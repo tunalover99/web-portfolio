@@ -8,8 +8,8 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #0e0d0b;
-    color: #e8e3d8;
+    background: #f5f3ef;
+    color: #2a2825;
     font-family: 'Courier New', monospace;
     overflow: hidden;
     height: 100vh;
@@ -24,7 +24,6 @@
 
   canvas { display: block; width: 100% !important; height: 100% !important; }
 
-  /* HUD */
   #hud-top {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -39,13 +38,13 @@
   .hud-name {
     font-size: 11px;
     letter-spacing: 0.22em;
-    color: rgba(232,227,216,0.5);
+    color: rgba(42,40,37,0.5);
     text-transform: uppercase;
   }
   .hud-sub {
     font-size: 10px;
     letter-spacing: 0.15em;
-    color: rgba(232,227,216,0.25);
+    color: rgba(42,40,37,0.25);
     margin-top: 4px;
     text-transform: uppercase;
   }
@@ -69,16 +68,15 @@
   .hint {
     font-size: 10px;
     letter-spacing: 0.14em;
-    color: rgba(232,227,216,0.25);
+    color: rgba(42,40,37,0.25);
     text-transform: uppercase;
     line-height: 1.8;
   }
 
-  /* 로딩 */
   #loading {
     position: fixed;
     inset: 0;
-    background: #0e0d0b;
+    background: #f5f3ef;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -91,7 +89,7 @@
   .loading-name {
     font-size: 13px;
     letter-spacing: 0.35em;
-    color: rgba(232,227,216,0.6);
+    color: rgba(42,40,37,0.5);
     text-transform: uppercase;
     margin-bottom: 32px;
   }
@@ -99,13 +97,13 @@
   .loading-bar-wrap {
     width: 180px;
     height: 1px;
-    background: rgba(232,227,216,0.1);
+    background: rgba(42,40,37,0.1);
     position: relative;
     overflow: hidden;
   }
   .loading-bar {
     height: 100%;
-    background: rgba(232,227,216,0.5);
+    background: rgba(42,40,37,0.4);
     width: 0%;
     transition: width 0.3s ease;
   }
@@ -113,12 +111,11 @@
   .loading-pct {
     font-size: 10px;
     letter-spacing: 0.2em;
-    color: rgba(232,227,216,0.25);
+    color: rgba(42,40,37,0.25);
     margin-top: 14px;
     text-align: center;
   }
 
-  /* 컨트롤 버튼 */
   #controls {
     position: fixed;
     right: 36px;
@@ -133,9 +130,9 @@
   .ctrl-btn {
     width: 36px;
     height: 36px;
-    background: rgba(232,227,216,0.06);
-    border: 0.5px solid rgba(232,227,216,0.15);
-    color: rgba(232,227,216,0.5);
+    background: rgba(42,40,37,0.05);
+    border: 0.5px solid rgba(42,40,37,0.15);
+    color: rgba(42,40,37,0.4);
     font-size: 14px;
     cursor: pointer;
     display: flex;
@@ -146,15 +143,14 @@
     border-radius: 2px;
   }
   .ctrl-btn:hover {
-    background: rgba(232,227,216,0.12);
-    color: rgba(232,227,216,0.9);
+    background: rgba(42,40,37,0.1);
+    color: rgba(42,40,37,0.8);
   }
 
-  /* 좌표 표시 */
   #coords {
     font-size: 9px;
     letter-spacing: 0.12em;
-    color: rgba(232,227,216,0.18);
+    color: rgba(42,40,37,0.18);
     line-height: 1.8;
     font-variant-numeric: tabular-nums;
   }
@@ -206,7 +202,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0e0d0b);
+scene.background = new THREE.Color(0xf5f3ef);
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100);
 camera.position.set(0, 2, 6);
@@ -217,14 +213,14 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 0.85;
 
-const ambient = new THREE.AmbientLight(0xfff8f0, 1.2);
+const ambient = new THREE.AmbientLight(0xfff8f0, 0.9);
 scene.add(ambient);
-const dirLight = new THREE.DirectionalLight(0xffeedd, 0.8);
+const dirLight = new THREE.DirectionalLight(0xffeedd, 0.5);
 dirLight.position.set(3, 5, 3);
 scene.add(dirLight);
-const dirLight2 = new THREE.DirectionalLight(0xddeeff, 0.4);
+const dirLight2 = new THREE.DirectionalLight(0xddeeff, 0.25);
 dirLight2.position.set(-3, 2, -2);
 scene.add(dirLight2);
 
@@ -246,14 +242,11 @@ manager.onLoad = () => {
   }, 400);
 };
 
-// GLTFLoader 직접 구현 (r128 호환)
 async function loadGLB(url) {
   const res = await fetch(url);
   const buffer = await res.arrayBuffer();
 
   const dv = new DataView(buffer);
-  const magic = dv.getUint32(0, true);
-  const version = dv.getUint32(4, true);
   const length = dv.getUint32(8, true);
 
   let jsonStr = '';
@@ -277,7 +270,6 @@ async function loadGLB(url) {
 
   const gltf = JSON.parse(jsonStr);
   const bin = binBuffer;
-
   const bvs = gltf.bufferViews;
   const accs = gltf.accessors;
 
@@ -334,7 +326,6 @@ async function loadGLB(url) {
 
   const mesh = new THREE.Mesh(geo, mat);
 
-  // Blender export 회전 보정 (quaternion: x=0.707, w=0.707 → -90° X)
   const node = gltf.nodes[0];
   if (node.rotation) {
     const [rx, ry, rz, rw] = node.rotation;
@@ -344,7 +335,6 @@ async function loadGLB(url) {
   geo.computeBoundingBox();
   geo.boundingBox.getCenter(center);
   mesh.position.sub(center);
-  geo.boundingBox.getSize(new THREE.Vector3());
   const size = new THREE.Vector3();
   geo.boundingBox.getSize(size);
   modelRadius = Math.max(size.x, size.y, size.z) * 0.5;
@@ -367,7 +357,6 @@ loadGLB('myspacescan.glb').then(mesh => {
   pct.textContent = '파일 로드 오류';
 });
 
-// OrbitControls 직접 구현
 let isDragging = false;
 let isRightDrag = false;
 let prevMouse = { x: 0, y: 0 };
@@ -415,7 +404,6 @@ wrap.addEventListener('wheel', e => {
   targetSpherical.r = Math.max(modelRadius * 0.3, Math.min(modelRadius * 5, targetSpherical.r));
 }, { passive: false });
 
-// 터치 지원
 let lastTouch = null;
 wrap.addEventListener('touchstart', e => {
   lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -430,7 +418,6 @@ wrap.addEventListener('touchmove', e => {
   targetSpherical.phi = Math.max(0.05, Math.min(Math.PI - 0.05, targetSpherical.phi));
 }, { passive: false });
 
-// 버튼 컨트롤
 document.getElementById('btn-reset').addEventListener('click', () => {
   targetSpherical = { theta: 0, phi: Math.PI / 3, r: modelRadius * 2.2 };
   targetPan.set(0, 0, 0);
@@ -444,7 +431,6 @@ document.getElementById('btn-front').addEventListener('click', () => {
   targetSpherical.theta = 0;
 });
 
-// 좌표 표시
 const coordsEl = document.getElementById('coords');
 
 function animate() {
