@@ -194,6 +194,8 @@
 </div>
 
 <div id="controls">
+  <button class="ctrl-btn" id="btn-zoom-in" title="줌인">+</button>
+  <button class="ctrl-btn" id="btn-zoom-out" title="줌아웃">−</button>
   <button class="ctrl-btn" id="btn-reset" title="뷰 초기화">↺</button>
   <button class="ctrl-btn" id="btn-top" title="위에서 보기">↑</button>
   <button class="ctrl-btn" id="btn-front" title="정면 보기">→</button>
@@ -429,6 +431,12 @@ document.getElementById('btn-top').addEventListener('click', () => {
 document.getElementById('btn-front').addEventListener('click', () => {
   targetSpherical.phi = Math.PI / 2;
   targetSpherical.theta = 0;
+});
+ document.getElementById('btn-zoom-in').addEventListener('click', () => {
+  targetSpherical.r = Math.max(modelRadius * 0.3, targetSpherical.r * 0.8);
+});
+document.getElementById('btn-zoom-out').addEventListener('click', () => {
+  targetSpherical.r = Math.min(modelRadius * 5, targetSpherical.r * 1.25);
 });
 
 const coordsEl = document.getElementById('coords');
