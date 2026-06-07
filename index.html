@@ -362,8 +362,9 @@ loadGLB('myspacescan.glb').then(mesh => {
 let isDragging = false;
 let isRightDrag = false;
 let prevMouse = { x: 0, y: 0 };
-let spherical = { theta: 1, phi: Math.PI / 2.2, r: modelRadius * 2.2 };
-let targetSpherical = { theta: 1, phi: Math.PI / 2.2, r: modelRadius * 2.2 };
+const DEFAULT_VIEW = { theta: 1, phi: Math.PI / 2.2, r: modelRadius * 2.2 };
+let spherical = { ...DEFAULT_VIEW };
+let targetSpherical = { ...DEFAULT_VIEW };
 let panOffset = new THREE.Vector3();
 let targetPan = new THREE.Vector3();
 let targetPos = new THREE.Vector3();
@@ -421,8 +422,8 @@ wrap.addEventListener('touchmove', e => {
 }, { passive: false });
 
 document.getElementById('btn-reset').addEventListener('click', () => {
-  targetSpherical = { theta: -0.2, phi: Math.PI / 2.2, r: modelRadius * 2.2 };
-  targetPan.set(-1.5, 1.5, 0);
+  targetSpherical = { ...DEFAULT_VIEW };
+  targetPan.set(0, 0, 0);
 });
 document.getElementById('btn-top').addEventListener('click', () => {
   targetSpherical.phi = 0.1;
