@@ -49,9 +49,7 @@
     text-transform: uppercase;
   }
 
-  .hud-right {
-    text-align: right;
-  }
+  .hud-right { text-align: right; }
 
   #hud-bottom {
     position: fixed;
@@ -98,7 +96,6 @@
     width: 180px;
     height: 1px;
     background: rgba(42,40,37,0.1);
-    position: relative;
     overflow: hidden;
   }
   .loading-bar {
@@ -230,6 +227,10 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
+// ★ 기본 시점 — 이 값 하나만 바꾸면 새로고침/초기화 둘 다 바뀜
+const DEFAULT_VIEW = { theta: -0.2, phi: Math.PI / 2.2, r: modelRadius * 2.2 };
+const DEFAULT_PAN = { x: 0, y: 0, z: 0 };
+
 const manager = new THREE.LoadingManager();
 const bar = document.getElementById('bar');
 const pct = document.getElementById('pct');
@@ -353,6 +354,11 @@ loadGLB('myspacescan.glb').then(mesh => {
   camera.position.set(0, modelRadius * 0.4, modelRadius * 2.2);
   camera.lookAt(0, 0, 0);
   targetPos.copy(camera.position);
+
+  // ★ 모델 로드 후 실제 modelRadius 반영해서 DEFAULT_VIEW r 업데이트
+  spherical.r = modelRadius * 2.2;
+  targetSpherical.r = modelRadius * 2.2;
+
   manager.onLoad();
 }).catch(err => {
   console.error(err);
@@ -362,11 +368,10 @@ loadGLB('myspacescan.glb').then(mesh => {
 let isDragging = false;
 let isRightDrag = false;
 let prevMouse = { x: 0, y: 0 };
-const DEFAULT_VIEW = { theta: 1, phi: Math.PI / 2.2, r: modelRadius * 2.2 };
 let spherical = { ...DEFAULT_VIEW };
 let targetSpherical = { ...DEFAULT_VIEW };
-let panOffset = new THREE.Vector3();
-let targetPan = new THREE.Vector3();
+let panOffset = new THREE.Vector3(DEFAULT_PAN.x, DEFAULT_PAN.y, DEFAULT_PAN.z);
+let targetPan = new THREE.Vector3(DEFAULT_PAN.x, DEFAULT_PAN.y, DEFAULT_PAN.z);
 let targetPos = new THREE.Vector3();
 
 const wrap = document.getElementById('canvas-wrap');
@@ -421,9 +426,15 @@ wrap.addEventListener('touchmove', e => {
   targetSpherical.phi = Math.max(0.05, Math.min(Math.PI - 0.05, targetSpherical.phi));
 }, { passive: false });
 
+document.getElementById('btn-zoom-in').addEventListener('click', () => {
+  targetSpherical.r = Math.max(modelRadius * 0.3, targetSpherical.r * 0.8);
+});
+document.getElementById('btn-zoom-out').addEventListener('click', () => {
+  targetSpherical.r = Math.min(modelRadius * 5, targetSpherical.r * 1.25);
+});
 document.getElementById('btn-reset').addEventListener('click', () => {
-  targetSpherical = { ...DEFAULT_VIEW };
-  targetPan.set(0, 0, 0);
+  targetSpherical = { ...DEFAULT_VIEW, r: modelRadius * 2.2 };
+  targetPan.set(DEFAULT_PAN.x, DEFAULT_PAN.y, DEFAULT_PAN.z);
 });
 document.getElementById('btn-top').addEventListener('click', () => {
   targetSpherical.phi = 0.1;
@@ -432,12 +443,6 @@ document.getElementById('btn-top').addEventListener('click', () => {
 document.getElementById('btn-front').addEventListener('click', () => {
   targetSpherical.phi = Math.PI / 2;
   targetSpherical.theta = 0;
-});
- document.getElementById('btn-zoom-in').addEventListener('click', () => {
-  targetSpherical.r = Math.max(modelRadius * 0.3, targetSpherical.r * 0.8);
-});
-document.getElementById('btn-zoom-out').addEventListener('click', () => {
-  targetSpherical.r = Math.min(modelRadius * 5, targetSpherical.r * 1.25);
 });
 
 const coordsEl = document.getElementById('coords');
