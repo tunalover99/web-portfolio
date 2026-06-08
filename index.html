@@ -153,19 +153,6 @@
     font-variant-numeric: tabular-nums;
   }
 
-  #fps-overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 20;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
   #crosshair {
     position: fixed;
     top: 50%; left: 50%;
@@ -215,16 +202,25 @@
     width: 12px;
     height: 12px;
     overflow: visible;
+    animation: starGlow 2s ease-in-out infinite;
   }
 
-  /* 배치도 패널 — 오른쪽 상단 호버 패널 */
- #map-panel {
+  @keyframes starGlow {
+    0%, 100% { filter: drop-shadow(0 0 2px rgba(255,230,0,0.4)) drop-shadow(0 0 4px rgba(255,230,0,0.2)); }
+    50% { filter: drop-shadow(0 0 6px rgba(255,230,0,0.9)) drop-shadow(0 0 12px rgba(255,230,0,0.5)) drop-shadow(0 0 20px rgba(255,200,0,0.3)); }
+  }
+
+  /* 배치도 패널 */
+  #map-panel {
     position: fixed;
-    top: 206px;
-    right: auto;
-    left: 950px;
-    width: 456px;
-    height: 645px;
+    top: 20%;
+    left: 65%;
+    width: 25vw;
+    height: 45vh;
+    min-width: 200px;
+    min-height: 280px;
+    max-width: 456px;
+    max-height: 645px;
     background: #f5f3ef;
     border: 0.5px solid rgba(42,40,37,0.15);
     z-index: 20;
@@ -290,7 +286,6 @@
 <div id="crosshair"></div>
 <div id="click-hint">CLICK TO ENTER SPACE</div>
 
-<!-- 별 버튼 -->
 <button id="star-btn">
   <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
     <polygon points="5,0 6.2,3.8 10,3.8 7,6.2 8.1,10 5,7.8 1.9,10 3,6.2 0,3.8 3.8,3.8"
@@ -298,7 +293,6 @@
   </svg>
 </button>
 
-<!-- 배치도 패널 -->
 <div id="map-panel">
   <img src="map.kor.jpg" alt="전시 배치도">
 </div>
@@ -332,7 +326,9 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
-const DEFAULT_VIEW = { theta: 1.878, phi: 1.192, r: 7.2 };
+// ★ 기본 시점 — 이 값만 바꾸면 새로고침/초기화 둘 다 바뀜
+// phi를 높여서 카메라를 올림 (매쉬가 화면 아래쪽으로 내려옴)
+const DEFAULT_VIEW = { theta: 1.878, phi: 1.35, r: 7.2 };
 const DEFAULT_PAN = { x: -1.5, y: -0.5, z: 0 };
 
 const manager = new THREE.LoadingManager();
@@ -430,6 +426,15 @@ async function loadGLB(url) {
   return mesh;
 }
 
+// 별 버튼 & 배치도 패널
+const starPos3D = new THREE.Vector3(1.490, 1.516, 1.755);
+const starBtn = document.getElementById('star-btn');
+const mapPanel = document.getElementById('map-panel');
+
+starBtn.addEventListener('mouseenter', () => { mapPanel.classList.add('visible'); });
+starBtn.addEventListener('mouseleave', () => { mapPanel.classList.remove('visible'); });
+starBtn.addEventListener('click', e => { e.stopPropagation(); });
+
 loadGLB('myspacescan.glb').then(mesh => {
   model = mesh;
   scene.add(mesh);
@@ -449,24 +454,6 @@ loadGLB('myspacescan.glb').then(mesh => {
 }).catch(err => {
   console.error(err);
   pct.textContent = '파일 로드 오류';
-});
-
-// 별 버튼 3D 좌표
-const starPos3D = new THREE.Vector3(1.490, 1.516, 1.755);
-const starBtn = document.getElementById('star-btn');
-const mapPanel = document.getElementById('map-panel');
-
-// 호버로 패널 토글
-starBtn.addEventListener('mouseenter', () => {
-  mapPanel.classList.add('visible');
-});
-starBtn.addEventListener('mouseleave', () => {
-  mapPanel.classList.remove('visible');
-});
-
-// 별 클릭시 FPS 모드 진입 막기
-starBtn.addEventListener('click', e => {
-  e.stopPropagation();
 });
 
 // ── 모드 관리 ──
