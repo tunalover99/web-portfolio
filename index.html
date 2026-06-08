@@ -691,7 +691,24 @@ function animate() {
   renderer.render(scene, camera);
 }
 animate();
+// Shift+클릭으로 3D 좌표 찍기
+const raycaster = new THREE.Raycaster();
+const mouse2 = new THREE.Vector2();
 
+wrap.addEventListener('click', e => {
+  if (!e.shiftKey) return;
+  if (isFPSMode) return;
+  mouse2.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse2.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse2, camera);
+  if (model) {
+    const hits = raycaster.intersectObject(model, true);
+    if (hits.length > 0) {
+      const p = hits[0].point;
+      alert(`x=${p.x.toFixed(3)}, y=${p.y.toFixed(3)}, z=${p.z.toFixed(3)}`);
+    }
+  }
+});
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
