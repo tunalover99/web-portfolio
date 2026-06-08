@@ -286,6 +286,24 @@
     line-height: 1;
   }
   #map-panel-close:hover { color: rgba(42,40,37,0.8); }
+ #star-btn {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    z-index: 15;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  #star-btn svg {
+    width: 10px;
+    height: 10px;
+    overflow: visible;
+  }
 </style>
 </head>
 <body>
@@ -687,6 +705,18 @@ function animate() {
       `ROT ${(spherical.theta * 57.3).toFixed(1)}° ${(spherical.phi * 57.3).toFixed(1)}° —<br>` +
       `ZOOM ${spherical.r.toFixed(2)}m`;
   }
+ // 별 버튼 3D 위치 추적
+const starPos3D = new THREE.Vector3(1.490, 1.516, 1.755);
+const starProjected = starPos3D.clone().project(camera);
+const starX = (starProjected.x * 0.5 + 0.5) * window.innerWidth;
+const starY = (-starProjected.y * 0.5 + 0.5) * window.innerHeight;
+const starBtn = document.getElementById('star-btn');
+starBtn.style.left = starX + 'px';
+starBtn.style.top = starY + 'px';
+// 카메라에서 멀어지면 작아지게
+const starDist = camera.position.distanceTo(starPos3D);
+const starScale = Math.max(0.5, Math.min(2, 8 / starDist));
+starBtn.style.transform = `translate(-50%, -50%) scale(${starScale})`;
 
   renderer.render(scene, camera);
 }
@@ -739,6 +769,15 @@ hintLeft.innerHTML = 'drag — rotate<br>scroll — zoom<br>right drag — pan<b
   mapClose.addEventListener('click', () => {
     mapPanel.classList.remove('visible');
   });
+ document.getElementById('star-btn').addEventListener('click', () => {
+  mapPanel.classList.toggle('visible');
+});
 </script>
+ <button id="star-btn">
+  <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="5,0 6.2,3.8 10,3.8 7,6.2 8.1,10 5,7.8 1.9,10 3,6.2 0,3.8 3.8,3.8"
+      fill="#FFE600" stroke="#000000" stroke-width="0.2"/>
+  </svg>
+</button>
 </body>
 </html>
