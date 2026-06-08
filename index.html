@@ -186,7 +186,6 @@
     transition: opacity 0.3s;
   }
 
-  /* 별 버튼 */
   #star-btn {
     position: fixed;
     width: 12px;
@@ -197,7 +196,7 @@
     background: none;
     border: none;
     padding: 0;
-    animation: starBlink 2s ease-in-out infinite;
+    animation: starBlink 1.6s ease-in-out infinite;
   }
 
   #star-btn svg {
@@ -207,17 +206,16 @@
   }
 
   @keyframes starBlink {
-    0%, 100% {
+    0%, 35%, 100% {
       opacity: 1;
-      filter: drop-shadow(0 0 2px rgba(255,255,255,0.4)) drop-shadow(0 0 4px rgba(255,255,255,0.2));
+      filter: drop-shadow(0 0 8px rgba(255,255,255,1)) drop-shadow(0 0 16px rgba(255,255,255,0.8)) drop-shadow(0 0 30px rgba(255,255,255,0.6));
     }
-    50% {
-      opacity: 0.6;
-      filter: drop-shadow(0 0 6px rgba(255,255,255,0.9)) drop-shadow(0 0 12px rgba(255,255,255,0.6)) drop-shadow(0 0 20px rgba(255,255,255,0.3));
+    50%, 70% {
+      opacity: 0;
+      filter: none;
     }
   }
 
-  /* 배치도 패널 */
   #map-panel {
     position: fixed;
     top: 20%;
@@ -295,7 +293,7 @@
 <button id="star-btn">
   <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
     <polygon points="5,0 6.2,3.8 10,3.8 7,6.2 8.1,10 5,7.8 1.9,10 3,6.2 0,3.8 3.8,3.8"
-      fill="#FFE600" stroke="#000000" stroke-width="0.2"/>
+      fill="#FFE600" stroke="#000000" stroke-width="0.5"/>
   </svg>
 </button>
 
@@ -332,7 +330,7 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
-const DEFAULT_VIEW = { theta: 1.878, phi: 1.35, r: 7.2 };
+const DEFAULT_VIEW = { theta: 1.878, phi: 1.55, r: 7.2 };
 const DEFAULT_PAN = { x: -1.5, y: -0.5, z: 0 };
 
 const manager = new THREE.LoadingManager();
@@ -430,7 +428,6 @@ async function loadGLB(url) {
   return mesh;
 }
 
-// 별 버튼 & 배치도 패널
 const starPos3D = new THREE.Vector3(1.490, 1.516, 1.755);
 const starBtn = document.getElementById('star-btn');
 const mapPanel = document.getElementById('map-panel');
@@ -650,7 +647,6 @@ function animate() {
       `ZOOM ${spherical.r.toFixed(2)}m`;
   }
 
-  // 별 버튼 3D 위치 추적
   const starProjected = starPos3D.clone().project(camera);
   const starX = (starProjected.x * 0.5 + 0.5) * window.innerWidth;
   const starY = (-starProjected.y * 0.5 + 0.5) * window.innerHeight;
