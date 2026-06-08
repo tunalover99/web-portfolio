@@ -153,7 +153,6 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* FPS 모드 안내 */
   #fps-overlay {
     position: fixed;
     inset: 0;
@@ -166,17 +165,7 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
-  #fps-overlay.visible { opacity: 1; }
 
-  #fps-overlay p {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: rgba(42,40,37,0.4);
-    text-transform: uppercase;
-    line-height: 2;
-  }
-
-  /* 십자선 */
   #crosshair {
     position: fixed;
     top: 50%; left: 50%;
@@ -192,19 +181,10 @@
     position: absolute;
     background: rgba(42,40,37,0.4);
   }
-  #crosshair::before {
-    width: 1px; height: 100%;
-    left: 50%; top: 0;
-    transform: translateX(-50%);
-  }
-  #crosshair::after {
-    width: 100%; height: 1px;
-    top: 50%; left: 0;
-    transform: translateY(-50%);
-  }
+  #crosshair::before { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+  #crosshair::after { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
   #crosshair.visible { display: block; }
 
-  /* 클릭 안내 */
   #click-hint {
     position: fixed;
     bottom: 28px;
@@ -218,91 +198,46 @@
     z-index: 10;
     transition: opacity 0.3s;
   }
- /* 배치도 버튼 */
-  #btn-map {
+
+  /* 별 버튼 */
+  #star-btn {
     position: fixed;
-    left: 36px;
-    bottom: 28px;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: rgba(42,40,37,0.4);
-    background: rgba(42,40,37,0.05);
-    border: 0.5px solid rgba(42,40,37,0.15);
-    padding: 8px 14px;
-    cursor: pointer;
-    text-transform: uppercase;
-    z-index: 10;
-    border-radius: 2px;
-    transition: background 0.2s, color 0.2s;
-  }
-  #btn-map:hover {
-    background: rgba(42,40,37,0.1);
-    color: rgba(42,40,37,0.8);
-  }
-
-  /* 배치도 패널 */
-  #map-panel {
-    position: fixed;
-    left: 36px;
-    bottom: 70px;
-    width: 340px;
-    background: #f5f3ef;
-    border: 0.5px solid rgba(42,40,37,0.15);
-    padding: 20px;
-    z-index: 20;
-    display: none;
-    box-shadow: 0 4px 24px rgba(42,40,37,0.08);
-  }
-  #map-panel.visible { display: block; }
-
-  #map-panel img {
-    width: 100%;
-    display: block;
-  }
-
-  #map-panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-
-  #map-panel-title {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: rgba(42,40,37,0.5);
-    text-transform: uppercase;
-  }
-
-  #map-panel-close {
-    font-size: 14px;
-    color: rgba(42,40,37,0.3);
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-family: 'Courier New', monospace;
-    padding: 0;
-    line-height: 1;
-  }
-  #map-panel-close:hover { color: rgba(42,40,37,0.8); }
- #star-btn {
-    position: fixed;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     cursor: pointer;
     z-index: 15;
     transform: translate(-50%, -50%);
-    pointer-events: auto;
     background: none;
     border: none;
     padding: 0;
   }
-
   #star-btn svg {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     overflow: visible;
+  }
+
+  /* 배치도 패널 — 오른쪽 상단 호버 패널 */
+  #map-panel {
+    position: fixed;
+    top: 28px;
+    right: 90px;
+    width: 170px;
+    height: 200px;
+    background: #f5f3ef;
+    border: 0.5px solid rgba(42,40,37,0.15);
+    z-index: 20;
+    display: none;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(42,40,37,0.08);
+  }
+  #map-panel.visible { display: block; }
+  #map-panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    display: block;
   }
 </style>
 </head>
@@ -335,7 +270,8 @@
   <div class="hint" id="hint-left">
     drag — rotate<br>
     scroll — zoom<br>
-    right drag — pan
+    right drag — pan<br>
+    click — enter space
   </div>
   <div class="hint" style="text-align:right">
     홍익대학교 판화과<br>
@@ -351,14 +287,21 @@
   <button class="ctrl-btn" id="btn-front" title="정면 보기">→</button>
 </div>
 
-<div id="fps-overlay">
-  <p>WASD — MOVE</p>
-  <p>MOUSE — LOOK</p>
-  <p>ESC — EXIT</p>
-</div>
-
 <div id="crosshair"></div>
 <div id="click-hint">CLICK TO ENTER SPACE</div>
+
+<!-- 별 버튼 -->
+<button id="star-btn">
+  <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="5,0 6.2,3.8 10,3.8 7,6.2 8.1,10 5,7.8 1.9,10 3,6.2 0,3.8 3.8,3.8"
+      fill="#FFE600" stroke="#000000" stroke-width="0.2"/>
+  </svg>
+</button>
+
+<!-- 배치도 패널 -->
+<div id="map-panel">
+  <img src="map(kor).jpg" alt="전시 배치도">
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -389,7 +332,7 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
-const DEFAULT_VIEW = { theta: 1.878, phi: 1.192, r: 8.2 };
+const DEFAULT_VIEW = { theta: 1.878, phi: 1.192, r: 10.2 };
 const DEFAULT_PAN = { x: -1.5, y: -0.5, z: 0 };
 
 const manager = new THREE.LoadingManager();
@@ -476,7 +419,7 @@ async function loadGLB(url) {
     const [rx, ry, rz, rw] = node.rotation;
     mesh.quaternion.set(rx, ry, rz, rw);
   }
- mesh.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), Math.PI / 4 + 0.175);
+  mesh.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), Math.PI / 4 + 0.175);
   geo.computeBoundingBox();
   geo.boundingBox.getCenter(center);
   mesh.position.sub(center);
@@ -495,20 +438,35 @@ loadGLB('myspacescan.glb').then(mesh => {
   targetPos.copy(camera.position);
 
   const axisLength = modelRadius * 2;
-
-const xGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-axisLength,0,0), new THREE.Vector3(axisLength,0,0)]);
-scene.add(new THREE.Line(xGeo, new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.4 })));
-
-const yGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,-axisLength,0), new THREE.Vector3(0,axisLength,0)]);
-scene.add(new THREE.Line(yGeo, new THREE.LineBasicMaterial({ color: 0x44ff44, transparent: true, opacity: 0.4 })));
-
-const zGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,-axisLength), new THREE.Vector3(0,0,axisLength)]);
-scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.4 })));
+  const xGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-axisLength,0,0), new THREE.Vector3(axisLength,0,0)]);
+  scene.add(new THREE.Line(xGeo, new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.4 })));
+  const yGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,-axisLength,0), new THREE.Vector3(0,axisLength,0)]);
+  scene.add(new THREE.Line(yGeo, new THREE.LineBasicMaterial({ color: 0x44ff44, transparent: true, opacity: 0.4 })));
+  const zGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,-axisLength), new THREE.Vector3(0,0,axisLength)]);
+  scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.4 })));
 
   manager.onLoad();
 }).catch(err => {
   console.error(err);
   pct.textContent = '파일 로드 오류';
+});
+
+// 별 버튼 3D 좌표
+const starPos3D = new THREE.Vector3(1.490, 1.516, 1.755);
+const starBtn = document.getElementById('star-btn');
+const mapPanel = document.getElementById('map-panel');
+
+// 호버로 패널 토글
+starBtn.addEventListener('mouseenter', () => {
+  mapPanel.classList.add('visible');
+});
+starBtn.addEventListener('mouseleave', () => {
+  mapPanel.classList.remove('visible');
+});
+
+// 별 클릭시 FPS 모드 진입 막기
+starBtn.addEventListener('click', e => {
+  e.stopPropagation();
 });
 
 // ── 모드 관리 ──
@@ -519,16 +477,13 @@ const fpsSpeed = 0.05;
 const keys = {};
 
 const wrap = document.getElementById('canvas-wrap');
-const fpsOverlay = document.getElementById('fps-overlay');
 const crosshair = document.getElementById('crosshair');
 const clickHint = document.getElementById('click-hint');
 const hintLeft = document.getElementById('hint-left');
 
-// 클릭 → FPS 모드 진입
-wrap.addEventListener('click', () => {
-  if (!isFPSMode) {
-    wrap.requestPointerLock();
-  }
+wrap.addEventListener('click', e => {
+  if (e.target === starBtn || starBtn.contains(e.target)) return;
+  if (!isFPSMode) wrap.requestPointerLock();
 });
 
 document.addEventListener('pointerlockchange', () => {
@@ -538,26 +493,23 @@ document.addEventListener('pointerlockchange', () => {
     crosshair.classList.add('visible');
     clickHint.style.opacity = '0';
     hintLeft.innerHTML = 'WASD — MOVE<br>MOUSE — LOOK<br>ESC — EXIT';
-    // FPS 시작 시 현재 카메라 위치 유지, 방향 초기화
     fpsYaw = 0;
     fpsPitch = 0;
-   camera.rotation.set(0, 0, 0);
+    camera.rotation.set(0, 0, 0);
   } else {
     isFPSMode = false;
     wrap.classList.remove('fps-mode');
     crosshair.classList.remove('visible');
     clickHint.style.opacity = '1';
     hintLeft.innerHTML = 'drag — rotate<br>scroll — zoom<br>right drag — pan<br>click — enter space';
-    // 궤도 모드로 복귀 시 카메라 위치를 spherical에 반영
     const pos = camera.position;
     spherical.r = pos.length();
-    spherical.phi = Math.acos(pos.y / spherical.r);
+    spherical.phi = Math.acos(Math.min(1, pos.y / spherical.r));
     spherical.theta = Math.atan2(pos.x, pos.z);
     targetSpherical = { ...spherical };
   }
 });
 
-// FPS 마우스 이동
 document.addEventListener('mousemove', e => {
   if (!isFPSMode) return;
   fpsYaw -= e.movementX * 0.002;
@@ -565,7 +517,6 @@ document.addEventListener('mousemove', e => {
   fpsPitch = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, fpsPitch));
 });
 
-// WASD 키
 window.addEventListener('keydown', e => { keys[e.code] = true; });
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 
@@ -655,76 +606,9 @@ document.getElementById('btn-front').addEventListener('click', () => {
   targetSpherical.theta = 0;
 });
 
-const coordsEl = document.getElementById('coords');
-
-// FPS 이동 방향 벡터
-const fpsForward = new THREE.Vector3();
-const fpsRight = new THREE.Vector3();
-const fpsUp = new THREE.Vector3(0, 1, 0);
-
-function animate() {
-  requestAnimationFrame(animate);
-
-  if (isFPSMode) {
-    // FPS 카메라 회전
-    camera.rotation.order = 'YXZ';
-    camera.rotation.y = fpsYaw;
-    camera.rotation.x = fpsPitch;
-
-    // WASD 이동
-    camera.getWorldDirection(fpsForward);
-    fpsForward.y = 0;
-    fpsForward.normalize();
-    fpsRight.crossVectors(fpsForward, fpsUp).normalize();
-
-    if (keys['KeyW'] || keys['ArrowUp'])    camera.position.addScaledVector(fpsForward, fpsSpeed);
-    if (keys['KeyS'] || keys['ArrowDown'])  camera.position.addScaledVector(fpsForward, -fpsSpeed);
-    if (keys['KeyA'] || keys['ArrowLeft'])  camera.position.addScaledVector(fpsRight, -fpsSpeed);
-    if (keys['KeyD'] || keys['ArrowRight']) camera.position.addScaledVector(fpsRight, fpsSpeed);
-
-    coordsEl.innerHTML =
-      `POS ${camera.position.x.toFixed(1)} ${camera.position.y.toFixed(1)} ${camera.position.z.toFixed(1)}<br>` +
-      `FPS MODE`;
-
-  } else {
-    // 궤도 모드
-    spherical.theta += (targetSpherical.theta - spherical.theta) * 0.08;
-    spherical.phi += (targetSpherical.phi - spherical.phi) * 0.08;
-    spherical.r += (targetSpherical.r - spherical.r) * 0.08;
-    panOffset.lerp(targetPan, 0.08);
-
-    const x = spherical.r * Math.sin(spherical.phi) * Math.sin(spherical.theta);
-    const y = spherical.r * Math.cos(spherical.phi);
-    const z = spherical.r * Math.sin(spherical.phi) * Math.cos(spherical.theta);
-
-    camera.position.set(x + panOffset.x, y + panOffset.y, z + panOffset.z);
-    camera.lookAt(panOffset);
-    camera.rotation.order = 'XYZ';
-
-    coordsEl.innerHTML =
-      `ROT ${(spherical.theta * 57.3).toFixed(1)}° ${(spherical.phi * 57.3).toFixed(1)}° —<br>` +
-      `ZOOM ${spherical.r.toFixed(2)}m`;
-  }
- // 별 버튼 3D 위치 추적
-const starPos3D = new THREE.Vector3(1.490, 1.516, 1.755);
-const starProjected = starPos3D.clone().project(camera);
-const starX = (starProjected.x * 0.5 + 0.5) * window.innerWidth;
-const starY = (-starProjected.y * 0.5 + 0.5) * window.innerHeight;
-const starBtn = document.getElementById('star-btn');
-starBtn.style.left = starX + 'px';
-starBtn.style.top = starY + 'px';
-// 카메라에서 멀어지면 작아지게
-const starDist = camera.position.distanceTo(starPos3D);
-const starScale = Math.max(0.5, Math.min(2, 8 / starDist));
-starBtn.style.transform = `translate(-50%, -50%) scale(${starScale})`;
-
-  renderer.render(scene, camera);
-}
-animate();
-// Shift+클릭으로 3D 좌표 찍기
+// Shift+클릭 좌표 찍기
 const raycaster = new THREE.Raycaster();
 const mouse2 = new THREE.Vector2();
-
 wrap.addEventListener('click', e => {
   if (!e.shiftKey) return;
   if (isFPSMode) return;
@@ -739,45 +623,64 @@ wrap.addEventListener('click', e => {
     }
   }
 });
+
+const coordsEl = document.getElementById('coords');
+const fpsForward = new THREE.Vector3();
+const fpsRight = new THREE.Vector3();
+const fpsUp = new THREE.Vector3(0, 1, 0);
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (isFPSMode) {
+    camera.rotation.order = 'YXZ';
+    camera.rotation.y = fpsYaw;
+    camera.rotation.x = fpsPitch;
+    camera.getWorldDirection(fpsForward);
+    fpsForward.y = 0;
+    fpsForward.normalize();
+    fpsRight.crossVectors(fpsForward, fpsUp).normalize();
+    if (keys['KeyW'] || keys['ArrowUp'])    camera.position.addScaledVector(fpsForward, fpsSpeed);
+    if (keys['KeyS'] || keys['ArrowDown'])  camera.position.addScaledVector(fpsForward, -fpsSpeed);
+    if (keys['KeyA'] || keys['ArrowLeft'])  camera.position.addScaledVector(fpsRight, -fpsSpeed);
+    if (keys['KeyD'] || keys['ArrowRight']) camera.position.addScaledVector(fpsRight, fpsSpeed);
+    coordsEl.innerHTML =
+      `POS ${camera.position.x.toFixed(1)} ${camera.position.y.toFixed(1)} ${camera.position.z.toFixed(1)}<br>FPS MODE`;
+  } else {
+    spherical.theta += (targetSpherical.theta - spherical.theta) * 0.08;
+    spherical.phi += (targetSpherical.phi - spherical.phi) * 0.08;
+    spherical.r += (targetSpherical.r - spherical.r) * 0.08;
+    panOffset.lerp(targetPan, 0.08);
+    const x = spherical.r * Math.sin(spherical.phi) * Math.sin(spherical.theta);
+    const y = spherical.r * Math.cos(spherical.phi);
+    const z = spherical.r * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+    camera.position.set(x + panOffset.x, y + panOffset.y, z + panOffset.z);
+    camera.lookAt(panOffset);
+    camera.rotation.order = 'XYZ';
+    coordsEl.innerHTML =
+      `ROT ${(spherical.theta * 57.3).toFixed(1)}° ${(spherical.phi * 57.3).toFixed(1)}° —<br>` +
+      `ZOOM ${spherical.r.toFixed(2)}m`;
+  }
+
+  // 별 버튼 3D 위치 추적
+  const starProjected = starPos3D.clone().project(camera);
+  const starX = (starProjected.x * 0.5 + 0.5) * window.innerWidth;
+  const starY = (-starProjected.y * 0.5 + 0.5) * window.innerHeight;
+  starBtn.style.left = starX + 'px';
+  starBtn.style.top = starY + 'px';
+  const starDist = camera.position.distanceTo(starPos3D);
+  const starScale = Math.max(0.5, Math.min(2, 8 / starDist));
+  starBtn.style.transform = `translate(-50%, -50%) scale(${starScale})`;
+
+  renderer.render(scene, camera);
+}
+animate();
+
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-// 초기 hint 업데이트
-hintLeft.innerHTML = 'drag — rotate<br>scroll — zoom<br>right drag — pan<br>click — enter space';
 </script>
-<button id="btn-map">FLOOR PLAN</button>
-
-<div id="map-panel">
-  <div id="map-panel-header">
-    <span id="map-panel-title">EXHIBITION MAP</span>
-    <button id="map-panel-close">×</button>
-  </div>
-  <img src="map.kr.jpg" alt="전시 배치도">
-</div>
-
-<script>
-  const btnMap = document.getElementById('btn-map');
-  const mapPanel = document.getElementById('map-panel');
-  const mapClose = document.getElementById('map-panel-close');
-
-  btnMap.addEventListener('click', () => {
-    mapPanel.classList.toggle('visible');
-  });
-  mapClose.addEventListener('click', () => {
-    mapPanel.classList.remove('visible');
-  });
- document.getElementById('star-btn').addEventListener('click', () => {
-  mapPanel.classList.toggle('visible');
-});
-</script>
- <button id="star-btn">
-  <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="5,0 6.2,3.8 10,3.8 7,6.2 8.1,10 5,7.8 1.9,10 3,6.2 0,3.8 3.8,3.8"
-      fill="#FFE600" stroke="#000000" stroke-width="0.2"/>
-  </svg>
-</button>
 </body>
 </html>
