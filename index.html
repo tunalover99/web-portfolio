@@ -359,7 +359,31 @@ loadGLB('myspacescan.glb').then(mesh => {
   spherical.r = modelRadius * 2.2;
   targetSpherical.r = modelRadius * 2.2;
 
-  manager.onLoad();
+ // X Y Z 축선 추가
+const axisLength = modelRadius * 2;
+
+// X축 (빨강)
+const xGeo = new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(-axisLength, 0, 0),
+  new THREE.Vector3(axisLength, 0, 0)
+]);
+scene.add(new THREE.Line(xGeo, new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.5 })));
+
+// Y축 (초록)
+const yGeo = new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(0, -axisLength, 0),
+  new THREE.Vector3(0, axisLength, 0)
+]);
+scene.add(new THREE.Line(yGeo, new THREE.LineBasicMaterial({ color: 0x44ff44, transparent: true, opacity: 0.5 })));
+
+// Z축 (파랑)
+const zGeo = new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(0, 0, -axisLength),
+  new THREE.Vector3(0, 0, axisLength)
+]);
+scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.5 })));
+  
+ manager.onLoad();
 }).catch(err => {
   console.error(err);
   pct.textContent = '파일 로드 오류';
