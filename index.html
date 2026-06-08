@@ -197,27 +197,36 @@
     background: none;
     border: none;
     padding: 0;
+    animation: starBlink 2s ease-in-out infinite;
   }
+
   #star-btn svg {
     width: 12px;
     height: 12px;
     overflow: visible;
-    animation: starGlow 2s ease-in-out infinite;
   }
 
-  @keyframes starGlow {
-    0%, 100% { filter: drop-shadow(0 0 2px rgba(255,230,0,0.4)) drop-shadow(0 0 4px rgba(255,230,0,0.2)); }
-    50% { filter: drop-shadow(0 0 6px rgba(255,230,0,0.9)) drop-shadow(0 0 12px rgba(255,230,0,0.5)) drop-shadow(0 0 20px rgba(255,200,0,0.3)); }
+  @keyframes starBlink {
+    0%, 100% {
+      opacity: 1;
+      filter: drop-shadow(0 0 2px rgba(255,255,255,0.4)) drop-shadow(0 0 4px rgba(255,255,255,0.2));
+    }
+    50% {
+      opacity: 0.6;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.9)) drop-shadow(0 0 12px rgba(255,255,255,0.6)) drop-shadow(0 0 20px rgba(255,255,255,0.3));
+    }
   }
 
   /* 배치도 패널 */
   #map-panel {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 20%;
+    right: 90px;
+    left: auto;
     width: 456px;
     height: 645px;
+    max-width: calc(100vw - 120px);
+    max-height: calc(100vh - 40px);
     background: transparent;
     border: none;
     z-index: 20;
@@ -225,6 +234,7 @@
     overflow: hidden;
     box-shadow: none;
   }
+  #map-panel.visible { display: block; }
   #map-panel img {
     width: 100%;
     height: 100%;
@@ -322,8 +332,6 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
-// ★ 기본 시점 — 이 값만 바꾸면 새로고침/초기화 둘 다 바뀜
-// phi를 높여서 카메라를 올림 (매쉬가 화면 아래쪽으로 내려옴)
 const DEFAULT_VIEW = { theta: 1.878, phi: 1.35, r: 7.2 };
 const DEFAULT_PAN = { x: -1.5, y: -0.5, z: 0 };
 
@@ -452,7 +460,6 @@ loadGLB('myspacescan.glb').then(mesh => {
   pct.textContent = '파일 로드 오류';
 });
 
-// ── 모드 관리 ──
 let isFPSMode = false;
 let fpsYaw = 0;
 let fpsPitch = 0;
@@ -503,7 +510,6 @@ document.addEventListener('mousemove', e => {
 window.addEventListener('keydown', e => { keys[e.code] = true; });
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 
-// ── 궤도 모드 ──
 let isDragging = false;
 let isRightDrag = false;
 let prevMouse = { x: 0, y: 0 };
@@ -589,7 +595,6 @@ document.getElementById('btn-front').addEventListener('click', () => {
   targetSpherical.theta = 0;
 });
 
-// Shift+클릭 좌표 찍기
 const raycaster = new THREE.Raycaster();
 const mouse2 = new THREE.Vector2();
 wrap.addEventListener('click', e => {
