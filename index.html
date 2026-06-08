@@ -390,6 +390,7 @@ async function loadGLB(url) {
     const [rx, ry, rz, rw] = node.rotation;
     mesh.quaternion.set(rx, ry, rz, rw);
   }
+ mesh.rotation.y = Math.PI / 4;
   geo.computeBoundingBox();
   geo.boundingBox.getCenter(center);
   mesh.position.sub(center);
