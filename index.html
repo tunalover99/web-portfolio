@@ -382,7 +382,52 @@ const zGeo = new THREE.BufferGeometry().setFromPoints([
   new THREE.Vector3(0, 0, axisLength)
 ]);
 scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.5 })));
-  
+
+ // 거리선 (거울 → 모래)
+const p1 = new THREE.Vector3(-3.590, 0.362, 1.710);
+const p2 = new THREE.Vector3(0.229, 0.377, -1.999);
+
+// 실제 거리 계산
+const dist = p1.distanceTo(p2);
+const realScale = 4.932 / dist; // 실제 4.932m 기준
+
+// 점선 효과를 위한 선
+const measureGeo = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+const measureMat = new THREE.LineDashedMaterial({
+  color: 0x2a2825,
+  dashSize: 0.15,
+  gapSize: 0.08,
+  transparent: true,
+  opacity: 0.6
+});
+const measureLine = new THREE.Line(measureGeo, measureMat);
+measureLine.computeLineDistances();
+scene.add(measureLine);
+
+// 거리 텍스트 (HTML 오버레이)
+const labelDiv = document.createElement('div');
+labelDiv.style.cssText = `
+  position: fixed;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(42,40,37,0.6);
+  pointer-events: none;
+  z-index: 5;
+`;
+labelDiv.textContent = '4.932 m';
+document.body.appendChild(labelDiv);
+
+// 텍스트를 선의 중간 지점에 위치시키기
+const midPoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+
+function updateLabel() {
+  const projected = midPoint.clone().project(camera);
+  const x = (projected.x * 0.5 + 0.5) * window.innerWidth;
+  const y = (-projected.y * 0.5 + 0.5) * window.innerHeight;
+  labelDiv.style.left = x + 'px';
+  labelDiv.style.top = (y - 16) + 'px';
+}
  manager.onLoad();
 }).catch(err => {
   console.error(err);
@@ -489,7 +534,7 @@ function animate() {
   coordsEl.innerHTML =
     `ROT ${(spherical.theta * 57.3).toFixed(1)}° ${(spherical.phi * 57.3).toFixed(1)}° —<br>` +
     `ZOOM ${spherical.r.toFixed(2)}m`;
-
+updateLabel();
   renderer.render(scene, camera);
 }
 animate();
