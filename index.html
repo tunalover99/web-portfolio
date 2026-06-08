@@ -151,6 +151,17 @@
     line-height: 1.8;
     font-variant-numeric: tabular-nums;
   }
+
+  #measure-label {
+    position: fixed;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: rgba(42,40,37,0.6);
+    pointer-events: none;
+    z-index: 5;
+    transform: translateX(-50%);
+  }
 </style>
 </head>
 <body>
@@ -174,7 +185,7 @@
   </div>
   <div class="hud-right" id="coords">
     ROT — — —<br>
-    POS — — —
+    ZOOM — —
   </div>
 </div>
 
@@ -197,6 +208,8 @@
   <button class="ctrl-btn" id="btn-top" title="위에서 보기">↑</button>
   <button class="ctrl-btn" id="btn-front" title="정면 보기">→</button>
 </div>
+
+<div id="measure-label">4.932 m</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -227,9 +240,9 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
-// ★ 기본 시점 — 이 값 하나만 바꾸면 새로고침/초기화 둘 다 바뀜
-const DEFAULT_VIEW = { theta: 0.918, phi: 1.192, r: 30 };
-const DEFAULT_PAN = { x: -2, y: -0.5, z: 0 };
+// ★ 기본 시점 — 이 값만 바꾸면 새로고침/초기화 둘 다 바뀜
+const DEFAULT_VIEW = { theta: 0.918, phi: 1.192, r: 11.5 };
+const DEFAULT_PAN = { x: -1.5, y: -0.5, z: 0 };
 
 const manager = new THREE.LoadingManager();
 const bar = document.getElementById('bar');
@@ -348,6 +361,12 @@ async function loadGLB(url) {
   return mesh;
 }
 
+// 거리선 두 점
+const p1 = new THREE.Vector3(-3.590, 0.362, 1.710);
+const p2 = new THREE.Vector3(0.229, 0.377, -1.999);
+const midPoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+const measureLabel = document.getElementById('measure-label');
+
 loadGLB('myspacescan.glb').then(mesh => {
   model = mesh;
   scene.add(mesh);
@@ -355,80 +374,37 @@ loadGLB('myspacescan.glb').then(mesh => {
   camera.lookAt(0, 0, 0);
   targetPos.copy(camera.position);
 
-  // ★ 모델 로드 후 실제 modelRadius 반영해서 DEFAULT_VIEW r 업데이트
-  spherical.r = modelRadius * 2.2;
-  targetSpherical.r = modelRadius * 2.2;
+  // X Y Z 축선
+  const axisLength = modelRadius * 2;
+  const xGeo = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0)
+  ]);
+  scene.add(new THREE.Line(xGeo, new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.4 })));
 
- // X Y Z 축선 추가
-const axisLength = modelRadius * 2;
+  const yGeo = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0)
+  ]);
+  scene.add(new THREE.Line(yGeo, new THREE.LineBasicMaterial({ color: 0x44ff44, transparent: true, opacity: 0.4 })));
 
-// X축 (빨강)
-const xGeo = new THREE.BufferGeometry().setFromPoints([
-  new THREE.Vector3(-axisLength, 0, 0),
-  new THREE.Vector3(axisLength, 0, 0)
-]);
-scene.add(new THREE.Line(xGeo, new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.5 })));
+  const zGeo = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength)
+  ]);
+  scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.4 })));
 
-// Y축 (초록)
-const yGeo = new THREE.BufferGeometry().setFromPoints([
-  new THREE.Vector3(0, -axisLength, 0),
-  new THREE.Vector3(0, axisLength, 0)
-]);
-scene.add(new THREE.Line(yGeo, new THREE.LineBasicMaterial({ color: 0x44ff44, transparent: true, opacity: 0.5 })));
+  // 거리 점선
+  const measureGeo = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+  const measureMat = new THREE.LineDashedMaterial({
+    color: 0x2a2825,
+    dashSize: 0.15,
+    gapSize: 0.08,
+    transparent: true,
+    opacity: 0.6
+  });
+  const measureLine = new THREE.Line(measureGeo, measureMat);
+  measureLine.computeLineDistances();
+  scene.add(measureLine);
 
-// Z축 (파랑)
-const zGeo = new THREE.BufferGeometry().setFromPoints([
-  new THREE.Vector3(0, 0, -axisLength),
-  new THREE.Vector3(0, 0, axisLength)
-]);
-scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.5 })));
-
- // 거리선 (거울 → 모래)
-const p1 = new THREE.Vector3(-3.590, 0.362, 1.710);
-const p2 = new THREE.Vector3(0.229, 0.377, -1.999);
-
-// 실제 거리 계산
-const dist = p1.distanceTo(p2);
-const realScale = 4.932 / dist; // 실제 4.932m 기준
-
-// 점선 효과를 위한 선
-const measureGeo = new THREE.BufferGeometry().setFromPoints([p1, p2]);
-const measureMat = new THREE.LineDashedMaterial({
-  color: 0x2a2825,
-  dashSize: 0.15,
-  gapSize: 0.08,
-  transparent: true,
-  opacity: 0.6
-});
-const measureLine = new THREE.Line(measureGeo, measureMat);
-measureLine.computeLineDistances();
-scene.add(measureLine);
-
-// 거리 텍스트 (HTML 오버레이)
-const labelDiv = document.createElement('div');
-labelDiv.style.cssText = `
-  position: fixed;
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: rgba(42,40,37,0.6);
-  pointer-events: none;
-  z-index: 5;
-`;
-labelDiv.textContent = '4.932 m';
-document.body.appendChild(labelDiv);
-
-// 텍스트를 선의 중간 지점에 위치시키기
-const midPoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-
-function updateLabel() {
-  const projected = midPoint.clone().project(camera);
-  const x = (projected.x * 0.5 + 0.5) * window.innerWidth;
-  const y = (-projected.y * 0.5 + 0.5) * window.innerHeight;
-  labelDiv.style.left = x + 'px';
-  labelDiv.style.top = (y - 16) + 'px';
-}
- manager.onLoad();
+  manager.onLoad();
 }).catch(err => {
   console.error(err);
   pct.textContent = '파일 로드 오류';
@@ -502,7 +478,7 @@ document.getElementById('btn-zoom-out').addEventListener('click', () => {
   targetSpherical.r = Math.min(modelRadius * 5, targetSpherical.r * 1.25);
 });
 document.getElementById('btn-reset').addEventListener('click', () => {
-  targetSpherical = { ...DEFAULT_VIEW, r: modelRadius * 2.2 };
+  targetSpherical = { ...DEFAULT_VIEW };
   targetPan.set(DEFAULT_PAN.x, DEFAULT_PAN.y, DEFAULT_PAN.z);
 });
 document.getElementById('btn-top').addEventListener('click', () => {
@@ -534,30 +510,18 @@ function animate() {
   coordsEl.innerHTML =
     `ROT ${(spherical.theta * 57.3).toFixed(1)}° ${(spherical.phi * 57.3).toFixed(1)}° —<br>` +
     `ZOOM ${spherical.r.toFixed(2)}m`;
-updateLabel();
+
+  // 거리 텍스트 위치 업데이트
+  const projected = midPoint.clone().project(camera);
+  const lx = (projected.x * 0.5 + 0.5) * window.innerWidth;
+  const ly = (-projected.y * 0.5 + 0.5) * window.innerHeight;
+  measureLabel.style.left = lx + 'px';
+  measureLabel.style.top = (ly - 16) + 'px';
+
   renderer.render(scene, camera);
 }
 animate();
 
- // Shift+클릭으로 3D 좌표 찍기
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-wrap.addEventListener('click', e => {
-  if (!e.shiftKey) return;
-  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
-  if (model) {
-    const hits = raycaster.intersectObject(model, true);
-    if (hits.length > 0) {
-      const p = hits[0].point;
-      console.log(`좌표: x=${p.x.toFixed(3)}, y=${p.y.toFixed(3)}, z=${p.z.toFixed(3)}`);
-      alert(`x=${p.x.toFixed(3)}, y=${p.y.toFixed(3)}, z=${p.z.toFixed(3)}`);
-    }
-  }
-});
- 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
