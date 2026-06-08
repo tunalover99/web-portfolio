@@ -451,6 +451,7 @@ document.addEventListener('pointerlockchange', () => {
     // FPS 시작 시 현재 카메라 위치 유지, 방향 초기화
     fpsYaw = 0;
     fpsPitch = 0;
+   camera.rotation.set(0, 0, 0);
   } else {
     isFPSMode = false;
     wrap.classList.remove('fps-mode');
