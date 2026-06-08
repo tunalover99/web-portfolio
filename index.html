@@ -21,6 +21,7 @@
     cursor: grab;
   }
   #canvas-wrap:active { cursor: grabbing; }
+  #canvas-wrap.fps-mode { cursor: none; }
 
   canvas { display: block; width: 100% !important; height: 100% !important; }
 
@@ -152,15 +153,70 @@
     font-variant-numeric: tabular-nums;
   }
 
-  #measure-label {
+  /* FPS 모드 안내 */
+  #fps-overlay {
     position: fixed;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: rgba(42,40,37,0.6);
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
-    z-index: 5;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  #fps-overlay.visible { opacity: 1; }
+
+  #fps-overlay p {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(42,40,37,0.4);
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  /* 십자선 */
+  #crosshair {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    z-index: 20;
+    display: none;
+  }
+  #crosshair::before, #crosshair::after {
+    content: '';
+    position: absolute;
+    background: rgba(42,40,37,0.4);
+  }
+  #crosshair::before {
+    width: 1px; height: 100%;
+    left: 50%; top: 0;
     transform: translateX(-50%);
+  }
+  #crosshair::after {
+    width: 100%; height: 1px;
+    top: 50%; left: 0;
+    transform: translateY(-50%);
+  }
+  #crosshair.visible { display: block; }
+
+  /* 클릭 안내 */
+  #click-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(42,40,37,0.3);
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.3s;
   }
 </style>
 </head>
@@ -190,7 +246,7 @@
 </div>
 
 <div id="hud-bottom">
-  <div class="hint">
+  <div class="hint" id="hint-left">
     drag — rotate<br>
     scroll — zoom<br>
     right drag — pan
@@ -209,14 +265,21 @@
   <button class="ctrl-btn" id="btn-front" title="정면 보기">→</button>
 </div>
 
-<div id="measure-label">4.932 m</div>
+<div id="fps-overlay">
+  <p>WASD — MOVE</p>
+  <p>MOUSE — LOOK</p>
+  <p>ESC — EXIT</p>
+</div>
+
+<div id="crosshair"></div>
+<div id="click-hint">CLICK TO ENTER SPACE</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xf5f3ef);
 
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100);
+const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100);
 camera.position.set(0, 2, 6);
 
 const canvas = document.getElementById('c');
@@ -240,7 +303,6 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
-// ★ 기본 시점 — 이 값만 바꾸면 새로고침/초기화 둘 다 바뀜
 const DEFAULT_VIEW = { theta: 0.918, phi: 1.192, r: 11.5 };
 const DEFAULT_PAN = { x: -1.5, y: -0.5, z: 0 };
 
@@ -261,34 +323,24 @@ manager.onLoad = () => {
 async function loadGLB(url) {
   const res = await fetch(url);
   const buffer = await res.arrayBuffer();
-
   const dv = new DataView(buffer);
   const length = dv.getUint32(8, true);
-
   let jsonStr = '';
   let binBuffer = null;
   let offset = 12;
-
   while (offset < length) {
     const chunkLen = dv.getUint32(offset, true);
     const chunkType = dv.getUint32(offset + 4, true);
     const chunkData = buffer.slice(offset + 8, offset + 8 + chunkLen);
-    if (chunkType === 0x4E4F534A) {
-      jsonStr = new TextDecoder().decode(chunkData);
-    } else if (chunkType === 0x004E4942) {
-      binBuffer = chunkData;
-    }
+    if (chunkType === 0x4E4F534A) jsonStr = new TextDecoder().decode(chunkData);
+    else if (chunkType === 0x004E4942) binBuffer = chunkData;
     offset += 8 + chunkLen;
   }
-
-  bar.style.width = '60%';
-  pct.textContent = '60%';
-
+  bar.style.width = '60%'; pct.textContent = '60%';
   const gltf = JSON.parse(jsonStr);
   const bin = binBuffer;
   const bvs = gltf.bufferViews;
   const accs = gltf.accessors;
-
   function getAccessorData(accIdx) {
     const acc = accs[accIdx];
     const bv = bvs[acc.bufferView];
@@ -304,26 +356,19 @@ async function loadGLB(url) {
     if (ct === 5121) return new Uint8Array(slice);
     return null;
   }
-
-  bar.style.width = '75%';
-  pct.textContent = '75%';
-
+  bar.style.width = '75%'; pct.textContent = '75%';
   const prim = gltf.meshes[0].primitives[0];
   const positions = getAccessorData(prim.attributes.POSITION);
   const normals = prim.attributes.NORMAL !== undefined ? getAccessorData(prim.attributes.NORMAL) : null;
   const uvs = prim.attributes.TEXCOORD_0 !== undefined ? getAccessorData(prim.attributes.TEXCOORD_0) : null;
   const indices = getAccessorData(prim.indices);
-
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   if (normals) geo.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
   if (uvs) geo.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
   geo.setIndex(new THREE.BufferAttribute(indices, 1));
   if (!normals) geo.computeVertexNormals();
-
-  bar.style.width = '88%';
-  pct.textContent = '88%';
-
+  bar.style.width = '88%'; pct.textContent = '88%';
   let mat;
   if (gltf.materials && gltf.images && uvs) {
     const imgInfo = gltf.images[0];
@@ -339,33 +384,21 @@ async function loadGLB(url) {
   } else {
     mat = new THREE.MeshStandardMaterial({ color: 0xc8bfac, side: THREE.DoubleSide });
   }
-
   const mesh = new THREE.Mesh(geo, mat);
-
   const node = gltf.nodes[0];
   if (node.rotation) {
     const [rx, ry, rz, rw] = node.rotation;
     mesh.quaternion.set(rx, ry, rz, rw);
   }
-
   geo.computeBoundingBox();
   geo.boundingBox.getCenter(center);
   mesh.position.sub(center);
   const size = new THREE.Vector3();
   geo.boundingBox.getSize(size);
   modelRadius = Math.max(size.x, size.y, size.z) * 0.5;
-
-  bar.style.width = '100%';
-  pct.textContent = '100%';
-
+  bar.style.width = '100%'; pct.textContent = '100%';
   return mesh;
 }
-
-// 거리선 두 점
-const p1 = new THREE.Vector3(-3.590, 0.362, 1.710);
-const p2 = new THREE.Vector3(0.229, 0.377, -1.999);
-const midPoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-const measureLabel = document.getElementById('measure-label');
 
 loadGLB('myspacescan.glb').then(mesh => {
   model = mesh;
@@ -374,35 +407,13 @@ loadGLB('myspacescan.glb').then(mesh => {
   camera.lookAt(0, 0, 0);
   targetPos.copy(camera.position);
 
-  // X Y Z 축선
   const axisLength = modelRadius * 2;
-  const xGeo = new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0)
-  ]);
+  const xGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-axisLength,0,0), new THREE.Vector3(axisLength,0,0)]);
   scene.add(new THREE.Line(xGeo, new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.4 })));
-
-  const yGeo = new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0)
-  ]);
+  const yGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,-axisLength,0), new THREE.Vector3(0,axisLength,0)]);
   scene.add(new THREE.Line(yGeo, new THREE.LineBasicMaterial({ color: 0x44ff44, transparent: true, opacity: 0.4 })));
-
-  const zGeo = new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength)
-  ]);
+  const zGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,-axisLength), new THREE.Vector3(0,0,axisLength)]);
   scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.4 })));
-
-  // 거리 점선
-  const measureGeo = new THREE.BufferGeometry().setFromPoints([p1, p2]);
-  const measureMat = new THREE.LineDashedMaterial({
-    color: 0x2a2825,
-    dashSize: 0.15,
-    gapSize: 0.08,
-    transparent: true,
-    opacity: 0.6
-  });
-  const measureLine = new THREE.Line(measureGeo, measureMat);
-  measureLine.computeLineDistances();
-  scene.add(measureLine);
 
   manager.onLoad();
 }).catch(err => {
@@ -410,6 +421,64 @@ loadGLB('myspacescan.glb').then(mesh => {
   pct.textContent = '파일 로드 오류';
 });
 
+// ── 모드 관리 ──
+let isFPSMode = false;
+let fpsYaw = 0;
+let fpsPitch = 0;
+const fpsSpeed = 0.05;
+const keys = {};
+
+const wrap = document.getElementById('canvas-wrap');
+const fpsOverlay = document.getElementById('fps-overlay');
+const crosshair = document.getElementById('crosshair');
+const clickHint = document.getElementById('click-hint');
+const hintLeft = document.getElementById('hint-left');
+
+// 클릭 → FPS 모드 진입
+wrap.addEventListener('click', () => {
+  if (!isFPSMode) {
+    wrap.requestPointerLock();
+  }
+});
+
+document.addEventListener('pointerlockchange', () => {
+  if (document.pointerLockElement === wrap) {
+    isFPSMode = true;
+    wrap.classList.add('fps-mode');
+    crosshair.classList.add('visible');
+    clickHint.style.opacity = '0';
+    hintLeft.innerHTML = 'WASD — MOVE<br>MOUSE — LOOK<br>ESC — EXIT';
+    // FPS 시작 시 현재 카메라 위치 유지, 방향 초기화
+    fpsYaw = 0;
+    fpsPitch = 0;
+  } else {
+    isFPSMode = false;
+    wrap.classList.remove('fps-mode');
+    crosshair.classList.remove('visible');
+    clickHint.style.opacity = '1';
+    hintLeft.innerHTML = 'drag — rotate<br>scroll — zoom<br>right drag — pan<br>click — enter space';
+    // 궤도 모드로 복귀 시 카메라 위치를 spherical에 반영
+    const pos = camera.position;
+    spherical.r = pos.length();
+    spherical.phi = Math.acos(pos.y / spherical.r);
+    spherical.theta = Math.atan2(pos.x, pos.z);
+    targetSpherical = { ...spherical };
+  }
+});
+
+// FPS 마우스 이동
+document.addEventListener('mousemove', e => {
+  if (!isFPSMode) return;
+  fpsYaw -= e.movementX * 0.002;
+  fpsPitch -= e.movementY * 0.002;
+  fpsPitch = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, fpsPitch));
+});
+
+// WASD 키
+window.addEventListener('keydown', e => { keys[e.code] = true; });
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+// ── 궤도 모드 ──
 let isDragging = false;
 let isRightDrag = false;
 let prevMouse = { x: 0, y: 0 };
@@ -419,9 +488,8 @@ let panOffset = new THREE.Vector3(DEFAULT_PAN.x, DEFAULT_PAN.y, DEFAULT_PAN.z);
 let targetPan = new THREE.Vector3(DEFAULT_PAN.x, DEFAULT_PAN.y, DEFAULT_PAN.z);
 let targetPos = new THREE.Vector3();
 
-const wrap = document.getElementById('canvas-wrap');
-
 wrap.addEventListener('mousedown', e => {
+  if (isFPSMode) return;
   isDragging = true;
   isRightDrag = e.button === 2;
   prevMouse = { x: e.clientX, y: e.clientY };
@@ -429,11 +497,10 @@ wrap.addEventListener('mousedown', e => {
 wrap.addEventListener('contextmenu', e => e.preventDefault());
 
 window.addEventListener('mousemove', e => {
-  if (!isDragging) return;
+  if (isFPSMode || !isDragging) return;
   const dx = e.clientX - prevMouse.x;
   const dy = e.clientY - prevMouse.y;
   prevMouse = { x: e.clientX, y: e.clientY };
-
   if (isRightDrag) {
     const panSpeed = 0.005 * targetSpherical.r;
     const right = new THREE.Vector3();
@@ -452,6 +519,7 @@ window.addEventListener('mousemove', e => {
 window.addEventListener('mouseup', () => { isDragging = false; });
 
 wrap.addEventListener('wheel', e => {
+  if (isFPSMode) return;
   e.preventDefault();
   targetSpherical.r *= (1 + e.deltaY * 0.001);
   targetSpherical.r = Math.max(modelRadius * 0.3, Math.min(modelRadius * 5, targetSpherical.r));
@@ -462,6 +530,7 @@ wrap.addEventListener('touchstart', e => {
   lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 });
 wrap.addEventListener('touchmove', e => {
+  if (isFPSMode) return;
   e.preventDefault();
   const dx = e.touches[0].clientX - lastTouch.x;
   const dy = e.touches[0].clientY - lastTouch.y;
@@ -472,51 +541,79 @@ wrap.addEventListener('touchmove', e => {
 }, { passive: false });
 
 document.getElementById('btn-zoom-in').addEventListener('click', () => {
+  if (isFPSMode) return;
   targetSpherical.r = Math.max(modelRadius * 0.3, targetSpherical.r * 0.8);
 });
 document.getElementById('btn-zoom-out').addEventListener('click', () => {
+  if (isFPSMode) return;
   targetSpherical.r = Math.min(modelRadius * 5, targetSpherical.r * 1.25);
 });
 document.getElementById('btn-reset').addEventListener('click', () => {
+  if (isFPSMode) return;
   targetSpherical = { ...DEFAULT_VIEW };
   targetPan.set(DEFAULT_PAN.x, DEFAULT_PAN.y, DEFAULT_PAN.z);
 });
 document.getElementById('btn-top').addEventListener('click', () => {
+  if (isFPSMode) return;
   targetSpherical.phi = 0.1;
   targetSpherical.theta = 0;
 });
 document.getElementById('btn-front').addEventListener('click', () => {
+  if (isFPSMode) return;
   targetSpherical.phi = Math.PI / 2;
   targetSpherical.theta = 0;
 });
 
 const coordsEl = document.getElementById('coords');
 
+// FPS 이동 방향 벡터
+const fpsForward = new THREE.Vector3();
+const fpsRight = new THREE.Vector3();
+const fpsUp = new THREE.Vector3(0, 1, 0);
+
 function animate() {
   requestAnimationFrame(animate);
 
-  spherical.theta += (targetSpherical.theta - spherical.theta) * 0.08;
-  spherical.phi += (targetSpherical.phi - spherical.phi) * 0.08;
-  spherical.r += (targetSpherical.r - spherical.r) * 0.08;
-  panOffset.lerp(targetPan, 0.08);
+  if (isFPSMode) {
+    // FPS 카메라 회전
+    camera.rotation.order = 'YXZ';
+    camera.rotation.y = fpsYaw;
+    camera.rotation.x = fpsPitch;
 
-  const x = spherical.r * Math.sin(spherical.phi) * Math.sin(spherical.theta);
-  const y = spherical.r * Math.cos(spherical.phi);
-  const z = spherical.r * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+    // WASD 이동
+    camera.getWorldDirection(fpsForward);
+    fpsForward.y = 0;
+    fpsForward.normalize();
+    fpsRight.crossVectors(fpsForward, fpsUp).normalize();
 
-  camera.position.set(x + panOffset.x, y + panOffset.y, z + panOffset.z);
-  camera.lookAt(panOffset);
+    if (keys['KeyW'] || keys['ArrowUp'])    camera.position.addScaledVector(fpsForward, fpsSpeed);
+    if (keys['KeyS'] || keys['ArrowDown'])  camera.position.addScaledVector(fpsForward, -fpsSpeed);
+    if (keys['KeyA'] || keys['ArrowLeft'])  camera.position.addScaledVector(fpsRight, -fpsSpeed);
+    if (keys['KeyD'] || keys['ArrowRight']) camera.position.addScaledVector(fpsRight, fpsSpeed);
 
-  coordsEl.innerHTML =
-    `ROT ${(spherical.theta * 57.3).toFixed(1)}° ${(spherical.phi * 57.3).toFixed(1)}° —<br>` +
-    `ZOOM ${spherical.r.toFixed(2)}m`;
+    coordsEl.innerHTML =
+      `POS ${camera.position.x.toFixed(1)} ${camera.position.y.toFixed(1)} ${camera.position.z.toFixed(1)}<br>` +
+      `FPS MODE`;
 
-  // 거리 텍스트 위치 업데이트
-  const projected = midPoint.clone().project(camera);
-  const lx = (projected.x * 0.5 + 0.5) * window.innerWidth;
-  const ly = (-projected.y * 0.5 + 0.5) * window.innerHeight;
-  measureLabel.style.left = lx + 'px';
-  measureLabel.style.top = (ly - 16) + 'px';
+  } else {
+    // 궤도 모드
+    spherical.theta += (targetSpherical.theta - spherical.theta) * 0.08;
+    spherical.phi += (targetSpherical.phi - spherical.phi) * 0.08;
+    spherical.r += (targetSpherical.r - spherical.r) * 0.08;
+    panOffset.lerp(targetPan, 0.08);
+
+    const x = spherical.r * Math.sin(spherical.phi) * Math.sin(spherical.theta);
+    const y = spherical.r * Math.cos(spherical.phi);
+    const z = spherical.r * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+
+    camera.position.set(x + panOffset.x, y + panOffset.y, z + panOffset.z);
+    camera.lookAt(panOffset);
+    camera.rotation.order = 'XYZ';
+
+    coordsEl.innerHTML =
+      `ROT ${(spherical.theta * 57.3).toFixed(1)}° ${(spherical.phi * 57.3).toFixed(1)}° —<br>` +
+      `ZOOM ${spherical.r.toFixed(2)}m`;
+  }
 
   renderer.render(scene, camera);
 }
@@ -527,6 +624,9 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// 초기 hint 업데이트
+hintLeft.innerHTML = 'drag — rotate<br>scroll — zoom<br>right drag — pan<br>click — enter space';
 </script>
 </body>
 </html>
