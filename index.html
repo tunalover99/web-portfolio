@@ -408,19 +408,15 @@ loadGLB('myspacescan.glb').then(mesh => {
   targetPos.copy(camera.position);
 
   const axisLength = modelRadius * 2;
-const axisMat = (color) => new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.5 });
-const axisGeo = new THREE.CylinderGeometry(0.015, 0.015, axisLength * 2, 8);
 
-const xAxis = new THREE.Mesh(axisGeo.clone(), axisMat(0xff4444));
-xAxis.rotation.z = Math.PI / 2;
-scene.add(xAxis);
+const xGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-axisLength,0,0), new THREE.Vector3(axisLength,0,0)]);
+scene.add(new THREE.Line(xGeo, new THREE.LineBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.4 })));
 
-const yAxis = new THREE.Mesh(axisGeo.clone(), axisMat(0x44ff44));
-scene.add(yAxis);
+const yGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,-axisLength,0), new THREE.Vector3(0,axisLength,0)]);
+scene.add(new THREE.Line(yGeo, new THREE.LineBasicMaterial({ color: 0x44ff44, transparent: true, opacity: 0.4 })));
 
-const zAxis = new THREE.Mesh(axisGeo.clone(), axisMat(0x4444ff));
-zAxis.rotation.x = Math.PI / 2;
-scene.add(zAxis);
+const zGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,-axisLength), new THREE.Vector3(0,0,axisLength)]);
+scene.add(new THREE.Line(zGeo, new THREE.LineBasicMaterial({ color: 0x4444ff, transparent: true, opacity: 0.4 })));
 
   manager.onLoad();
 }).catch(err => {
