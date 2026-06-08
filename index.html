@@ -218,6 +218,74 @@
     z-index: 10;
     transition: opacity 0.3s;
   }
+ /* 배치도 버튼 */
+  #btn-map {
+    position: fixed;
+    left: 36px;
+    bottom: 28px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(42,40,37,0.4);
+    background: rgba(42,40,37,0.05);
+    border: 0.5px solid rgba(42,40,37,0.15);
+    padding: 8px 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    z-index: 10;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  #btn-map:hover {
+    background: rgba(42,40,37,0.1);
+    color: rgba(42,40,37,0.8);
+  }
+
+  /* 배치도 패널 */
+  #map-panel {
+    position: fixed;
+    left: 36px;
+    bottom: 70px;
+    width: 340px;
+    background: #f5f3ef;
+    border: 0.5px solid rgba(42,40,37,0.15);
+    padding: 20px;
+    z-index: 20;
+    display: none;
+    box-shadow: 0 4px 24px rgba(42,40,37,0.08);
+  }
+  #map-panel.visible { display: block; }
+
+  #map-panel img {
+    width: 100%;
+    display: block;
+  }
+
+  #map-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  #map-panel-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(42,40,37,0.5);
+    text-transform: uppercase;
+  }
+
+  #map-panel-close {
+    font-size: 14px;
+    color: rgba(42,40,37,0.3);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Courier New', monospace;
+    padding: 0;
+    line-height: 1;
+  }
+  #map-panel-close:hover { color: rgba(42,40,37,0.8); }
 </style>
 </head>
 <body>
@@ -632,6 +700,28 @@ window.addEventListener('resize', () => {
 
 // 초기 hint 업데이트
 hintLeft.innerHTML = 'drag — rotate<br>scroll — zoom<br>right drag — pan<br>click — enter space';
+</script>
+<button id="btn-map">FLOOR PLAN</button>
+
+<div id="map-panel">
+  <div id="map-panel-header">
+    <span id="map-panel-title">EXHIBITION MAP</span>
+    <button id="map-panel-close">×</button>
+  </div>
+  <img src="map_kr.jpg" alt="전시 배치도">
+</div>
+
+<script>
+  const btnMap = document.getElementById('btn-map');
+  const mapPanel = document.getElementById('map-panel');
+  const mapClose = document.getElementById('map-panel-close');
+
+  btnMap.addEventListener('click', () => {
+    mapPanel.classList.toggle('visible');
+  });
+  mapClose.addEventListener('click', () => {
+    mapPanel.classList.remove('visible');
+  });
 </script>
 </body>
 </html>
