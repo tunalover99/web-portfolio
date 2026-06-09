@@ -7,8 +7,8 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: #f5f3ef;
+ body {
+    background: linear-gradient(to top, rgba(255,255,44,0.7), rgba(217,217,217,0.5));
     color: #2a2825;
     font-family: 'Courier New', monospace;
     overflow: hidden;
@@ -373,7 +373,9 @@ btnJp.addEventListener('click', () => {
 });
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf5f3ef);
+scene.background = null;
+renderer.setClearColor(0x000000, 0);
+renderer.alpha = true;
 
 const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100);
 camera.position.set(0, 2, 6);
