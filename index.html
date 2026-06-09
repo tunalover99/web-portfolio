@@ -345,7 +345,7 @@ let center = new THREE.Vector3();
 let modelRadius = 3;
 
 const DEFAULT_VIEW = { theta: 1.878, phi: 1.15, r: 7.2 };
-const DEFAULT_PAN = { x: -0.5, y: -1.4, z: 0 };
+const DEFAULT_PAN = { x: -0.5, y: 0.5, z: 0 };
 
 const manager = new THREE.LoadingManager();
 const bar = document.getElementById('bar');
@@ -480,7 +480,9 @@ loadGLB('myspacescan.glb').then(mesh => {
 });
 
 let isFPSMode = false;
-fpsYaw = Math.PI;
+const toStar = new THREE.Vector3(1.490, 1.516, 1.755).sub(camera.position);
+fpsYaw = Math.atan2(toStar.x, toStar.z);
+fpsPitch = -Math.atan2(toStar.y, Math.sqrt(toStar.x * toStar.x + toStar.z * toStar.z));
 let fpsPitch = 0;
 const fpsSpeed = 0.05;
 const keys = {};
