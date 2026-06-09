@@ -345,7 +345,7 @@ let center = new THREE.Vector3();
 let modelRadius = 3;
 
 const DEFAULT_VIEW = { theta: 1.878, phi: 1.15, r: 7.2 };
-const DEFAULT_PAN = { x: -0.5, y: -0.8, z: 0 };
+const DEFAULT_PAN = { x: -0.5, y: -1.4, z: 0 };
 
 const manager = new THREE.LoadingManager();
 const bar = document.getElementById('bar');
@@ -480,7 +480,7 @@ loadGLB('myspacescan.glb').then(mesh => {
 });
 
 let isFPSMode = false;
-let fpsYaw = 0;
+fpsYaw = Math.PI;
 let fpsPitch = 0;
 const fpsSpeed = 0.05;
 const keys = {};
