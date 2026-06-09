@@ -7,7 +7,7 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
- body {
+  body {
     background: linear-gradient(to top, rgba(255,255,44,0.7), rgba(217,217,217,0.5));
     color: #2a2825;
     font-family: 'Courier New', monospace;
@@ -75,7 +75,7 @@
   #loading {
     position: fixed;
     inset: 0;
-    background: #f5f3ef;
+    background: linear-gradient(to top, rgba(255,255,44,0.7), rgba(217,217,217,0.5));
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -186,7 +186,6 @@
     transition: opacity 0.3s;
   }
 
-  /* 언어 전환 버튼 */
   #lang-toggle {
     position: fixed;
     top: 28px;
@@ -211,7 +210,7 @@
   .lang-btn.active { color: rgba(42,40,37,0.8); }
   .lang-btn:hover { color: rgba(42,40,37,0.6); }
   .lang-divider {
-    font-size: 10px;
+    font-size: 16px;
     color: rgba(42,40,37,0.2);
     line-height: 1.4;
   }
@@ -295,7 +294,6 @@
   </div>
 </div>
 
-<!-- 언어 전환 -->
 <div id="lang-toggle">
   <button class="lang-btn active" id="btn-kr">KR</button>
   <span class="lang-divider">/</span>
@@ -350,7 +348,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// 언어 관리
 let currentLang = 'kr';
 const btnKr = document.getElementById('btn-kr');
 const btnJp = document.getElementById('btn-jp');
@@ -374,8 +371,6 @@ btnJp.addEventListener('click', () => {
 
 const scene = new THREE.Scene();
 scene.background = null;
-renderer.setClearColor(0x000000, 0);
-renderer.alpha = true;
 
 const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100);
 camera.position.set(0, 2, 6);
@@ -387,6 +382,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.85;
+renderer.setClearColor(0x000000, 0);
 
 const ambient = new THREE.AmbientLight(0xfff8f0, 0.9);
 scene.add(ambient);
@@ -401,7 +397,7 @@ let model = null;
 let center = new THREE.Vector3();
 let modelRadius = 3;
 
-const DEFAULT_VIEW = { theta: 1.878, phi: 1.15, r: 5.2 };
+const DEFAULT_VIEW = { theta: 1.878, phi: 1.15, r: 7.2 };
 const DEFAULT_PAN = { x: -0.5, y: 0.5, z: 0 };
 
 const manager = new THREE.LoadingManager();
