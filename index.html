@@ -289,7 +289,6 @@
 <div id="crosshair"></div>
 <div id="click-hint">CLICK TO ENTER SPACE</div>
 
-<!-- 흰색 별 (전시배치도) -->
 <button id="star-btn1" class="star-btn">
   <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
     <polygon points="5,0 6.2,3.8 10,3.8 7,6.2 8.1,10 5,7.8 1.9,10 3,6.2 0,3.8 3.8,3.8"
@@ -297,7 +296,6 @@
   </svg>
 </button>
 
-<!-- 노란색 별 (작가 정보) -->
 <button id="star-btn2" class="star-btn">
   <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
     <polygon points="5,0 6.2,3.8 10,3.8 7,6.2 8.1,10 5,7.8 1.9,10 3,6.2 0,3.8 3.8,3.8"
@@ -305,12 +303,10 @@
   </svg>
 </button>
 
-<!-- 전시배치도 패널 -->
 <div id="map-panel" class="info-panel">
   <img src="map.kor.jpg" alt="전시 배치도">
 </div>
 
-<!-- 작가 정보 패널 -->
 <div id="artist-panel" class="info-panel">
   <img src="artistinfo.kor.jpg" alt="작가 정보">
 </div>
@@ -442,7 +438,6 @@ async function loadGLB(url) {
   return mesh;
 }
 
-// 별 버튼 & 패널
 const starPos3D1 = new THREE.Vector3(1.490, 1.516, 1.755);
 const starPos3D2 = new THREE.Vector3(1.276, 1.487, 1.780);
 const starBtn1 = document.getElementById('star-btn1');
@@ -480,9 +475,7 @@ loadGLB('myspacescan.glb').then(mesh => {
 });
 
 let isFPSMode = false;
-const toStar = new THREE.Vector3(1.490, 1.516, 1.755).sub(camera.position);
-fpsYaw = Math.atan2(toStar.x, toStar.z);
-fpsPitch = -Math.atan2(toStar.y, Math.sqrt(toStar.x * toStar.x + toStar.z * toStar.z));
+let fpsYaw = 0;
 let fpsPitch = 0;
 const fpsSpeed = 0.05;
 const keys = {};
@@ -504,8 +497,10 @@ document.addEventListener('pointerlockchange', () => {
     crosshair.classList.add('visible');
     clickHint.style.opacity = '0';
     hintLeft.innerHTML = 'WASD — MOVE<br>MOUSE — LOOK<br>ESC — EXIT';
-    fpsYaw = 0;
-    fpsPitch = 0;
+    // 별 좌표를 바라보는 방향으로 시점 설정
+    const toStar = new THREE.Vector3(1.490, 1.516, 1.755).sub(camera.position);
+    fpsYaw = Math.atan2(toStar.x, toStar.z);
+    fpsPitch = -Math.atan2(toStar.y, Math.sqrt(toStar.x * toStar.x + toStar.z * toStar.z));
     camera.rotation.set(0, 0, 0);
   } else {
     isFPSMode = false;
@@ -671,14 +666,12 @@ function animate() {
       `ZOOM ${spherical.r.toFixed(2)}m`;
   }
 
-  // 별1 위치 추적
   const sp1 = starPos3D1.clone().project(camera);
   starBtn1.style.left = ((sp1.x * 0.5 + 0.5) * window.innerWidth) + 'px';
   starBtn1.style.top = ((-sp1.y * 0.5 + 0.5) * window.innerHeight) + 'px';
   const sd1 = camera.position.distanceTo(starPos3D1);
   starBtn1.style.transform = `translate(-50%, -50%) scale(${Math.max(0.5, Math.min(2, 8 / sd1))})`;
 
-  // 별2 위치 추적
   const sp2 = starPos3D2.clone().project(camera);
   starBtn2.style.left = ((sp2.x * 0.5 + 0.5) * window.innerWidth) + 'px';
   starBtn2.style.top = ((-sp2.y * 0.5 + 0.5) * window.innerHeight) + 'px';
