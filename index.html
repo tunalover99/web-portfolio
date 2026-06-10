@@ -9,7 +9,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: linear-gradient(to top, rgba(255,255,44,0.7), rgba(217,217,217,0.5));
+    background: linear-gradient(to top, rgba(255,255,44,0.7), rgba(255,255,255,0.5));
     color: #2a2825;
     font-family: 'Courier New', monospace;
     overflow: hidden;
@@ -76,7 +76,7 @@
   #loading {
     position: fixed;
     inset: 0;
-    background: linear-gradient(to top, rgba(255,255,44,0.7), rgba(217,217,217,0.5));
+    background: linear-gradient(to top, rgba(255,255,44,0.7), rgba(255,255,255,0.5));
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -185,6 +185,8 @@
     pointer-events: none;
     z-index: 10;
     transition: opacity 0.3s;
+    text-align: center;
+    line-height: 1.8;
   }
 
   #lang-toggle {
@@ -251,24 +253,19 @@
   #menu-btn.open .menu-line:nth-child(2) { opacity: 0; }
   #menu-btn.open .menu-line:nth-child(3) { transform: rotate(-45deg) translate(3px, -3px); }
 
-  /* 메뉴 패널 */
+  /* 메뉴 패널 — 좌표 기반 위치 */
   #menu-panel {
     position: fixed;
-    top: 70px;
-    right: 36px;
-    display: flex;
-    flex-direction: column;
-    gap: 0px;
-    z-index: 25;
-    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    transition: opacity 0.2s;
+    z-index: 25;
   }
-  #menu-panel.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
+
   .menu-item {
+    position: absolute;
     font-family: 'Inconsolata', monospace;
     font-size: 24px;
     font-weight: 300;
@@ -278,11 +275,24 @@
     background: none;
     border: none;
     cursor: pointer;
-    padding: 6px 0;
-    text-align: right;
-    transition: color 0.2s;
+    padding: 0;
+    text-align: left;
+    transition: color 0.2s, opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
   }
   .menu-item:hover { color: rgba(42,40,37,1); }
+
+  /* 좌표값 기반 위치 — 피그마 기준 1920px 너비 환산 */
+  /* ARTWORKS: (-1552, 2344) → 피그마 절대좌표 → right: 1552px 기준으로 right 정렬 */
+  #menu-item-1 { right: calc(100vw - (100vw - 1552px / 2)); top: 44px; }
+  #menu-item-2 { right: calc(100vw - (100vw - 1523px / 2)); top: 90px; }
+  #menu-item-3 { right: calc(100vw - (100vw - 1552px / 2)); top: 139px; }
+
+  #menu-panel.open .menu-item {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   .star-btn {
     position: fixed;
@@ -369,18 +379,16 @@
   <button class="lang-btn" id="btn-jp">JP</button>
 </div>
 
-<!-- 메뉴 버튼 -->
 <button id="menu-btn">
   <span class="menu-line"></span>
   <span class="menu-line"></span>
   <span class="menu-line"></span>
 </button>
 
-<!-- 메뉴 패널 -->
 <div id="menu-panel">
-  <button class="menu-item">artworks</button>
-  <button class="menu-item">spatial design</button>
-  <button class="menu-item">about & archive</button>
+  <button class="menu-item" id="menu-item-1">artworks</button>
+  <button class="menu-item" id="menu-item-2">spatial design</button>
+  <button class="menu-item" id="menu-item-3">about & archive</button>
 </div>
 
 <div id="hud-bottom">
@@ -401,7 +409,10 @@
 </div>
 
 <div id="crosshair"></div>
-<div id="click-hint">CLICK TO ENTER SPACE</div>
+<div id="click-hint">
+  CLICK TO ENTER SPACE<br>
+  HOVER OVER STARS FOR INFO
+</div>
 
 <button id="star-btn1" class="star-btn">
   <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
@@ -427,7 +438,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// 언어 관리
 let currentLang = 'kr';
 const btnKr = document.getElementById('btn-kr');
 const btnJp = document.getElementById('btn-jp');
@@ -449,7 +459,6 @@ btnJp.addEventListener('click', () => {
   artistImg.src = 'artistinfo.jpn.jpg';
 });
 
-// 메뉴 버튼
 const menuBtn = document.getElementById('menu-btn');
 const menuPanel = document.getElementById('menu-panel');
 menuBtn.addEventListener('click', () => {
@@ -778,6 +787,29 @@ const fpsForward = new THREE.Vector3();
 const fpsRight = new THREE.Vector3();
 const fpsUp = new THREE.Vector3(0, 1, 0);
 
+// 메뉴 아이템 위치 — 피그마 좌표 기반으로 JS에서 동적 계산
+function updateMenuPositions() {
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  // 피그마 기준 캔버스: 대략 1920x2700 (실제 비율에 맞게 비율 환산)
+  const baseW = 1920;
+  const baseH = 2700;
+  const scaleX = W / baseW;
+  const scaleY = H / baseH;
+
+  // ARTWORKS (-1552, 2344) — 피그마 좌표는 음수이므로 오른쪽에서 계산
+  // 화면 우측에서: right = 1552 * scaleX
+  document.getElementById('menu-item-1').style.right = (1552 * scaleX) + 'px';
+  document.getElementById('menu-item-1').style.top = (2344 * scaleY) + 'px';
+
+  document.getElementById('menu-item-2').style.right = (1523 * scaleX) + 'px';
+  document.getElementById('menu-item-2').style.top = (2390 * scaleY) + 'px';
+
+  document.getElementById('menu-item-3').style.right = (1552 * scaleX) + 'px';
+  document.getElementById('menu-item-3').style.top = (2439 * scaleY) + 'px';
+}
+updateMenuPositions();
+
 function animate() {
   requestAnimationFrame(animate);
 
@@ -831,6 +863,7 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  updateMenuPositions();
 });
 </script>
 </body>
