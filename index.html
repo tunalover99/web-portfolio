@@ -221,7 +221,7 @@
   /* 메뉴 버튼 */
   #menu-btn {
     position: fixed;
-    top: 22px;
+    top: 122px;
     right: 36px;
     width: 36px;
     height: 36px;
@@ -254,18 +254,24 @@
   #menu-btn.open .menu-line:nth-child(3) { transform: rotate(-45deg) translate(3px, -3px); }
 
   /* 메뉴 패널 — 좌표 기반 위치 */
-  #menu-panel {
+#menu-panel {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    top: 122px;
+    right: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
     z-index: 25;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    align-items: flex-end;
   }
-
+  #menu-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
   .menu-item {
-    position: absolute;
     font-family: 'Inconsolata', monospace;
     font-size: 24px;
     font-weight: 300;
@@ -276,10 +282,11 @@
     border: none;
     cursor: pointer;
     padding: 0;
-    text-align: left;
-    transition: color 0.2s, opacity 0.2s;
-    opacity: 0;
-    pointer-events: none;
+    text-align: right;
+    transition: color 0.2s;
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
   }
   .menu-item:hover { color: rgba(42,40,37,1); }
 
@@ -787,28 +794,8 @@ const fpsForward = new THREE.Vector3();
 const fpsRight = new THREE.Vector3();
 const fpsUp = new THREE.Vector3(0, 1, 0);
 
-// 메뉴 아이템 위치 — 피그마 좌표 기반으로 JS에서 동적 계산
-function updateMenuPositions() {
-  const W = window.innerWidth;
-  const H = window.innerHeight;
-  // 피그마 기준 캔버스: 대략 1920x2700 (실제 비율에 맞게 비율 환산)
-  const baseW = 1920;
-  const baseH = 2700;
-  const scaleX = W / baseW;
-  const scaleY = H / baseH;
 
-  // ARTWORKS (-1552, 2344) — 피그마 좌표는 음수이므로 오른쪽에서 계산
-  // 화면 우측에서: right = 1552 * scaleX
-  document.getElementById('menu-item-1').style.right = (1552 * scaleX) + 'px';
-  document.getElementById('menu-item-1').style.top = (2344 * scaleY) + 'px';
 
-  document.getElementById('menu-item-2').style.right = (1523 * scaleX) + 'px';
-  document.getElementById('menu-item-2').style.top = (2390 * scaleY) + 'px';
-
-  document.getElementById('menu-item-3').style.right = (1552 * scaleX) + 'px';
-  document.getElementById('menu-item-3').style.top = (2439 * scaleY) + 'px';
-}
-updateMenuPositions();
 
 function animate() {
   requestAnimationFrame(animate);
@@ -863,7 +850,6 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  updateMenuPositions();
 });
 </script>
 </body>
