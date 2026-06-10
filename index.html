@@ -471,7 +471,16 @@ btnJp.addEventListener('click', () => {
 const menuBtn = document.getElementById('menu-btn');
 const menuPanel = document.getElementById('menu-panel');
 menuBtn.addEventListener('click', () => {
-  menuBtn.classList.toggle('open');
+  document.getElementById('menu-item-1').addEventListener('click', () => {
+  window.location.href = 'works.html#section-artworks';
+});
+document.getElementById('menu-item-2').addEventListener('click', () => {
+  window.location.href = 'works.html#section-spatial';
+});
+document.getElementById('menu-item-3').addEventListener('click', () => {
+  window.location.href = 'works.html#section-about';
+});
+ menuBtn.classList.toggle('open');
   menuPanel.classList.toggle('open');
 });
 
