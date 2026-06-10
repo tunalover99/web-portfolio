@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHOI HANBIN — Space Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -67,7 +68,7 @@
   .hint {
     font-size: 10px;
     letter-spacing: 0.14em;
-    color: rgba(42,40,37,0.25);
+    color: #FF2F2F;
     text-transform: uppercase;
     line-height: 1.8;
   }
@@ -179,7 +180,7 @@
     transform: translateX(-50%);
     font-size: 10px;
     letter-spacing: 0.15em;
-    color: rgba(42,40,37,0.3);
+    color: #FF2F2F;
     text-transform: uppercase;
     pointer-events: none;
     z-index: 10;
@@ -214,6 +215,74 @@
     color: rgba(42,40,37,0.2);
     line-height: 1.4;
   }
+
+  /* 메뉴 버튼 */
+  #menu-btn {
+    position: fixed;
+    top: 22px;
+    right: 36px;
+    width: 36px;
+    height: 36px;
+    background: rgba(42,40,37,0.05);
+    border: 0.5px solid rgba(42,40,37,0.15);
+    color: rgba(42,40,37,0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Courier New', monospace;
+    border-radius: 2px;
+    z-index: 30;
+    flex-direction: column;
+    gap: 4px;
+  }
+  #menu-btn:hover {
+    background: rgba(42,40,37,0.1);
+    color: rgba(42,40,37,0.8);
+  }
+  .menu-line {
+    width: 16px;
+    height: 1px;
+    background: rgba(42,40,37,0.5);
+    transition: all 0.2s;
+  }
+  #menu-btn.open .menu-line:nth-child(1) { transform: rotate(45deg) translate(3px, 3px); }
+  #menu-btn.open .menu-line:nth-child(2) { opacity: 0; }
+  #menu-btn.open .menu-line:nth-child(3) { transform: rotate(-45deg) translate(3px, -3px); }
+
+  /* 메뉴 패널 */
+  #menu-panel {
+    position: fixed;
+    top: 70px;
+    right: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    z-index: 25;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  #menu-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .menu-item {
+    font-family: 'Inconsolata', monospace;
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: rgba(42,40,37,0.7);
+    text-transform: lowercase;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 0;
+    text-align: right;
+    transition: color 0.2s;
+  }
+  .menu-item:hover { color: rgba(42,40,37,1); }
 
   .star-btn {
     position: fixed;
@@ -300,16 +369,26 @@
   <button class="lang-btn" id="btn-jp">JP</button>
 </div>
 
+<!-- 메뉴 버튼 -->
+<button id="menu-btn">
+  <span class="menu-line"></span>
+  <span class="menu-line"></span>
+  <span class="menu-line"></span>
+</button>
+
+<!-- 메뉴 패널 -->
+<div id="menu-panel">
+  <button class="menu-item">artworks</button>
+  <button class="menu-item">spatial design</button>
+  <button class="menu-item">about & archive</button>
+</div>
+
 <div id="hud-bottom">
   <div class="hint" id="hint-left">
     drag — rotate<br>
     scroll — zoom<br>
     right drag — pan<br>
     click — enter space
-  </div>
-  <div class="hint" style="text-align:right">
-    홍익대학교 판화과<br>
-    PORTFOLIO 2025
   </div>
 </div>
 
@@ -348,6 +427,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// 언어 관리
 let currentLang = 'kr';
 const btnKr = document.getElementById('btn-kr');
 const btnJp = document.getElementById('btn-jp');
@@ -367,6 +447,14 @@ btnJp.addEventListener('click', () => {
   btnKr.classList.remove('active');
   mapImg.src = 'map.jpn.jpg';
   artistImg.src = 'artistinfo.jpn.jpg';
+});
+
+// 메뉴 버튼
+const menuBtn = document.getElementById('menu-btn');
+const menuPanel = document.getElementById('menu-panel');
+menuBtn.addEventListener('click', () => {
+  menuBtn.classList.toggle('open');
+  menuPanel.classList.toggle('open');
 });
 
 const scene = new THREE.Scene();
@@ -544,6 +632,7 @@ const hintLeft = document.getElementById('hint-left');
 
 wrap.addEventListener('click', e => {
   if (starBtn1.contains(e.target) || starBtn2.contains(e.target)) return;
+  if (menuBtn.contains(e.target) || menuPanel.contains(e.target)) return;
   if (!isFPSMode) wrap.requestPointerLock();
 });
 
