@@ -126,15 +126,6 @@
     100% { transform: translateX(-50%); }
   }
 
-  /* 노란 배경 섹션 */
-  .yellow-section {
-    background: #FFFF2C;
-    margin-left: -120px;
-    margin-right: -120px;
-    padding: 80px 120px 80px;
-  }
-
-  /* 텍스트 3단 레이아웃 */
   .text-columns {
     display: grid;
     grid-template-columns: 1fr 1px 1fr 1fr;
@@ -161,7 +152,6 @@
     background: rgba(255,255,255,0.3);
   }
 
-  /* 나머지 섹션 */
   .next-section {
     padding-top: 160px;
     padding-bottom: 160px;
@@ -184,39 +174,39 @@
   <div class="section" id="section-artworks">
     <span class="section-label">artworks</span>
 
-    <!-- 영상 풀너비 -->
-    <div style="margin-left: -120px; margin-right: -120px;">
+    <!-- 노란 배경 — 영상부터 텍스트까지 -->
+    <div style="background: #FFFF2C; margin-left: -120px; margin-right: -120px;">
+
+      <!-- 영상 -->
       <iframe width="100%" height="600"
-        src="https://www.youtube.com/embed/YwqzBa2-cmY?start=1&end=20&loop=1&playlist=YwqzBa2-cmY&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0"
+        src="https://www.youtube.com/embed/YwqzBa2-cmY?start=10&end=40&loop=1&playlist=YwqzBa2-cmY&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0"
         frameborder="0" allowfullscreen>
       </iframe>
-    </div>
 
-    <!-- 슬라이드 풀너비 -->
-    <div style="margin-left: -120px; margin-right: -120px; overflow: hidden; margin-top: 0;">
-      <div style="display: flex; gap: 16px; animation: slideLeft 40s linear infinite; width: max-content;">
-        <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p2.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p3.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p4.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p5.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p6.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p7.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p2.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p3.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p4.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p5.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p6.jpg" style="height: 300px; width: auto; object-fit: cover;">
-        <img src="p7.jpg" style="height: 300px; width: auto; object-fit: cover;">
+      <!-- 슬라이드 -->
+      <div style="overflow: hidden;">
+        <div style="display: flex; gap: 16px; animation: slideLeft 40s linear infinite; width: max-content;">
+          <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p2.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p3.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p4.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p5.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p6.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p7.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p2.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p3.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p4.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p5.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p6.jpg" style="height: 300px; width: auto; object-fit: cover;">
+          <img src="p7.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        </div>
       </div>
-    </div>
 
-    <!-- 노란 배경 텍스트 섹션 -->
-    <div class="yellow-section" style="margin-top: 0;">
-      <div class="text-columns">
-        <!-- 한국어 텍스트 -->
-        <div class="text-col">닿지 않을 너에게, 아니 나에게
+      <!-- 텍스트 -->
+      <div style="padding: 80px 120px;">
+        <div class="text-columns">
+          <div class="text-col">닿지 않을 너에게, 아니 나에게
 오래 전, 너와 나는 무언가를
 좇으며 살았지.
 눈을 감으면
@@ -244,11 +234,9 @@
 우리가 걸어온 발자국 끝에서
 조용히 열리기를 바라면서.</div>
 
-        <!-- 세로 구분선 -->
-        <div class="text-divider"></div>
+          <div class="text-divider"></div>
 
-        <!-- 일본어 텍스트 -->
-        <div class="text-col">届かない君へ、いや私へ。
+          <div class="text-col">届かない君へ、いや私へ。
 昔、君と私はなにかを
 追いかけながら生きてきた。
 目を閉じれば
@@ -282,10 +270,12 @@
 私たちが歩んできた足跡の先で、
 静かに開かれますように。</div>
 
-        <!-- 빈 박스 -->
-        <div class="text-col-right"></div>
+          <div class="text-col-right"></div>
+        </div>
       </div>
+
     </div>
+    <!-- 노란 배경 끝 -->
 
     <!-- 추가 작품 영역 -->
     <div class="next-section">
