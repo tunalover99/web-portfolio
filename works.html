@@ -331,13 +331,13 @@
   const thumb = document.getElementById('scroll-thumb');
   const thumbHeight = window.innerHeight / 6;
 
-  function updateThumb() {
+function updateThumb() {
     const scrollTop = window.scrollY;
     const stonehead = document.getElementById('stonehead');
     const stoneheadTop = stonehead ? stonehead.getBoundingClientRect().top + window.scrollY : document.body.scrollHeight;
-    const maxScroll = stoneheadTop - window.innerHeight;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
     const thumbHeight = window.innerHeight / 6;
-    const maxThumbTop = window.innerHeight - thumbHeight;
+    const maxThumbTop = stoneheadTop - thumbHeight;
     const thumbTop = maxScroll > 0 ? Math.min((scrollTop / maxScroll) * maxThumbTop, maxThumbTop) : 0;
     thumb.style.top = thumbTop + 'px';
   }
