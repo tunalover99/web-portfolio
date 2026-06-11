@@ -157,10 +157,10 @@
     width: 100%;
     background: #fff;
     padding: 60px 0 80px;
-    perspective: 1200px;
+    perspective: 1000px;
     overflow: hidden;
+    transform-style: preserve-3d;
   }
-
   .carousel-stage {
     display: flex;
     align-items: center;
@@ -169,20 +169,9 @@
     height: 560px;
   }
 
-  .carousel-item {
-    position: absolute;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    cursor: pointer;
-  }
-
-  .carousel-item img {
-    display: block;
-    object-fit: contain;
-  }
-
   .carousel-item.pos-center {
     z-index: 5;
-    transform: translateX(0) rotateY(0deg) scale(1);
+    transform: translateX(0) rotateY(0deg);
     filter: drop-shadow(0 20px 50px rgba(0,0,0,0.3));
     opacity: 1;
   }
@@ -190,25 +179,25 @@
 
   .carousel-item.pos-left {
     z-index: 3;
-    transform: translateX(-320px) rotateY(35deg) scale(0.85);
+    transform: translateX(-380px) rotateY(55deg);
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.18));
-    opacity: 0.7;
+    opacity: 1;
     transform-origin: right center;
   }
   .carousel-item.pos-left img { width: 280px; height: 370px; }
 
   .carousel-item.pos-right {
     z-index: 3;
-    transform: translateX(320px) rotateY(-35deg) scale(0.85);
+    transform: translateX(380px) rotateY(-55deg);
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.18));
-    opacity: 0.7;
+    opacity: 1;
     transform-origin: left center;
   }
   .carousel-item.pos-right img { width: 280px; height: 370px; }
 
   .carousel-item.pos-hidden-left {
     z-index: 1;
-    transform: translateX(-600px) rotateY(50deg) scale(0.6);
+    transform: translateX(-700px) rotateY(70deg);
     opacity: 0;
     pointer-events: none;
   }
@@ -216,12 +205,12 @@
 
   .carousel-item.pos-hidden-right {
     z-index: 1;
-    transform: translateX(600px) rotateY(-50deg) scale(0.6);
+    transform: translateX(700px) rotateY(-70deg);
     opacity: 0;
     pointer-events: none;
   }
   .carousel-item.pos-hidden-right img { width: 200px; height: 260px; }
-
+ 
   .carousel-arrow {
     position: absolute;
     top: 50%;
