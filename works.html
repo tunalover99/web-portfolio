@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHOI HANBIN — Works</title>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -151,87 +152,64 @@
     padding-bottom: 160px;
   }
 
-  /* 3D 캐러셀 */
-  .carousel-wrap {
-    position: relative;
-    width: 100%;
+  /* Swiper 캐러셀 */
+  .swiper-section {
     background: #fff;
     padding: 60px 0 80px;
-    perspective: 1000px;
-    overflow: hidden;
-    transform-style: preserve-3d;
+    position: relative;
   }
-  .carousel-stage {
+
+  .swiper {
+    width: 100%;
+    padding: 40px 0 !important;
+  }
+
+  .swiper-slide {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    height: 560px;
+    width: 400px !important;
   }
 
-  .carousel-item.pos-center {
-    z-index: 5;
-    transform: translateX(0) rotateY(0deg);
-    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.3));
-    opacity: 1;
+  .swiper-slide img {
+    width: 100%;
+    height: auto;
+    max-height: 520px;
+    object-fit: contain;
+    filter: drop-shadow(0 16px 40px rgba(0,0,0,0.25));
+    transition: filter 0.3s;
+    display: block;
   }
-  .carousel-item.pos-center img { width: 380px; height: 500px; }
 
-  .carousel-item.pos-left {
-    z-index: 3;
-    transform: translateX(-380px) rotateY(55deg);
-    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.18));
-    opacity: 1;
-    transform-origin: right center;
+  .swiper-slide-active img {
+    filter: drop-shadow(0 24px 60px rgba(0,0,0,0.4));
   }
-  .carousel-item.pos-left img { width: 280px; height: 370px; }
 
-  .carousel-item.pos-right {
-    z-index: 3;
-    transform: translateX(380px) rotateY(-55deg);
-    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.18));
-    opacity: 1;
-    transform-origin: left center;
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: rgba(42,40,37,0.5) !important;
+    font-size: 20px;
   }
-  .carousel-item.pos-right img { width: 280px; height: 370px; }
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    color: rgba(42,40,37,0.9) !important;
+  }
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 24px !important;
+    font-family: 'Courier New', monospace !important;
+  }
 
-  .carousel-item.pos-hidden-left {
-    z-index: 1;
-    transform: translateX(-700px) rotateY(70deg);
-    opacity: 0;
-    pointer-events: none;
+  .swiper-pagination-bullet {
+    background: rgba(42,40,37,0.3) !important;
   }
-  .carousel-item.pos-hidden-left img { width: 200px; height: 260px; }
+  .swiper-pagination-bullet-active {
+    background: rgba(42,40,37,0.8) !important;
+  }
 
-  .carousel-item.pos-hidden-right {
-    z-index: 1;
-    transform: translateX(700px) rotateY(-70deg);
-    opacity: 0;
-    pointer-events: none;
-  }
-  .carousel-item.pos-hidden-right img { width: 200px; height: 260px; }
- 
-  .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 36px;
-    cursor: pointer;
-    color: rgba(42,40,37,0.4);
-    z-index: 20;
-    font-family: 'Courier New', monospace;
-    transition: color 0.2s;
-    padding: 0 20px;
-  }
-  .carousel-arrow:hover { color: rgba(42,40,37,0.9); }
-  .carousel-arrow.left { left: 0; }
-  .carousel-arrow.right { right: 0; }
-
-  .carousel-counter {
+  .slide-counter {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 16px;
     font-size: 11px;
     letter-spacing: 0.15em;
     color: rgba(42,40,37,0.4);
@@ -254,7 +232,6 @@
   <div class="section" id="section-artworks">
     <span class="section-label">artworks</span>
 
-    <!-- g1.jpg 풀너비 -->
     <div style="margin-left: -120px; margin-right: -120px;">
       <img src="g1.jpg" style="width: 100%; display: block; object-fit: cover;">
     </div>
@@ -283,21 +260,30 @@
     <!-- 토글 섹션 -->
     <div id="printmaking-section" style="display: none; margin-left: -120px; margin-right: -120px;">
 
-      <!-- 상단 3장 풀너비 간격없음 -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin-bottom: 40px;">
+      <!-- 상단 3장 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin-bottom: 0;">
         <img src="pm10.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
         <img src="pm9.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
         <img src="pm11.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
       </div>
 
-      <!-- 3D 캐러셀 -->
-      <div class="carousel-wrap">
-        <button class="carousel-arrow left" onclick="prevSlide()">‹</button>
-        <button class="carousel-arrow right" onclick="nextSlide()">›</button>
-        <div class="carousel-stage" id="carousel-stage"></div>
-        <div class="carousel-counter">
-          <span id="slide-counter">1 / 8</span>
+      <!-- Swiper 캐러셀 -->
+      <div class="swiper-section">
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="pm1.png"></div>
+            <div class="swiper-slide"><img src="pm2.png"></div>
+            <div class="swiper-slide"><img src="pm3.png"></div>
+            <div class="swiper-slide"><img src="pm4.png"></div>
+            <div class="swiper-slide"><img src="pm5.png"></div>
+            <div class="swiper-slide"><img src="pm6.png"></div>
+            <div class="swiper-slide"><img src="pm7.png"></div>
+            <div class="swiper-slide"><img src="pm8.png"></div>
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
         </div>
+        <div class="slide-counter" id="slide-counter">1 / 8</div>
       </div>
 
     </div>
@@ -464,6 +450,7 @@
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
 <script>
   const thumb = document.getElementById('scroll-thumb');
   const thumbHeight = window.innerHeight / 6;
@@ -516,65 +503,46 @@
     if (section.style.display === 'none') {
       section.style.display = 'block';
       icon.textContent = '－';
+      // 토글 열릴 때 Swiper 초기화
+      if (!window.swiperInitialized) {
+        initSwiper();
+        window.swiperInitialized = true;
+      }
     } else {
       section.style.display = 'none';
       icon.textContent = '＋';
     }
   }
 
-  // 3D 캐러셀
-  const slides = ['pm1.png','pm2.png','pm3.png','pm4.png','pm5.png','pm6.png','pm7.png','pm8.png'];
-  let currentSlide = 0;
-
-  function buildCarousel() {
-    const stage = document.getElementById('carousel-stage');
-    stage.innerHTML = '';
-    slides.forEach((src, i) => {
-      const item = document.createElement('div');
-      item.className = 'carousel-item';
-      item.dataset.index = i;
-      const img = document.createElement('img');
-      img.src = src;
-      item.appendChild(img);
-      stage.appendChild(item);
-    });
-    updateCarousel();
-  }
-
-  function updateCarousel() {
-    const items = document.querySelectorAll('.carousel-item');
-    const total = slides.length;
-    items.forEach(item => {
-      const i = parseInt(item.dataset.index);
-      const diff = ((i - currentSlide) + total) % total;
-      item.className = 'carousel-item';
-      if (diff === 0) {
-        item.classList.add('pos-center');
-      } else if (diff === 1 || diff === total - 1 && diff > 1) {
-        if (diff === 1) item.classList.add('pos-right');
-        else item.classList.add('pos-hidden-right');
-      } else if (diff === total - 1) {
-        item.classList.add('pos-left');
-      } else if (diff < total / 2) {
-        item.classList.add('pos-hidden-right');
-      } else {
-        item.classList.add('pos-hidden-left');
+  // Swiper 초기화
+  function initSwiper() {
+    const swiper = new Swiper('.mySwiper', {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      loop: true,
+      coverflowEffect: {
+        rotate: 45,
+        stretch: 0,
+        depth: 200,
+        modifier: 1,
+        slideShadows: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on: {
+        slideChange: function() {
+          const counter = document.getElementById('slide-counter');
+          if (counter) {
+            counter.textContent = (this.realIndex + 1) + ' / 8';
+          }
+        }
       }
     });
-    document.getElementById('slide-counter').textContent = (currentSlide + 1) + ' / ' + slides.length;
   }
-
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    updateCarousel();
-  }
-
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    updateCarousel();
-  }
-
-  buildCarousel();
 </script>
 </body>
 </html>
