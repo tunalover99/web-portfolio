@@ -8,12 +8,8 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html {
-    scrollbar-width: none;
-  }
-  html::-webkit-scrollbar {
-    display: none;
-  }
+  html { scrollbar-width: none; }
+  html::-webkit-scrollbar { display: none; }
 
   body {
     background: linear-gradient(to top, rgba(255,255,44,0.7) 0%, rgba(255,255,255,0.5) 60%);
@@ -76,7 +72,7 @@
   #content {
     max-width: 1512px;
     margin: 0 auto;
-    padding: 100px 120px 200px;
+    padding: 100px 120px 0;
   }
 
   .section-label {
@@ -92,7 +88,7 @@
   }
 
   .section {
-    margin-bottom: 160px;
+    margin-bottom: 0;
   }
 
   .placeholder {
@@ -129,6 +125,47 @@
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
+
+  /* 노란 배경 섹션 */
+  .yellow-section {
+    background: #FFFF2C;
+    margin-left: -120px;
+    margin-right: -120px;
+    padding: 80px 120px 80px;
+  }
+
+  /* 텍스트 3단 레이아웃 */
+  .text-columns {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1fr;
+    gap: 0 40px;
+    align-items: start;
+  }
+
+  .text-divider {
+    background: rgba(42,40,37,0.2);
+    height: 100%;
+    min-height: 400px;
+  }
+
+  .text-col {
+    font-size: 13px;
+    line-height: 2;
+    color: rgba(42,40,37,0.8);
+    white-space: pre-line;
+  }
+
+  .text-col-right {
+    border: 0.5px solid rgba(42,40,37,0.2);
+    min-height: 300px;
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* 나머지 섹션 */
+  .next-section {
+    padding-top: 160px;
+    padding-bottom: 160px;
+  }
 </style>
 </head>
 <body>
@@ -156,7 +193,7 @@
     </div>
 
     <!-- 슬라이드 풀너비 -->
-    <div style="margin-left: -120px; margin-right: -120px; overflow: hidden; margin-top: 24px;">
+    <div style="margin-left: -120px; margin-right: -120px; overflow: hidden; margin-top: 0;">
       <div style="display: flex; gap: 16px; animation: slideLeft 40s linear infinite; width: max-content;">
         <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
         <img src="p2.jpg" style="height: 300px; width: auto; object-fit: cover;">
@@ -175,17 +212,91 @@
       </div>
     </div>
 
-    <div class="grid-3" style="margin-top: 48px;">
-      <div class="placeholder placeholder-mid">작품 사진</div>
-      <div class="placeholder placeholder-mid">작품 사진</div>
-      <div class="placeholder placeholder-mid">작품 사진</div>
+    <!-- 노란 배경 텍스트 섹션 -->
+    <div class="yellow-section" style="margin-top: 0;">
+      <div class="text-columns">
+        <!-- 한국어 텍스트 -->
+        <div class="text-col">닿지 않을 너에게, 아니 나에게
+오래 전, 너와 나는 무언가를
+좇으며 살았지.
+눈을 감으면
+언제든 길고긴 수평선
+속으로 빠져들 수 있을 거라 믿었어.
+오래 전, 너와 나는 물결의
+그림자만을 좇으며 살았지.
+눈을 감으면 언제든
+부드러운 어둠 속으로
+빠져들 수 있을 거라 믿었어.
+하지만 발밑의 흙은 생각보다 깊었고,
+그 속에서 나는 뿌리를 내려고 있었다는
+걸 뒤늦게 알게 되었어.
+물을 향한 갈증이
+나를 묶어둔 게 아니라,
+오히려 잡아주고 있었다는 사실처럼.
+이제 나는 파도를 향해 몸을 던지기보다,
+내 안에 흐르는 물기를 더듬으며 살아가려 해.
+잎맥 속에 고여 있는 작은 빛처럼,
+나 또한 이 땅 위에서 숨을 쉬고, 언어를 배우며,
+옷감 사이로 스며드는 바람을 느낀다.
+그리움은 여전히 사라지지 않지만,
+그것이 나를 다시 길 위에 세우기에.
+언젠가 네가 바라보던 바다가,
+우리가 걸어온 발자국 끝에서
+조용히 열리기를 바라면서.</div>
+
+        <!-- 세로 구분선 -->
+        <div class="text-divider"></div>
+
+        <!-- 일본어 텍스트 -->
+        <div class="text-col">届かない君へ、いや私へ。
+昔、君と私はなにかを
+追いかけながら生きてきた。
+目を閉じれば
+いつでも長い水平線の彼方へ
+溶け込めると信じていた。
+昔、君と私は波の影だけを
+追いながら生きてきた。
+目を閉じればいつでも
+柔らかな闇の中へ
+沈み込めると信じていた。
+しかし、足元の土は
+思っていたよりも深く、
+その中で私は根を
+下ろそうとしていたのだと、
+後になって知った。
+水への渇きが私を
+縛っていたのではなく、
+むしろ引き留めてくれていたのだ
+という事実のように。
+これから私は波に向かって
+身を投げるよりも、
+私の中に漂う水の気配を
+手探りしながら生きていこうと思う。
+葉脈の中に宿る小さな光のように、
+私もこの地の上で息をし、言葉を学び、
+布の隙間を吹き抜ける風を感じる。
+懐かしさは今も消えない。
+けれど、それが私を再び道の上に
+立たせてくれるから。
+いつか君が眺めていた海が、
+私たちが歩んできた足跡の先で、
+静かに開かれますように。</div>
+
+        <!-- 빈 박스 -->
+        <div class="text-col-right"></div>
+      </div>
     </div>
-    <div class="grid-2" style="margin-top: 16px;">
-      <div class="placeholder placeholder-short">텍스트</div>
-      <div class="placeholder placeholder-short">텍스트</div>
-    </div>
-    <div class="placeholder placeholder-tall" style="margin-top: 48px;">
-      PIXEL GACHA — 추가 예정
+
+    <!-- 추가 작품 영역 -->
+    <div class="next-section">
+      <div class="grid-3">
+        <div class="placeholder placeholder-mid">작품 사진</div>
+        <div class="placeholder placeholder-mid">작품 사진</div>
+        <div class="placeholder placeholder-mid">작품 사진</div>
+      </div>
+      <div class="placeholder placeholder-tall" style="margin-top: 48px;">
+        PIXEL GACHA — 추가 예정
+      </div>
     </div>
   </div>
 
@@ -200,7 +311,7 @@
       <div class="placeholder placeholder-mid">전시 사진</div>
       <div class="placeholder placeholder-mid">전시 사진</div>
     </div>
-    <div class="placeholder placeholder-mid" style="margin-top: 16px;">
+    <div class="placeholder placeholder-mid" style="margin-top: 16px; margin-bottom: 160px;">
       작품 설명 — 추가 예정
     </div>
   </div>
@@ -209,7 +320,7 @@
   <div class="section" id="section-about">
     <span class="section-label">about & archive</span>
 
-    <div class="grid-2">
+    <div class="grid-2" style="margin-bottom: 200px;">
       <div class="placeholder placeholder-tall">프로필 사진</div>
       <div class="placeholder placeholder-tall">텍스트 — 추가 예정</div>
     </div>
@@ -254,7 +365,6 @@
 
   window.addEventListener('mouseup', () => { isDragging = false; });
 
-  // 해시로 섹션 이동
   window.addEventListener('load', () => {
     const hash = window.location.hash;
     if (hash) {
