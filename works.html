@@ -312,17 +312,20 @@
     </div>
   </div>
 
-  <!-- ABOUT & ARCHIVE 섹션 -->
+ <!-- ABOUT & ARCHIVE 섹션 -->
   <div class="section" id="section-about">
     <span class="section-label">about & archive</span>
 
-    <div class="grid-2" style="margin-bottom: 200px;">
+    <div class="grid-2" style="margin-bottom: 80px;">
       <div class="placeholder placeholder-tall">프로필 사진</div>
       <div class="placeholder placeholder-tall">텍스트 — 추가 예정</div>
     </div>
-  </div>
 
-</div>
+    <!-- stonehead - 페이지 맨 아래 오른쪽 -->
+    <div style="display: flex; justify-content: flex-end; padding-bottom: 0;">
+      <img src="stonehead.png" id="stonehead" style="width: 300px; display: block;">
+    </div>
+  </div>
 
 <script>
   const thumb = document.getElementById('scroll-thumb');
@@ -330,9 +333,12 @@
 
   function updateThumb() {
     const scrollTop = window.scrollY;
-    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const stonehead = document.getElementById('stonehead');
+    const stoneheadTop = stonehead ? stonehead.getBoundingClientRect().top + window.scrollY : document.body.scrollHeight;
+    const maxScroll = stoneheadTop - window.innerHeight;
+    const thumbHeight = window.innerHeight / 6;
     const maxThumbTop = window.innerHeight - thumbHeight;
-    const thumbTop = maxScroll > 0 ? (scrollTop / maxScroll) * maxThumbTop : 0;
+    const thumbTop = maxScroll > 0 ? Math.min((scrollTop / maxScroll) * maxThumbTop, maxThumbTop) : 0;
     thumb.style.top = thumbTop + 'px';
   }
 
