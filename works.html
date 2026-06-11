@@ -8,12 +8,11 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* 기본 스크롤바 숨기기 */
   html {
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
   }
   html::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
+    display: none;
   }
 
   body {
@@ -24,7 +23,6 @@
     overflow-x: hidden;
   }
 
-  /* 뒤로가기 버튼 */
   #back-btn {
     position: fixed;
     top: 28px;
@@ -47,7 +45,6 @@
     color: rgba(42,40,37,0.8);
   }
 
-  /* 커스텀 스크롤바 */
   #custom-scrollbar {
     position: fixed;
     right: 20px;
@@ -65,7 +62,6 @@
     height: calc(100vh / 6);
     cursor: grab;
     pointer-events: auto;
-    transition: transform 0.05s linear;
     user-select: none;
   }
   #scroll-thumb:active { cursor: grabbing; }
@@ -77,14 +73,12 @@
     pointer-events: none;
   }
 
-  /* 페이지 콘텐츠 */
   #content {
     max-width: 1512px;
     margin: 0 auto;
     padding: 100px 120px 200px;
   }
 
-  /* 섹션 헤더 */
   .section-label {
     display: inline-block;
     font-family: 'Inconsolata', monospace;
@@ -101,7 +95,6 @@
     margin-bottom: 160px;
   }
 
-  /* 임시 플레이스홀더 */
   .placeholder {
     width: 100%;
     background: rgba(42,40,37,0.04);
@@ -131,31 +124,58 @@
     gap: 16px;
     margin-bottom: 16px;
   }
+
+  @keyframes slideLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 </style>
 </head>
 <body>
 
 <button id="back-btn" onclick="window.location.href='index.html'">← back</button>
 
-<!-- 커스텀 스크롤바 -->
 <div id="custom-scrollbar">
   <div id="scroll-thumb">
     <img src="scroll.png" alt="scroll">
   </div>
 </div>
 
-<!-- 콘텐츠 -->
 <div id="content">
 
   <!-- ARTWORKS 섹션 -->
   <div class="section" id="section-artworks">
     <span class="section-label">artworks</span>
 
-   <iframe width="100%" height="500"
-  src="https://www.youtube.com/embed/YwqzBa2-cmY?start=1&end=20&loop=1&playlist=YwqzBa2-cmY&autoplay=1&mute=1"
-  frameborder="0" allowfullscreen>
-</iframe>
-    <div class="grid-3">
+    <!-- 영상 풀너비 -->
+    <div style="margin-left: -120px; margin-right: -120px;">
+      <iframe width="100%" height="600"
+        src="https://www.youtube.com/embed/YwqzBa2-cmY?start=1&end=20&loop=1&playlist=YwqzBa2-cmY&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0"
+        frameborder="0" allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- 슬라이드 풀너비 -->
+    <div style="margin-left: -120px; margin-right: -120px; overflow: hidden; margin-top: 24px;">
+      <div style="display: flex; gap: 16px; animation: slideLeft 20s linear infinite; width: max-content;">
+        <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p2.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p3.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p4.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p5.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p6.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p7.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p2.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p3.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p4.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p5.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p6.jpg" style="height: 300px; width: auto; object-fit: cover;">
+        <img src="p7.jpg" style="height: 300px; width: auto; object-fit: cover;">
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top: 48px;">
       <div class="placeholder placeholder-mid">작품 사진</div>
       <div class="placeholder placeholder-mid">작품 사진</div>
       <div class="placeholder placeholder-mid">작품 사진</div>
@@ -212,7 +232,6 @@
   window.addEventListener('scroll', updateThumb);
   updateThumb();
 
-  // 드래그로 스크롤
   let isDragging = false;
   let startY = 0;
   let startScrollY = 0;
@@ -235,11 +254,14 @@
 
   window.addEventListener('mouseup', () => { isDragging = false; });
 
-  // 메뉴에서 섹션으로 점프
-  function scrollToSection(id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }
+  // 해시로 섹션 이동
+  window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const el = document.querySelector(hash);
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+    }
+  });
 </script>
 </body>
 </html>
