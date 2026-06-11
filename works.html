@@ -179,6 +179,102 @@
     <div style="margin-left: -120px; margin-right: -120px; margin-bottom: 0;">
       <img src="g1.jpg" style="width: 100%; display: block; object-fit: cover;">
     </div>
+   <!-- 토글 버튼 -->
+<div style="margin-left: -120px; margin-right: -120px; background: #f5f3ef; padding: 0 120px;">
+  <button id="toggle-btn" onclick="togglePrintmaking()" style="
+    font-family: 'Inconsolata', monospace;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    color: #000;
+    background: #fff;
+    border: 1.5px solid #000;
+    padding: 8px 20px;
+    cursor: pointer;
+    margin: 24px 0;
+    text-transform: lowercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  ">
+    <span id="toggle-icon">＋</span> printmaking artworks
+  </button>
+</div>
+
+<!-- 토글 섹션 -->
+<div id="printmaking-section" style="display: none; margin-left: -120px; margin-right: -120px; border: 1.5px solid #4A90D9; padding: 40px 120px 60px;">
+
+  <!-- 상단 3장 가로 배치 -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin-bottom: 40px;">
+    <img src="pm10.jpg" style="width: 100%; height: 300px; object-fit: cover; display: block;">
+    <img src="pm9.jpg" style="width: 100%; height: 300px; object-fit: cover; display: block;">
+    <img src="pm11.jpg" style="width: 100%; height: 300px; object-fit: cover; display: block;">
+  </div>
+
+  <!-- 캐러셀 -->
+  <div style="position: relative; display: flex; align-items: center; justify-content: center; padding: 40px 0; min-height: 500px; background: #fff;">
+
+    <!-- 왼쪽 화살표 -->
+    <button onclick="prevSlide()" style="
+      position: absolute; left: 20px;
+      background: none; border: none;
+      font-size: 28px; cursor: pointer;
+      color: rgba(42,40,37,0.5);
+      z-index: 10;
+      font-family: 'Courier New', monospace;
+    ">‹</button>
+
+    <!-- 슬라이드 뷰 -->
+    <div style="display: flex; align-items: center; justify-content: center; gap: 24px; width: 100%; overflow: hidden; padding: 20px 80px;">
+      <img id="slide-prev" src="pm8.png" style="
+        width: 160px; height: 220px;
+        object-fit: contain;
+        opacity: 0.5;
+        filter: drop-shadow(0 8px 24px rgba(0,0,0,0.18));
+        transition: all 0.3s ease;
+        cursor: pointer;
+      " onclick="prevSlide()">
+
+      <img id="slide-current" src="pm1.png" style="
+        width: 340px; height: 420px;
+        object-fit: contain;
+        opacity: 1;
+        filter: drop-shadow(0 16px 40px rgba(0,0,0,0.28));
+        transition: all 0.3s ease;
+      ">
+
+      <img id="slide-next" src="pm2.png" style="
+        width: 160px; height: 220px;
+        object-fit: contain;
+        opacity: 0.5;
+        filter: drop-shadow(0 8px 24px rgba(0,0,0,0.18));
+        transition: all 0.3s ease;
+        cursor: pointer;
+      " onclick="nextSlide()">
+    </div>
+
+    <!-- 오른쪽 화살표 -->
+    <button onclick="nextSlide()" style="
+      position: absolute; right: 20px;
+      background: none; border: none;
+      font-size: 28px; cursor: pointer;
+      color: rgba(42,40,37,0.5);
+      z-index: 10;
+      font-family: 'Courier New', monospace;
+    ">›</button>
+
+    <!-- 페이지 표시 -->
+    <div style="
+      position: absolute; bottom: 12px;
+      left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: 0.15em;
+      color: rgba(42,40,37,0.4);
+      font-family: 'Courier New', monospace;
+    ">
+      <span id="slide-counter">1 / 8</span>
+    </div>
+
+  </div>
+</div>
 
     <!-- 노란 배경 — 영상부터 텍스트까지 -->
     <div style="background: #FFFF2C; margin-left: -120px; margin-right: -120px;">
@@ -395,6 +491,41 @@
       if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
     }
   });
+ // 토글
+  function togglePrintmaking() {
+    const section = document.getElementById('printmaking-section');
+    const icon = document.getElementById('toggle-icon');
+    if (section.style.display === 'none') {
+      section.style.display = 'block';
+      icon.textContent = '－';
+    } else {
+      section.style.display = 'none';
+      icon.textContent = '＋';
+    }
+  }
+
+  // 캐러셀
+  const slides = ['pm1.png','pm2.png','pm3.png','pm4.png','pm5.png','pm6.png','pm7.png','pm8.png'];
+  let currentSlide = 0;
+
+  function updateSlides() {
+    const prev = (currentSlide - 1 + slides.length) % slides.length;
+    const next = (currentSlide + 1) % slides.length;
+    document.getElementById('slide-prev').src = slides[prev];
+    document.getElementById('slide-current').src = slides[currentSlide];
+    document.getElementById('slide-next').src = slides[next];
+    document.getElementById('slide-counter').textContent = (currentSlide + 1) + ' / ' + slides.length;
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    updateSlides();
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    updateSlides();
+  }
 </script>
 </body>
 </html>
