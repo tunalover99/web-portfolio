@@ -246,6 +246,41 @@
     letter-spacing: 0.15em;
     color: rgba(42,40,37,0.35);
   }
+
+  /* 포스터 + 노란박스 섹션 */
+  .poster-section {
+    position: relative;
+    margin-left: -120px;
+    margin-right: -120px;
+  }
+
+  .yellow-text-box {
+    background: #FFFF2B;
+    padding: 80px 120px;
+    min-height: 970px;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 0 40px;
+    align-items: start;
+  }
+
+  .yellow-text-col {
+    font-size: 13px;
+    line-height: 2;
+    color: rgba(42,40,37,0.85);
+    white-space: pre-line;
+  }
+
+  .yellow-divider {
+    background: rgba(42,40,37,0.2);
+    min-height: 800px;
+  }
+
+  .realposter-wrap {
+    position: relative;
+    margin-left: -120px;
+    margin-right: -120px;
+  }
 </style>
 </head>
 <body>
@@ -292,14 +327,12 @@
     <!-- 토글 섹션 -->
     <div id="printmaking-section" style="display: none; margin-left: -120px; margin-right: -120px;">
 
-      <!-- 상단 3장 -->
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin-top: 250px;">
         <img src="pm10.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
         <img src="pm9.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
         <img src="pm11.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
       </div>
 
-      <!-- 슬라이드 -->
       <div class="slide-section">
         <button class="slide-arrow left-arrow" onclick="prevSlide()">‹</button>
         <button class="slide-arrow right-arrow" onclick="nextSlide()">›</button>
@@ -405,10 +438,65 @@
         </div>
       </div>
     </div>
- <!-- 가챠 섹션 -->
-<div style="margin-left: -120px; margin-right: -120px; height: 100vh;">
-  <iframe src="https://gacha-877.pages.dev" width="100%" height="100%" frameborder="0" style="display: block;"></iframe>
-</div>
+
+    <!-- 가챠 섹션 -->
+    <div style="margin-left: -120px; margin-right: -120px; height: 100vh;">
+      <iframe src="https://gacha-877.pages.dev" width="100%" height="100%" frameborder="0" style="display: block;"></iframe>
+    </div>
+
+    <!-- poster.png 풀너비 + realposter.png 오버레이 -->
+    <div class="poster-section">
+      <!-- poster.png -->
+      <img src="poster.png" style="width: 100%; display: block;">
+
+      <!-- realposter.png — 우측하단에 40px 겹치게 -->
+      <img src="realposter.png" style="
+        position: absolute;
+        bottom: -40px;
+        right: 0;
+        width: 300px;
+        z-index: 2;
+      ">
+    </div>
+
+    <!-- 노란 박스 + 텍스트 -->
+    <div style="margin-left: -120px; margin-right: -120px; position: relative; z-index: 1;">
+      <div class="yellow-text-box">
+
+        <!-- 왼쪽 한국어 -->
+        <div class="yellow-text-col">불안원자 [합성명사]
+미완숙하고 불안전하며 고립된 존재임과 동시에 타자와의 결합과 연대에 대한 갈망을 가진 존재
+
+불안원자는 매일의 변화와 경쟁, 예측 불가의 미래 속에서 공허와 두려움을 느끼며 자라난다. 그들은 끊임없이 움직이며 서로에게 다가가고, 임시적인 결속을 시도한다. 서로의 미완의 틈에 작은 진동을 일으켜 마주치고 충돌하며, 이탈과 접촉을 반복한다. 그렇게 결합에 대한 갈망을 갖고 끊임없이 변화하며 불안정한 상태를 벗어나려한다. 인간 또한 마찬가지다. 인간은 의식을 지닌 존재이기에 세상에 홀로 던져졌다는 감각을 피할 수 없고, 외부의 불안정과 내면의 공허를 관계를 통해 해소하고자 한다. 진동은 공동체의 형상, 불완전한 접촉, 그리고 간절함을 만들어내고 연대는 불확실한 세계 속에서 생존을 위한 서로의 체온이 된다.
+
+&lt;불안원자: 집속모드&gt;는 현대인이 갖고 있는 불안감과 외로움에 주목하여 불완전한 존재들이 생존을 위해 나아가는 방식을 판화를 통해 탐구한다. 판을 제작하고 찍어내는 과정 속에서 작은 진동들이 일어나고 부딪치며 하나의 작업으로 결합된다. 불안하고 결합에 대한 갈망을 갖고 있던 불안원자는 비로소 완전한 상태가 되어 새로운 연대를 형성해 불확실한 미래로 한 발짝 더 나아갈 것이다.
+
+본 전시는 홍익대학교 미술대학 판화과 전시(기획) 콜렉티브 '데클'의 열두 번째 정기 전시다. 감정은 미묘하게 어긋나고, 작업은 충돌하며, 관계는 머물지 못하고 이내 흐트러지지만, 작가들은 본 전시에서 자신의 불안과 공허를 공유하며 '데클'과 관람객 사이에 새로운 연대를 형성해 진정한 공동체로 결합한다.
+
+예술은 더 이상 고립된 행위가 아니라, 함께 공유하고 소통하며 자라나는 존재가 되었다. 우리의 연대는 단지 따뜻하고 낭만적인 것만은 아니다. 그것은 두려움에서 비롯된, 생존을 위한 본능적인 결속이다. 그러나 그 속에서 우리는 서로를 안심시키고, 온기를 나누며, 마침내 혼자가 아니라는 감각을 회복한다.
+
+이러한 연대는 데클이라는 콜렉티브 안에서만 형성되는 것이 아니라, 이 전시가 펼쳐지는 공간인 청년예술청(sapy)의 성격과도 맞닿아 있다. 이 공간은 청년 예술인의 지속가능한 창작활동을 위한 공간이다. 본 전시가 진행되는 화이트 갤러리는 기존의 화이트 큐브의 특성과 비대칭적인 바닥과 구조를 갖고 있다. 작가들은 전시장 곳곳에 작업을 놓아 관객과 데클 사이의 새로운 연대를 형성해 불완전하고 새로운 도전을 시도한다. 예술인들이 방문하는 이곳에서 불안원자의 집속모드를 실현을 기대한다.</div>
+
+        <!-- 구분선 -->
+        <div class="yellow-divider"></div>
+
+        <!-- 오른쪽 일본어 -->
+        <div class="yellow-text-col">不安原子
+未成熟で不完全、そして孤立した存在であると同時に、他者との結合や連帯への渇望を抱いた存在。
+
+「不安原子」は、日々の変化や競争、予測不可能な未来のなかで、空虚と恐怖を感じながら肥大化していく。それらは絶え間なく動き回り、互いに近づき、一時的な結束を試みる。互いの未完の隙間に小さな振動を起こして出会い、衝突し、離脱と接触を繰り返す。そのように結合への渇望を抱きながら絶え間なく変化し、不安定な状態から抜け出そうとする。人間もまた同様である。人間は意識を持つ存在であるからこそ、世界に一人投げ出されたという感覚を避けることはできず、外部の不安定さと内面の空虚を「関係性」を通じて解消しようとする。振動は共同体の形象、不完全な接触、そして切実さを生み出し、連帯は不確実な世界のなかで生き残るための、互いの体温となる。
+
+「不安原子：集束モード」は、現代人が抱える不安感と孤独感に焦点を当て、不完全な存在が生きていくための方法を版画を通じて探求する。版を制作し、刷り上げる過程のなかで、小さな振動が生じてぶつかり合い、一つの作品へと結合していく。不安に満ち、結合への渇望を抱いていた不安原子は、ようやく完全な状態となり、新たな連帯を形成して不確実な未来へと一歩踏み出す。
+
+本展は、弘益大学校美術大学版画科の展示（企画）コレクティブ「デクル（Decl）」の第12回定期展である。感情は微妙にすれ違い、作品は衝突し、関係は留まることなくたちまち乱れてしまうが、作家たちは本展において自らの不安と空虚を共有し、「デクル」と観客の間に新たな連帯を形成して、真の共同体へと結合する。
+
+芸術はもはや孤立した行為ではなく、共に共有し、コミュニケーションを取りながら成長する存在となった。私たちの連帯は、単に温かくロマンチックなものだけではない。それは恐怖から始まった、生存のための本能的な結束である。しかしそのなかで、私たちは互いを安心させ、温もりを分かち合い、ついに「一人ではない」という感覚を回復するのである。
+
+このような連帯は、デクルというコレクティブのなかだけで形成されるのではなく、この展示が繰り広げられる空間である「青年芸術庁（SAPY）」の性格とも響き合っている。この空間は、若手芸術家の持続可能な創作活動のための場所である。本展が開催されるホワイト・ギャラリーは、従来のホワイト・キューブの特性を持ちながらも、非対称な床や構造を備えている。作家たちは展示室のいたるところに作品を配置することで、観客とデクルの間の新たな連帯を形成し、不完全で新しい挑戦を試みる。芸術家たちが集うこの場所で、「不安原子の集束モード」が実現されることを期待する。</div>
+
+      </div>
+    </div>
+
     <div class="next-section">
       <div class="grid-3">
         <div class="placeholder placeholder-mid">작품 사진</div>
@@ -516,7 +604,6 @@
     }
   });
 
-  // 토글
   function togglePrintmaking() {
     const section = document.getElementById('printmaking-section');
     const icon = document.getElementById('toggle-icon');
@@ -530,7 +617,6 @@
     }
   }
 
-  // 슬라이드
   const slides = ['pm1.png','pm2.png','pm3.png','pm4.png','pm5.png','pm6.png','pm7.png','pm8.png'];
   let currentSlide = 0;
   let slidesBuilt = false;
