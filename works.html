@@ -123,32 +123,17 @@
     100% { transform: translateX(-50%); }
   }
 
-  .text-columns {
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr 1fr;
-    gap: 0 40px;
-    align-items: start;
-  }
-  .text-divider {
-    background: rgba(42,40,37,0.2);
-    height: 100%;
-    min-height: 400px;
-  }
   .text-col {
     font-size: 13px;
     line-height: 2;
     color: rgba(42,40,37,0.8);
     white-space: pre-line;
   }
-  .text-col-right {
-    border: 0.5px solid rgba(42,40,37,0.2);
-    min-height: 300px;
-    background: rgba(255,255,255,0.3);
-    padding: 24px;
-    font-size: 13px;
-    line-height: 2;
-    color: rgba(42,40,37,0.8);
-    white-space: pre-line;
+
+  .text-divider {
+    background: rgba(42,40,37,0.2);
+    height: 100%;
+    min-height: 400px;
   }
 
   .next-section {
@@ -178,74 +163,48 @@
     position: absolute;
     transition: all 0.4s ease;
   }
-
   .slide-item img { display: block; object-fit: contain; }
 
   .slide-item.center {
-    z-index: 5;
-    left: 50%;
-    transform: translateX(-50%);
+    z-index: 5; left: 50%; transform: translateX(-50%);
   }
   .slide-item.center img {
-    width: 650px;
-    height: 830px;
+    width: 650px; height: 830px;
     filter: drop-shadow(0 24px 60px rgba(0,0,0,0.35));
     opacity: 1;
   }
-
   .slide-item.left {
-    z-index: 3;
-    left: 50%;
-    transform: translateX(calc(-50% - 480px));
+    z-index: 3; left: 50%; transform: translateX(calc(-50% - 480px));
   }
   .slide-item.left img {
-    width: 220px;
-    height: 280px;
+    width: 220px; height: 280px;
     filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
     opacity: 0.6;
   }
-
   .slide-item.right {
-    z-index: 3;
-    left: 50%;
-    transform: translateX(calc(-50% + 480px));
+    z-index: 3; left: 50%; transform: translateX(calc(-50% + 480px));
   }
   .slide-item.right img {
-    width: 220px;
-    height: 280px;
+    width: 220px; height: 280px;
     filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
     opacity: 0.6;
   }
-
-  .slide-item.hidden {
-    z-index: 1;
-    display: none;
-    pointer-events: none;
-  }
+  .slide-item.hidden { z-index: 1; display: none; pointer-events: none; }
 
   .slide-arrow {
-    background: none;
-    border: none;
-    font-size: 40px;
-    cursor: pointer;
-    color: rgba(42,40,37,0.35);
+    background: none; border: none; font-size: 40px;
+    cursor: pointer; color: rgba(42,40,37,0.35);
     font-family: 'Courier New', monospace;
-    transition: color 0.2s;
-    padding: 0 40px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
+    transition: color 0.2s; padding: 0 40px;
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
   }
   .slide-arrow:hover { color: rgba(42,40,37,0.8); }
   .slide-arrow.left-arrow { left: 0; }
   .slide-arrow.right-arrow { right: 0; }
 
   .slide-counter {
-    margin-top: 32px;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: rgba(42,40,37,0.35);
+    margin-top: 32px; font-size: 11px;
+    letter-spacing: 0.15em; color: rgba(42,40,37,0.35);
   }
 
   .yellow-text-box {
@@ -259,10 +218,8 @@
   }
 
   .yellow-text-col {
-    font-size: 13px;
-    line-height: 2;
-    color: rgba(42,40,37,0.85);
-    white-space: pre-line;
+    font-size: 13px; line-height: 2;
+    color: rgba(42,40,37,0.85); white-space: pre-line;
   }
 
   .yellow-divider {
@@ -270,24 +227,23 @@
     min-height: 800px;
   }
 
-  .yellow-text-right {
-    border: 0.5px solid rgba(42,40,37,0.3);
-    background: rgba(255,255,255,0.3);
-    padding: 24px;
-    font-size: 13px;
-    line-height: 2;
-    color: rgba(42,40,37,0.85);
-    white-space: pre-line;
-  }
-
   .sub-title {
     font-family: 'Inconsolata', monospace;
+    font-size: 13px; letter-spacing: 0.15em;
+    color: rgba(42,40,37,0.5); text-transform: uppercase;
+    margin-bottom: 40px; text-align: center;
+  }
+
+  /* 작은 텍스트 박스 */
+  .small-text-box {
+    border: 0.5px solid rgba(42,40,37,0.3);
+    background: rgba(255,255,255,0.3);
+    padding: 16px 20px;
     font-size: 13px;
-    letter-spacing: 0.15em;
-    color: rgba(42,40,37,0.5);
-    text-transform: uppercase;
-    margin-bottom: 40px;
-    text-align: center;
+    line-height: 1.8;
+    color: rgba(42,40,37,0.85);
+    white-space: pre-line;
+    display: inline-block;
   }
 </style>
 </head>
@@ -313,20 +269,11 @@
 
     <div style="margin-left: -120px; margin-right: -120px; padding: 0 120px;">
       <button id="toggle-btn" onclick="togglePrintmaking()" style="
-        font-family: 'Inconsolata', monospace;
-        font-size: 14px;
-        letter-spacing: 0.12em;
-        color: #000;
-        background: #fff;
-        border: 1.5px solid #000;
-        padding: 8px 20px;
-        cursor: pointer;
-        margin: 24px 0;
-        text-transform: lowercase;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      ">
+        font-family: 'Inconsolata', monospace; font-size: 14px;
+        letter-spacing: 0.12em; color: #000; background: #fff;
+        border: 1.5px solid #000; padding: 8px 20px; cursor: pointer;
+        margin: 24px 0; text-transform: lowercase; display: flex;
+        align-items: center; gap: 10px;">
         <span id="toggle-icon">＋</span> printmaking artworks
       </button>
     </div>
@@ -349,8 +296,8 @@
     <div style="background: #FFFF2C; margin-left: -120px; margin-right: -120px;">
       <iframe width="100%" height="600"
         src="https://www.youtube.com/embed/YwqzBa2-cmY?start=10&end=40&loop=1&playlist=YwqzBa2-cmY&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0"
-        frameborder="0" allowfullscreen style="display: block;">
-      </iframe>
+        frameborder="0" allowfullscreen style="display: block;"></iframe>
+
       <div style="overflow: hidden; margin-top: 16px;">
         <div style="display: flex; gap: 16px; animation: slideLeft 40s linear infinite; width: max-content;">
           <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
@@ -370,9 +317,8 @@
         </div>
       </div>
 
-      <!-- 노란배경 텍스트 — 4컬럼으로 변경 -->
       <div style="padding: 80px 120px;">
-        <div class="yellow-text-box" style="background: transparent; padding: 0; min-height: unset;">
+        <div style="display: grid; grid-template-columns: 1fr 1px 1fr auto; gap: 0 40px; align-items: start;">
           <div class="yellow-text-col">닿지 않을 너에게, 아니 나에게
 오래 전, 너와 나는 무언가를
 좇으며 살았지.
@@ -437,13 +383,10 @@
 私たちが歩んできた足跡の先で、
 静かに開かれますように。</div>
 
-          <div class="yellow-text-right">〈닿지 않을 나에게〉, 2025, 단채널 비디오, 컬러, 사운드, 1분 24초
+          <!-- 작은 텍스트 박스 -->
+          <div class="small-text-box">〈닿지 않을 나에게〉, 2025, 단채널 비디오, 컬러, 사운드, 1분 24초
 
-본 작품은 지난 4년간의 학업적 고민과 연구의 궤적이 담긴 졸업전시 공간을 디지털 스캔하여 가상 세계에 재현한 미디어 아트이다. 가상 공간 속에서 터치디자이너(TouchDesigner)로 구현된 인터랙티브 파티클(Interactive Particle) 시스템은, 금방이라도 흩어질 듯한 '육지 세계에서의 존재의 가벼움'을 시각적으로 은유한다. 화면을 흐르는 편지의 텍스트 자막과 나레이션은 메인 실크스크린 연작에 각인된 편지 내용의 서사적 해석본이자 확장판으로 기능하며, 관람객을 보다 깊은 내면의 서사로 안내한다.
-
-《届かない私へ》, 2025年, シングルチャンネル・ビデオ, カラー, サウンド, 1分24秒
-
-本作は、過去4年間の学術的な悩みと研究の軌跡が込められた卒業展示空間をデジタルスキャンし、仮想世界へと再現したメディアアートである。仮想空間の中でTouchDesigner（タッチデザイナー）によって実装されたインタラクティブ・パーティクル（Interactive Particle）システムは、今にも散ってしまいそうな「陸の世界における存在の軽さ」を視覚的に隠喩する。画面を流れる手紙のテキスト字幕とナレーションは、メインのシルクスクリーン連作に刻まれた手紙の内容の叙事的な解釈本であり、拡張版として機能しながら、観客をより深い内面の叙事へと誘う。</div>
+《届かない私へ》, 2025年, シングルチャンネル・ビデオ, カラー, サウンド, 1分24秒</div>
         </div>
       </div>
     </div>
@@ -482,10 +425,10 @@
       <img src="gm3.png" style="width: 100%; display: block;">
     </div>
 
-    <!-- 하늘색 텍스트 박스 — 4컬럼 -->
+    <!-- 하늘색 텍스트 박스 -->
     <div style="background: #CCE6FF; margin-left: -120px; margin-right: -120px;">
       <div style="padding: 80px 120px;">
-        <div style="display: grid; grid-template-columns: 1fr 1px 1fr 1fr; gap: 0 40px; align-items: start;">
+        <div style="display: grid; grid-template-columns: 1fr 1px 1fr auto; gap: 0 40px; align-items: start;">
           <div class="text-col">우리는 잊혀가는 기술을 다루는 것일까? 2025 홍익대학교 미술대학 판화과 졸업전시는 이 질문과 함께 '열쇠'라는 단어에서 출발한다.
 
 열쇠는 어떤 것을 숨겨 보호하기 위해 사용한다. 그러나 동시에 우리에게서 가장 잘 도망치는 사물 중 하나이다. 열쇠공이 닫힌 문을 열기 위해 금속 틈을 더듬듯, 우리 역시 판화 기술의 틈을 되짚으며 이미지를 만들어왔다.
@@ -504,39 +447,42 @@
 
 しかし私たちは、いつでも再び版画のもとに集うことができる。失われつつある感覚や技術を取り戻そうとする人々のために、新たな鍵を作り出すことができる。本展は、31名の作家それぞれが生み出した「版画の鍵」を紹介する場である。私たちは版画という技術と概念を通じて新たな鍵を作り出し、それを来場者へ手渡したいと考えている。それぞれの手から生み出された鍵は、隠されていた版画のさまざまな側面を明らかにする媒介であり、閉ざされた構造を開くための試みでもある。私たちはそれぞれの作品の中に秘めていた問いを鍵へと変え、もう一度、その扉を開こうとしている。</div>
 
-          <div class="text-col-right">《더 스페어 키 (The spare key)》 졸업전시 공간 기획, 2026
+          <!-- 작은 텍스트 박스 -->
+          <div class="small-text-box">《더 스페어 키 (The spare key)》 졸업전시 공간 기획, 2026
 메인 입구 및 참여 작가 공간 배치 레이아웃
 
-전체 전시 공간을 크게 3개의 거점으로 구획하고, 각 전시실의 물리적·미학적 특성에 부합하는 참여 작가들을 전략적으로 배치하였습니다. 특히, 관람객의 이동 동선 지도를 전시 메인 콘셉트인 '열쇠(Key)'의 형태로 구조화함으로써, 동선의 기능적 편리함을 확보하는 동시에 전시의 정체성을 시각화하는 독창적인 디자인적 요소를 더했습니다.
-
 卒業制作展『The spare key』空間構成・会場レイアウト, 2026
-メインエントランスおよび出展作家のスペース配置
-
-展示空間全体を大きく3つのエリアに区画し、各展示室の物理的・美学的特性に合致する出展作家を戦略的に配置しました。特に、観客の動線マップを展覧会のメインコンセプトである「鍵（Key）」の形態へと構造化することで、動線の機能的な利便性を確保すると同時に、展覧会のアイデンティティを視覚化する独創的なデザイン要素を加えました。</div>
+メインエントランスおよび出展作家のスペース配置</div>
         </div>
       </div>
     </div>
 
-    <!-- poster.png 풀너비 -->
+    <!-- poster.png 풀너비 + realposter 위치 수정 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="poster.png" style="width: 100%; display: block;">
       <img src="realposter.png" style="
         position: absolute;
-        bottom: -40px;
-        right: 0;
+        bottom: -200px;
+        right: 15%;
         width: 300px;
-        z-index: 2;
+        z-index: 4;
       ">
     </div>
 
-    <!-- 검정 동그라미 구분 영역 -->
-    <div style="margin-left: -120px; margin-right: -120px; position: relative; height: 200px; background: #fff; overflow: visible; z-index: 1;">
-      <div style="position: absolute; left: 8%; top: 30px; width: 120px; height: 120px; background: #000; border-radius: 50%;"></div>
-      <div style="position: absolute; left: 22%; top: 80px; width: 50px; height: 50px; background: #000; border-radius: 50%;"></div>
-      <div style="position: absolute; left: 38%; top: 20px; width: 80px; height: 80px; background: #000; border-radius: 50%;"></div>
-      <div style="position: absolute; left: 52%; top: 90px; width: 40px; height: 40px; background: #000; border-radius: 50%;"></div>
-      <div style="position: absolute; right: 15%; top: 10px; width: 140px; height: 140px; background: #000; border-radius: 50%;"></div>
-      <div style="position: absolute; right: 8%; top: 100px; width: 25px; height: 25px; background: #000; border-radius: 50%;"></div>
+    <!-- 검정 동그라미 — poster랑 노란박스를 가로질러 존재 -->
+    <div style="margin-left: -120px; margin-right: -120px; position: relative; height: 260px; background: #fff; overflow: visible; z-index: 3;">
+      <!-- 큰 동그라미 — 위로 절반 튀어나옴 (poster와 걸침) -->
+      <div style="position: absolute; left: 5%; top: -70px; width: 160px; height: 160px; background: #000; border-radius: 50%; z-index: 4;"></div>
+      <!-- 작은 동그라미 -->
+      <div style="position: absolute; left: 18%; top: 60px; width: 40px; height: 40px; background: #000; border-radius: 50%; z-index: 4;"></div>
+      <!-- 중간 동그라미 -->
+      <div style="position: absolute; left: 30%; top: -30px; width: 100px; height: 100px; background: #000; border-radius: 50%; z-index: 4;"></div>
+      <!-- 아주 작은 동그라미 -->
+      <div style="position: absolute; left: 45%; top: 80px; width: 28px; height: 28px; background: #000; border-radius: 50%; z-index: 4;"></div>
+      <!-- 큰 동그라미 오른쪽 — 아래로 절반 튀어나옴 (노란박스와 걸침) -->
+      <div style="position: absolute; right: 20%; top: 120px; width: 180px; height: 180px; background: #000; border-radius: 50%; z-index: 4;"></div>
+      <!-- 작은 동그라미 우측 -->
+      <div style="position: absolute; right: 10%; top: 30px; width: 35px; height: 35px; background: #000; border-radius: 50%; z-index: 4;"></div>
     </div>
 
     <!-- 노란 박스 + 텍스트 -->
@@ -585,19 +531,19 @@
       <div class="placeholder placeholder-tall">텍스트 — 추가 예정</div>
     </div>
 
-    <!-- 뮤비 아트디렉터 섹션 -->
+    <!-- 뮤비 아트디렉터 -->
     <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px;">
       <p class="sub-title">music video art director</p>
       <img src="mvsc.jpg" style="width: 100%; display: block;">
     </div>
 
-    <!-- 미디어파티 섹션 -->
+    <!-- 미디어파티 -->
     <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px; border-top: 0.5px solid rgba(42,40,37,0.15);">
       <p class="sub-title">media party</p>
       <img src="mdpt.jpg" style="width: 100%; display: block;">
     </div>
 
-    <!-- artist book 슬라이드 + ab 호버 -->
+    <!-- artist book -->
     <div style="margin-left: -120px; margin-right: -120px; background: #fff; border-top: 0.5px solid rgba(42,40,37,0.15); padding-top: 80px; padding-bottom: 0;">
       <p class="sub-title">artist book</p>
       <div style="overflow: hidden;">
@@ -634,7 +580,6 @@
           <img class="base-img" src="ab1.jpg" style="display: block; width: 100%; transition: opacity 0.3s;">
           <img class="hover-img" src="ab4.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.3s;">
         </div>
-
         <div style="position: relative; display: inline-block; cursor: pointer; max-width: 800px; width: 100%;"
           onmouseenter="this.querySelector('.hover-img').style.opacity='1'; this.querySelector('.base-img').style.opacity='0';"
           onmouseleave="this.querySelector('.hover-img').style.opacity='0'; this.querySelector('.base-img').style.opacity='1';">
@@ -644,6 +589,31 @@
       </div>
     </div>
 
+    <!-- education -->
+    <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px; border-top: 0.5px solid rgba(42,40,37,0.15);">
+      <p class="sub-title">education</p>
+      <!-- cwd.jpg 슬라이드 -->
+      <div style="overflow: hidden; margin-bottom: 40px;">
+        <div style="display: flex; gap: 0; animation: slideLeft 60s linear infinite; width: max-content;">
+          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
+          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
+          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
+          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
+          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
+          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
+        </div>
+      </div>
+      <!-- cwd2.jpg -->
+      <img src="cwd2.jpg" style="width: 100%; display: block;">
+    </div>
+
+    <!-- art for a cause -->
+    <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px; border-top: 0.5px solid rgba(42,40,37,0.15);">
+      <p class="sub-title">art for a cause</p>
+      <img src="prm.jpg" style="width: 100%; display: block;">
+    </div>
+
+    <!-- stonehead -->
     <div style="display: flex; justify-content: flex-end; padding-bottom: 0; margin-right: -20px; margin-bottom: 100px; margin-top: 80px;">
       <img src="stonehead.png" id="stonehead" style="width: 150px; display: block;">
     </div>
