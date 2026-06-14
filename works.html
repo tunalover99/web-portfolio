@@ -57,7 +57,6 @@
   .placeholder-mid { height: 400px; }
 
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 
   @keyframes slideLeft {
     0% { transform: translateX(0); }
@@ -114,25 +113,28 @@
     color: rgba(42,40,37,0.85); white-space: pre-line; display: inline-block;
   }
 
-  /* 번호 원 */
+  /* 번호 원 — 검정 배경 흰색 글씨 */
   .num-circle {
-    width: 73px; height: 73px; background: #fff;
-    border: 1.5px solid #000; border-radius: 50%;
+    width: 73px; height: 73px; background: #000;
+    border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 40px; font-family: 'Courier New', monospace;
-    font-weight: normal; color: #000; position: absolute; z-index: 10;
-    line-height: 1;
+    font-weight: normal; color: #fff; position: absolute; z-index: 10;
+    line-height: 1; flex-shrink: 0;
+  }
+  .num-circle-inline {
+    width: 73px; height: 73px; background: #000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; font-family: 'Courier New', monospace;
+    font-weight: normal; color: #fff;
+    line-height: 1; flex-shrink: 0;
   }
 
-  /* 작품 설명 박스 */
   .artwork-box {
     border: 1px solid rgba(42,40,37,0.3);
-    padding: 24px 28px;
-    font-size: 12px;
-    line-height: 1.9;
-    color: rgba(42,40,37,0.8);
-    white-space: pre-line;
-    background: #fff;
+    padding: 24px 28px; font-size: 12px; line-height: 1.9;
+    color: rgba(42,40,37,0.8); white-space: pre-line; background: #fff;
   }
 </style>
 </head>
@@ -150,11 +152,9 @@
   <div class="section" id="section-artworks">
     <span class="section-label">artworks</span>
 
-    <!-- g1.jpg -->
+    <!-- g1.jpg + 토글버튼 경계에 걸치게 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="g1.jpg" style="width: 100%; display: block; object-fit: cover;">
-
-      <!-- 토글 버튼 — g1과 흰색박스 경계에 걸치게 -->
       <button id="toggle-btn" onclick="togglePrintmaking()" style="
         position: absolute; bottom: -30px; left: 120px;
         font-family: 'Inconsolata', monospace; font-size: 20px;
@@ -235,9 +235,7 @@
 언젠가 네가 바라보던 바다가,
 우리가 걸어온 발자국 끝에서
 조용히 열리기를 바라면서.</div>
-
           <div class="yellow-divider"></div>
-
           <div class="yellow-text-col">届かない君へ、いや私へ。
 昔、君と私はなにかを
 追いかけながら生きてきた。
@@ -271,7 +269,6 @@
 いつか君が眺めていた海が、
 私たちが歩んできた足跡の先で、
 静かに開かれますように。</div>
-
           <div class="small-text-box">〈닿지 않을 나에게〉, 2025, 단채널 비디오, 컬러, 사운드, 1분 24초
 
 《届かない私へ》, 2025年, シングルチャンネル・ビデオ, カラー, サウンド, 1分24秒</div>
@@ -279,40 +276,41 @@
       </div>
     </div>
 
+    <!-- hl.png — itrv.jpg 위에 풀너비 -->
+    <div style="margin-left: -120px; margin-right: -120px;">
+      <img src="hl.png" style="width: 100%; display: block;">
+    </div>
+
     <!-- itrv.jpg + 원1 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="itrv.jpg" style="width: 100%; display: block;">
-      <!-- 원 1 — 우측 하단 -->
       <div class="num-circle" style="bottom: 40px; right: 120px;">1</div>
     </div>
 
     <!-- 가챠 섹션 + 원2 -->
     <div style="margin-left: -120px; margin-right: -120px; height: 100vh; position: relative;">
       <iframe src="https://gacha-877.pages.dev" width="100%" height="100%" frameborder="0" style="display: block;"></iframe>
-      <!-- 원 2 — 좌측 하단 -->
       <div class="num-circle" style="bottom: 60px; left: 80px;">2</div>
     </div>
 
     <!-- df.jpg + 원3 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="df.jpg" style="width: 100%; display: block;">
-      <!-- 원 3 — 우측 하단 -->
-      <div class="num-circle" style="bottom: 40px; right: 200px;">3</div>
+      <!-- 3번 원 — 오른쪽으로 50px 이동 (right 줄임) -->
+      <div class="num-circle" style="bottom: 40px; right: 150px;">3</div>
     </div>
 
-    <!-- 작품 설명 섹션 — 원 + 캡션 3개 -->
-    <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px;">
+    <!-- 작품 설명 섹션 — 사진 배치 참고 레이아웃 -->
+    <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px 120px;">
+      <!-- 피그마 레이아웃: 왼쪽에 2번(위) + 2번박스, 오른쪽에 1번(위)+1번박스 / 3번(아래)+3번박스 -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
 
-        <!-- 왼쪽: 원2 + 작품2, 원3 + 작품3 세로 배치 -->
-        <div style="display: flex; flex-direction: column; gap: 48px;">
-
-          <!-- 원2 + 작품2 -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-              <div class="num-circle" style="position: static; flex-shrink: 0;">2</div>
-            </div>
-            <div class="artwork-box">〈가챠 웹〉, 2025
+        <!-- 왼쪽 열: 원2 + 박스2 (세로 중간쯤에 위치) -->
+        <div style="padding-top: 200px;">
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div class="num-circle-inline">2</div>
+          </div>
+          <div class="artwork-box">〈가챠 웹〉, 2025
 
 웹 기반 인터랙티브 프로젝트, 바이브 코딩, 얼굴 인식 및 AI 기반 감정 분석 시스템
 
@@ -323,12 +321,32 @@
 Webインタラクティブプロジェクト、Vibe Coding、顔認識およびAI感情分析システム
 
 ユーザーの顔を認識し、それをガチャカプセルのイメージへと変換することで、見慣れた自分自身を新たな視点から捉える体験を提案する。顔の特徴をもとに生成されたイメージはそれぞれ異なる個性を持ち、利用者はデジタル空間の中で自身のアイデンティティがどのように再解釈されるのかを体験することができる。</div>
-          </div>
+        </div>
 
-          <!-- 원3 + 작품3 -->
+        <!-- 오른쪽 열: 원1 + 박스1 (위), 원3 + 박스3 (아래) -->
+        <div style="display: flex; flex-direction: column; gap: 48px;">
+          <!-- 원1 + 박스1 -->
           <div>
             <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-              <div class="num-circle" style="position: static; flex-shrink: 0;">3</div>
+              <div class="num-circle-inline">1</div>
+            </div>
+            <div class="artwork-box">〈가장 멍청한 회귀〉, 2025
+
+단채널 비디오, 모션 센서 기반 인터랙티브 영상 설치, 30초
+
+관람객의 움직임에 반응하여 변화하는 인터랙티브 영상 설치 작품이다. 작품은 물속에서의 자유롭고 평온한 기억으로 돌아가고자 하는 인간의 회귀 욕망을 다룬다. 관람자의 개입에 따라 영상의 흐름이 변화하며 기억과 현실 사이의 거리를 경험하도록 유도한다.
+
+《最も愚かな回帰》, 2025
+
+シングルチャンネル・ビデオ、モーションセンサーによるインタラクティブ映像インスタレーション、30秒
+
+鑑賞者の動きに反応して変化するインタラクティブ映像インスタレーション作品である。本作は、水の中で感じた自由で穏やかな記憶へ戻ろうとする人間の回帰願望をテーマとしている。鑑賞者の介入によって映像が変化し、記憶と現実のあいだにある距離を体験させる。</div>
+          </div>
+
+          <!-- 원3 + 박스3 -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+              <div class="num-circle-inline">3</div>
             </div>
             <div class="artwork-box">〈물에서 자유롭게 춤을 추는〉, 2024
 
@@ -342,25 +360,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 
 デジタルドローイングによって描かれた魚のアニメーションの背後には、水にまつわる映像が重ねて再生されている。アニメーションの中の魚の動きは限られており、やがて終わりを迎える運命にある。しかし、揺らぐ水面や降り続く雨、流れる水の映像は、その魚にわずかでも長く泳ぎ続けるための生命感を与えているかのように見える。</div>
           </div>
-
-        </div>
-
-        <!-- 오른쪽: 원1 + 작품1 -->
-        <div>
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-            <div class="num-circle" style="position: static; flex-shrink: 0;">1</div>
-          </div>
-          <div class="artwork-box">〈가장 멍청한 회귀〉, 2025
-
-단채널 비디오, 모션 센서 기반 인터랙티브 영상 설치, 30초
-
-관람객의 움직임에 반응하여 변화하는 인터랙티브 영상 설치 작품이다. 작품은 물속에서의 자유롭고 평온한 기억으로 돌아가고자 하는 인간의 회귀 욕망을 다룬다. 관람자의 개입에 따라 영상의 흐름이 변화하며 기억과 현실 사이의 거리를 경험하도록 유도한다.
-
-《最も愚かな回帰》, 2025
-
-シングルチャンネル・ビデオ、モーションセンサーによるインタラクティブ映像インスタレーション、30秒
-
-鑑賞者の動きに反応して変化するインタラクティブ映像インスタレーション作品である。本作は、水の中で感じた自由で穏やかな記憶へ戻ろうとする人間の回帰願望をテーマとしている。鑑賞者の介入によって映像が変化し、記憶と現実のあいだにある距離を体験させる。</div>
         </div>
 
       </div>
@@ -389,9 +388,7 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 우리가 다루는 판화는 태초의 인쇄술에서 시작된 매체이자 반복과 계산, 손의 감각이 함께 작동하는 창작의 기술이다. 손으로 종이를 눌러 찍어내고, 도안을 새기고, 잉크의 농도를 조절하는 일련의 과정들은 사람들의 손에서 멀어지고 있지만, 우리는 그 기술을 손에 익혀 프레스기를 돌려왔다. 그 안에서 누군가는 판에서 자신만의 세계를 확장하고, 누군가는 판화의 개념을 타 매체로 확장하며 판화의 가능성을 시험한다.
 
 그러나 우리는 언제든 다시 판화 앞에 모여, 잃어버린 감각과 기술을 되찾고자 하는 이들을 위해 새로운 열쇠를 만들어낼 수 있다. 이번 전시는 31명의 작가 개인이 만들어낸 '판화의 키'를 선보이는 자리다. 우리는 판화라는 기술과 개념을 통해 새로운 열쇠를 만들고, 그것을 관람객에게 건네고자 한다. 각자의 손끝에서 만들어진 열쇠들은 감춰진 판화의 면을 드러내는 매개이자, 닫힌 구조를 여는 시도다. 우리는 각자의 작업 속에 감추어 두었던 물음표들을 열쇠로 바꾸어, 다시 문을 열어보려 한다.</div>
-
           <div class="text-divider"></div>
-
           <div class="text-col">私たちは、忘れられつつある技術を扱っているのだろうか。2025年弘益大学校美術大学版画科卒業展示は、この問いとともに、「鍵」という言葉から始まる。
 
 鍵とは、本来何かを隠し、守るためのものである。しかし同時に、私たちのもとから最もよく姿を消してしまう存在の一つでもある。鍵師が閉ざされた扉を開くために金属のわずかな隙間を探るように、私たちもまた版画という技術の隙間をたどりながらイメージを生み出してきた。
@@ -399,7 +396,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 私たちが扱う版画は、太古の印刷技術に起源を持つメディアであり、反復と計算、そして手の感覚がともに働く創作の技術である。紙に手で圧をかけて刷り上げ、版を彫り、インクの濃度を調整する――そうした一連の工程は次第に人々の手から遠ざかりつつある。それでも私たちは、その技術を身につけ、プレス機を回し続けてきた。その中である者は版の上に独自の世界を広げ、またある者は版画の概念を他のメディアへと拡張し、その可能性を探求している。
 
 しかし私たちは、いつでも再び版画のもとに集うことができる。失われつつある感覚や技術を取り戻そうとする人々のために、新たな鍵を作り出すことができる。本展は、31名の作家それぞれが生み出した「版画の鍵」を紹介する場である。私たちは版画という技術と概念を通じて新たな鍵を作り出し、それを来場者へ手渡したいと考えている。それぞれの手から生み出された鍵は、隠されていた版画のさまざまな側面を明らかにする媒介であり、閉ざされた構造を開くための試みでもある。私たちはそれぞれの作品の中に秘めていた問いを鍵へと変え、もう一度、その扉を開こうとしている。</div>
-
           <div class="small-text-box">《더 스페어 키 (The spare key)》 졸업전시 공간 기획, 2026
 메인 입구 및 참여 작가 공간 배치 레이아웃
 
@@ -412,11 +408,10 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
     <!-- poster.png + realposter -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="poster.png" style="width: 100%; display: block;">
-      <img src="realposter.png" style="
-        position: absolute; bottom: -200px; right: 7%; width: 300px; z-index: 4;">
+      <img src="realposter.png" style="position: absolute; bottom: -200px; right: 7%; width: 300px; z-index: 4;">
     </div>
 
-    <!-- 검정 동그라미 -->
+    <!-- 검정 동그라미 구분 영역 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative; height: 260px; background: #fff; overflow: visible; z-index: 3;">
       <div style="position: absolute; left: 5%; top: -70px; width: 160px; height: 160px; background: #000; border-radius: 50%; z-index: 4;"></div>
       <div style="position: absolute; left: 18%; top: 60px; width: 40px; height: 40px; background: #000; border-radius: 50%; z-index: 4;"></div>
@@ -426,7 +421,7 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
       <div style="position: absolute; right: 10%; top: 30px; width: 35px; height: 35px; background: #000; border-radius: 50%; z-index: 4;"></div>
     </div>
 
-    <!-- 노란 박스 + 텍스트 -->
+    <!-- 노란 박스 + 텍스트 + 캡션박스 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative; z-index: 1;">
       <div class="yellow-text-box">
         <div class="yellow-text-col">불안원자 [합성명사]
@@ -457,7 +452,14 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 
 このような連帯は、デクルというコレクティブのなかだけで形成されるのではなく、この展示が繰り広げられる空間である「青年芸術庁（SAPY）」の性格とも響き合っている。この空間は、若手芸術家の持続可能な創作活動のための場所である。本展が開催されるホワイト・ギャラリーは、従来のホワイト・キューブの特性を持ちながらも、非対称な床や構造を備えている。作家たちは展示室のいたるところに作品を配置することで、観客とデクルの間の新たな連帯を形成し、不完全で新しい挑戦を試みる。芸術家たちが集うこの場所で、「不安原子の集束モード」が実現されることを期待する。</div>
 
-        <div style="background: transparent;"></div>
+        <!-- 노란박스 캡션 -->
+        <div class="small-text-box">〈불안원자: 집속모드〉, 2024
+청년예술청 SAPY 기획전
+전시 컨셉 개발, 공간 기획, 참여 작가 공간 배치 설계, 구조물 설치
+
+《不安原子：集束モード》, 2024
+青年芸術庁 SAPY企画展
+展示コンセプト企画、空間デザイン、参加作家の展示レイアウト設計、展示構造物設置</div>
       </div>
     </div>
 
@@ -513,7 +515,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
           <img src="abs11.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
         </div>
       </div>
-
       <div style="display: flex; flex-direction: column; align-items: center; gap: 60px; padding: 80px 120px;">
         <div style="position: relative; display: inline-block; cursor: pointer; max-width: 800px; width: 100%;"
           onmouseenter="this.querySelector('.hover-img').style.opacity='1'; this.querySelector('.base-img').style.opacity='0';"
@@ -539,16 +540,24 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
       </div>
     </div>
 
-    <!-- art for a cause -->
-    <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px; border-top: 0.5px solid rgba(42,40,37,0.15);">
-      <p class="sub-title">art for a cause</p>
-      <img src="prm.jpg" style="width: 100%; display: block;">
+    <!-- art for a cause + stonehead 레이어 위에 -->
+    <div style="position: relative; margin-left: -120px; margin-right: -120px;">
+      <!-- stonehead — 흰색 박스보다 위 레이어, prm 섹션 위에 겹침 -->
+      <img src="stonehead.png" style="
+        position: absolute;
+        bottom: 100px;
+        right: -20px;
+        width: 150px;
+        z-index: 10;
+        display: block;
+      ">
+      <!-- art for a cause — 최하단까지 꽉 채움 -->
+      <div style="background: #fff; padding: 80px 120px 0; border-top: 0.5px solid rgba(42,40,37,0.15); min-height: 100vh;">
+        <p class="sub-title">art for a cause</p>
+        <img src="prm.jpg" style="width: 100%; display: block;">
+      </div>
     </div>
 
-    <!-- stonehead -->
-    <div style="display: flex; justify-content: flex-end; padding-bottom: 0; margin-right: -20px; margin-bottom: 100px; margin-top: 80px;">
-      <img src="stonehead.png" id="stonehead" style="width: 150px; display: block;">
-    </div>
   </div>
 
 </div>
