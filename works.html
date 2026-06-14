@@ -54,7 +54,6 @@
     font-size: 11px; letter-spacing: 0.12em; color: rgba(42,40,37,0.25); text-transform: uppercase;
   }
   .placeholder-tall { height: 600px; }
-  .placeholder-mid { height: 400px; }
 
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 
@@ -113,29 +112,34 @@
     color: rgba(42,40,37,0.85); white-space: pre-line; display: inline-block;
   }
 
-  /* 번호 원 — 검정 배경 흰색 글씨 */
   .num-circle {
     width: 73px; height: 73px; background: #000;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-size: 40px; font-family: 'Courier New', monospace;
-    font-weight: normal; color: #fff; position: absolute; z-index: 10;
-    line-height: 1; flex-shrink: 0;
+    font-weight: normal; color: #fff; position: absolute; z-index: 10; line-height: 1; flex-shrink: 0;
   }
   .num-circle-inline {
     width: 73px; height: 73px; background: #000;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-size: 40px; font-family: 'Courier New', monospace;
-    font-weight: normal; color: #fff;
-    line-height: 1; flex-shrink: 0;
+    font-weight: normal; color: #fff; line-height: 1; flex-shrink: 0;
   }
 
   .artwork-box {
-    border: 1px solid rgba(42,40,37,0.3);
-    padding: 24px 28px; font-size: 12px; line-height: 1.9;
-    color: rgba(42,40,37,0.8); white-space: pre-line; background: #fff;
+    border: 1px solid rgba(42,40,37,0.3); padding: 24px 28px; font-size: 12px;
+    line-height: 1.9; color: rgba(42,40,37,0.8); white-space: pre-line; background: #fff;
   }
+
+  /* about 섹션 텍스트 */
+  .about-section-title {
+    font-size: 16px; font-weight: bold; color: #cc0000;
+    margin-bottom: 16px; font-family: 'Courier New', monospace;
+  }
+  .about-list {
+    list-style: disc; padding-left: 20px;
+    font-size: 13px; line-height: 1.9; color: rgba(42,40,37,0.8);
+  }
+  .about-list li { margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -152,7 +156,6 @@
   <div class="section" id="section-artworks">
     <span class="section-label">artworks</span>
 
-    <!-- g1.jpg + 토글버튼 경계에 걸치게 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="g1.jpg" style="width: 100%; display: block; object-fit: cover;">
       <button id="toggle-btn" onclick="togglePrintmaking()" style="
@@ -160,13 +163,11 @@
         font-family: 'Inconsolata', monospace; font-size: 20px;
         letter-spacing: 0.12em; color: #000; background: #fff;
         border: 1.5px solid #000; padding: 16px 40px; cursor: pointer;
-        text-transform: lowercase; display: flex; align-items: center; gap: 10px;
-        z-index: 10;">
+        text-transform: lowercase; display: flex; align-items: center; gap: 10px; z-index: 10;">
         <span id="toggle-icon">＋</span> printmaking artworks
       </button>
     </div>
 
-    <!-- 토글 섹션 -->
     <div id="printmaking-section" style="display: none; margin-left: -120px; margin-right: -120px; margin-top: 60px;">
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin-top: 250px;">
         <img src="pm10.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
@@ -181,12 +182,10 @@
       </div>
     </div>
 
-    <!-- 노란 배경 -->
     <div style="background: #FFFF2C; margin-left: -120px; margin-right: -120px; margin-top: 60px;">
       <iframe width="100%" height="600"
         src="https://www.youtube.com/embed/YwqzBa2-cmY?start=10&end=40&loop=1&playlist=YwqzBa2-cmY&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0"
         frameborder="0" allowfullscreen style="display: block;"></iframe>
-
       <div style="overflow: hidden; margin-top: 16px;">
         <div style="display: flex; gap: 16px; animation: slideLeft 40s linear infinite; width: max-content;">
           <img src="p1.jpg" style="height: 300px; width: auto; object-fit: cover;">
@@ -205,7 +204,6 @@
           <img src="p7.jpg" style="height: 300px; width: auto; object-fit: cover;">
         </div>
       </div>
-
       <div style="padding: 80px 120px;">
         <div style="display: grid; grid-template-columns: 1fr 1px 1fr auto; gap: 0 40px; align-items: start;">
           <div class="yellow-text-col">닿지 않을 너에게, 아니 나에게
@@ -276,36 +274,28 @@
       </div>
     </div>
 
-    <!-- hl.png — itrv.jpg 위에 풀너비 -->
     <div style="margin-left: -120px; margin-right: -120px;">
       <img src="hl.png" style="width: 100%; display: block;">
     </div>
 
-    <!-- itrv.jpg + 원1 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="itrv.jpg" style="width: 100%; display: block;">
       <div class="num-circle" style="bottom: 40px; right: 120px;">1</div>
     </div>
 
-    <!-- 가챠 섹션 + 원2 -->
     <div style="margin-left: -120px; margin-right: -120px; height: 100vh; position: relative;">
       <iframe src="https://gacha-877.pages.dev" width="100%" height="100%" frameborder="0" style="display: block;"></iframe>
       <div class="num-circle" style="bottom: 60px; left: 80px;">2</div>
     </div>
 
-    <!-- df.jpg + 원3 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="df.jpg" style="width: 100%; display: block;">
-      <!-- 3번 원 — 오른쪽으로 50px 이동 (right 줄임) -->
       <div class="num-circle" style="bottom: 40px; right: 150px;">3</div>
     </div>
 
-    <!-- 작품 설명 섹션 — 사진 배치 참고 레이아웃 -->
+    <!-- 작품 설명 섹션 -->
     <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px 120px;">
-      <!-- 피그마 레이아웃: 왼쪽에 2번(위) + 2번박스, 오른쪽에 1번(위)+1번박스 / 3번(아래)+3번박스 -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
-
-        <!-- 왼쪽 열: 원2 + 박스2 (세로 중간쯤에 위치) -->
         <div style="padding-top: 200px;">
           <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
             <div class="num-circle-inline">2</div>
@@ -323,9 +313,7 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 ユーザーの顔を認識し、それをガチャカプセルのイメージへと変換することで、見慣れた自分自身を新たな視点から捉える体験を提案する。顔の特徴をもとに生成されたイメージはそれぞれ異なる個性を持ち、利用者はデジタル空間の中で自身のアイデンティティがどのように再解釈されるのかを体験することができる。</div>
         </div>
 
-        <!-- 오른쪽 열: 원1 + 박스1 (위), 원3 + 박스3 (아래) -->
         <div style="display: flex; flex-direction: column; gap: 48px;">
-          <!-- 원1 + 박스1 -->
           <div>
             <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
               <div class="num-circle-inline">1</div>
@@ -342,8 +330,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 
 鑑賞者の動きに反応して変化するインタラクティブ映像インスタレーション作品である。本作は、水の中で感じた自由で穏やかな記憶へ戻ろうとする人間の回帰願望をテーマとしている。鑑賞者の介入によって映像が変化し、記憶と現実のあいだにある距離を体験させる。</div>
           </div>
-
-          <!-- 원3 + 박스3 -->
           <div>
             <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
               <div class="num-circle-inline">3</div>
@@ -361,7 +347,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 デジタルドローイングによって描かれた魚のアニメーションの背後には、水にまつわる映像が重ねて再生されている。アニメーションの中の魚の動きは限られており、やがて終わりを迎える運命にある。しかし、揺らぐ水面や降り続く雨、流れる水の映像は、その魚にわずかでも長く泳ぎ続けるための生命感を与えているかのように見える。</div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -377,7 +362,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
       <img src="gm3.png" style="width: 100%; display: block;">
     </div>
 
-    <!-- 하늘색 텍스트 박스 -->
     <div style="background: #CCE6FF; margin-left: -120px; margin-right: -120px;">
       <div style="padding: 80px 120px;">
         <div style="display: grid; grid-template-columns: 1fr 1px 1fr auto; gap: 0 40px; align-items: start;">
@@ -405,13 +389,11 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
       </div>
     </div>
 
-    <!-- poster.png + realposter -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="poster.png" style="width: 100%; display: block;">
       <img src="realposter.png" style="position: absolute; bottom: -200px; right: 7%; width: 300px; z-index: 4;">
     </div>
 
-    <!-- 검정 동그라미 구분 영역 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative; height: 260px; background: #fff; overflow: visible; z-index: 3;">
       <div style="position: absolute; left: 5%; top: -70px; width: 160px; height: 160px; background: #000; border-radius: 50%; z-index: 4;"></div>
       <div style="position: absolute; left: 18%; top: 60px; width: 40px; height: 40px; background: #000; border-radius: 50%; z-index: 4;"></div>
@@ -421,7 +403,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
       <div style="position: absolute; right: 10%; top: 30px; width: 35px; height: 35px; background: #000; border-radius: 50%; z-index: 4;"></div>
     </div>
 
-    <!-- 노란 박스 + 텍스트 + 캡션박스 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative; z-index: 1;">
       <div class="yellow-text-box">
         <div class="yellow-text-col">불안원자 [합성명사]
@@ -436,9 +417,7 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 예술은 더 이상 고립된 행위가 아니라, 함께 공유하고 소통하며 자라나는 존재가 되었다. 우리의 연대는 단지 따뜻하고 낭만적인 것만은 아니다. 그것은 두려움에서 비롯된, 생존을 위한 본능적인 결속이다. 그러나 그 속에서 우리는 서로를 안심시키고, 온기를 나누며, 마침내 혼자가 아니라는 감각을 회복한다.
 
 이러한 연대는 데클이라는 콜렉티브 안에서만 형성되는 것이 아니라, 이 전시가 펼쳐지는 공간인 청년예술청(sapy)의 성격과도 맞닿아 있다. 이 공간은 청년 예술인의 지속가능한 창작활동을 위한 공간이다. 본 전시가 진행되는 화이트 갤러리는 기존의 화이트 큐브의 특성과 비대칭적인 바닥과 구조를 갖고 있다. 작가들은 전시장 곳곳에 작업을 놓아 관객과 데클 사이의 새로운 연대를 형성해 불완전하고 새로운 도전을 시도한다. 예술인들이 방문하는 이곳에서 불안원자의 집속모드를 실현을 기대한다.</div>
-
         <div class="yellow-divider"></div>
-
         <div class="yellow-text-col">不安原子
 未成熟で不完全、そして孤立した存在であると同時に、他者との結合や連帯への渇望を抱いた存在。
 
@@ -451,8 +430,6 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 芸術はもはや孤立した行為ではなく、共に共有し、コミュニケーションを取りながら成長する存在となった。私たちの連帯は、単に温かくロマンチックなものだけではない。それは恐怖から始まった、生存のための本能的な結束である。しかしそのなかで、私たちは互いを安心させ、温もりを分かち合い、ついに「一人ではない」という感覚を回復するのである。
 
 このような連帯は、デクルというコレクティブのなかだけで形成されるのではなく、この展示が繰り広げられる空間である「青年芸術庁（SAPY）」の性格とも響き合っている。この空間は、若手芸術家の持続可能な創作活動のための場所である。本展が開催されるホワイト・ギャラリーは、従来のホワイト・キューブの特性を持ちながらも、非対称な床や構造を備えている。作家たちは展示室のいたるところに作品を配置することで、観客とデクルの間の新たな連帯を形成し、不完全で新しい挑戦を試みる。芸術家たちが集うこの場所で、「不安原子の集束モード」が実現されることを期待する。</div>
-
-        <!-- 노란박스 캡션 -->
         <div class="small-text-box">〈불안원자: 집속모드〉, 2024
 청년예술청 SAPY 기획전
 전시 컨셉 개발, 공간 기획, 참여 작가 공간 배치 설계, 구조물 설치
@@ -469,9 +446,60 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
   <div class="section" id="section-about">
     <span class="section-label">about & archive</span>
 
-    <div class="grid-2" style="margin-bottom: 80px;">
-      <div class="placeholder placeholder-tall">프로필 사진</div>
-      <div class="placeholder placeholder-tall">텍스트 — 추가 예정</div>
+    <!-- 프로필 + contact 영역 -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 80px; align-items: start;">
+      <!-- 왼쪽: 빈 공간 (프로필 추가 예정) -->
+      <div></div>
+      <!-- 오른쪽: contact + 미모지 -->
+      <div style="display: flex; justify-content: flex-end; align-items: flex-start; gap: 40px;">
+        <div style="text-align: right;">
+          <p class="about-section-title" style="text-align: right;">contact</p>
+          <p style="font-size: 13px; line-height: 2; color: rgba(42,40,37,0.8);">email:<br>supzltm@naver.com</p>
+        </div>
+        <img src="myface.png" style="width: 180px; height: auto; display: block; flex-shrink: 0;">
+      </div>
+    </div>
+
+    <!-- 전시이력(왼쪽) + 수상/경험(오른쪽) -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 80px; align-items: start;">
+
+      <!-- 왼쪽: Exhibitions -->
+      <div>
+        <p class="about-section-title">Exhibitions</p>
+        <ul class="about-list">
+          <li>2025 The Spare Key (Hongik University Department of Printmaking Graduation Exhibition), Hongik Museum of Contemporary Art, Seoul, South Korea</li>
+          <li>2025 Connected Through Our Hearts (Charity Exhibition Supporting Purme Foundation Nexon Children's Rehabilitation Hospital), Open Art Space, Purme Foundation Nexon Children's Rehabilitation Hospital, Seoul, South Korea</li>
+          <li>2025 Anxiety Atom: Focus Mode, Seoul Art Space for Young Artists (SAPY), Seoul, South Korea</li>
+          <li>2024 Descendants Within the Frame – To My Twin (Deckle Printmaking Group Exhibition, Hongik University), Gaon Gallery, Incheon Metropolitan Office of Education, Incheon, South Korea</li>
+          <li>2023 The 59th Gyeonggi Art Exhibition, Ansan Arts Center, Ansan, South Korea</li>
+          <li>2023 The 42nd Emerging Artists Printmaking Exhibition, Korea Contemporary Printmakers Association, Seoul, South Korea</li>
+          <li>2022 p between a (Deckle Printmaking Group Exhibition, Hongik University), Gallery Raon, Seoul, South Korea</li>
+          <li>2021 spread & pause (Joint Exhibition by the School of Fine Art, Hongik University), Hongik University Auditorium, Seoul, South Korea</li>
+          <li>2019 Now, We Stand in the Square, National Museum of Modern and Contemporary Art, Gwacheon, Gwacheon, South Korea</li>
+        </ul>
+      </div>
+
+      <!-- 오른쪽: Awards + Experiences -->
+      <div style="display: flex; flex-direction: column; gap: 48px;">
+        <div>
+          <p class="about-section-title">Awards</p>
+          <ul class="about-list">
+            <li>2023 Selected Winner (Printmaking Division), The 59th Gyeonggi Art Exhibition, Fine Arts Association of Gyeonggi-do</li>
+            <li>2023 Selected Winner, The 42nd Korea Contemporary Printmakers Association Competition, Korea Contemporary Printmakers Association</li>
+          </ul>
+        </div>
+        <div>
+          <p class="about-section-title">Experiences</p>
+          <ul class="about-list">
+            <li>2025 Exhibition Planning Committee, Spatial Planning Team, Hongik University Department of Printmaking Graduation Exhibition, Seoul, South Korea</li>
+            <li>2025 Instructor, Printmaking Education Team, Cheong Wa Dae (The Blue House) Education Week, Seoul, South Korea</li>
+            <li>2025 Organizer, Charity Exhibition Supporting Purme Foundation Nexon Children's Rehabilitation Hospital, Seoul, South Korea</li>
+            <li>2025 Exhibition Director & Spatial Designer, Anxiety Atom: Focus Mode, Seoul Art Space for Young Artists (SAPY), Seoul, South Korea</li>
+            <li>2021–2025 Exhibiting Artist, Deckle Printmaking Exhibition Club, Hongik University, Seoul, South Korea</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
 
     <!-- 뮤비 아트디렉터 -->
@@ -534,7 +562,7 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
     <!-- education -->
     <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px; border-top: 0.5px solid rgba(42,40,37,0.15);">
       <p class="sub-title">education</p>
-      <img src="cwd.jpg" style="width: calc(100% + 240px); margin-left: -120px; display: block; margin-bottom: 40px;">
+      <img src="cwd.jpg" style="width: calc(100% + 240px); margin-left: -120px; display: block; margin-bottom: 80px;">
       <div style="display: flex; justify-content: center;">
         <img src="cwd2.jpg" style="width: 33%; display: block;">
       </div>
@@ -542,17 +570,10 @@ Webインタラクティブプロジェクト、Vibe Coding、顔認識および
 
     <!-- art for a cause + stonehead 레이어 위에 -->
     <div style="position: relative; margin-left: -120px; margin-right: -120px;">
-      <!-- stonehead — 흰색 박스보다 위 레이어, prm 섹션 위에 겹침 -->
       <img src="stonehead.png" style="
-        position: absolute;
-        bottom: 100px;
-        right: -20px;
-        width: 150px;
-        z-index: 10;
-        display: block;
-      ">
-      <!-- art for a cause — 최하단까지 꽉 채움 -->
-      <div style="background: #fff; padding: 80px 120px 0; border-top: 0.5px solid rgba(42,40,37,0.15); min-height: 100vh;">
+        position: absolute; bottom: 300px; right: -20px;
+        width: 150px; z-index: 10; display: block;">
+      <div style="background: #fff; padding: 80px 120px 200px; border-top: 0.5px solid rgba(42,40,37,0.15);">
         <p class="sub-title">art for a cause</p>
         <img src="prm.jpg" style="width: 100%; display: block;">
       </div>
