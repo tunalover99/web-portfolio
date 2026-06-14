@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scrollbar-width: none; }
   html::-webkit-scrollbar { display: none; }
 
@@ -20,230 +19,120 @@
   }
 
   #back-btn {
-    position: fixed;
-    top: 28px;
-    left: 36px;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: rgba(42,40,37,0.4);
-    background: rgba(42,40,37,0.05);
-    border: 0.5px solid rgba(42,40,37,0.15);
-    padding: 8px 14px;
-    cursor: pointer;
-    text-transform: uppercase;
-    z-index: 100;
-    border-radius: 2px;
-    transition: background 0.2s, color 0.2s;
+    position: fixed; top: 28px; left: 36px;
+    font-family: 'Courier New', monospace; font-size: 10px;
+    letter-spacing: 0.15em; color: rgba(42,40,37,0.4);
+    background: rgba(42,40,37,0.05); border: 0.5px solid rgba(42,40,37,0.15);
+    padding: 8px 14px; cursor: pointer; text-transform: uppercase;
+    z-index: 100; border-radius: 2px; transition: background 0.2s, color 0.2s;
   }
-  #back-btn:hover {
-    background: rgba(42,40,37,0.1);
-    color: rgba(42,40,37,0.8);
-  }
+  #back-btn:hover { background: rgba(42,40,37,0.1); color: rgba(42,40,37,0.8); }
 
   #custom-scrollbar {
-    position: fixed;
-    right: 20px;
-    top: 0;
-    width: 74px;
-    height: 100vh;
-    z-index: 100;
-    pointer-events: none;
+    position: fixed; right: 20px; top: 0; width: 74px; height: 100vh;
+    z-index: 100; pointer-events: none;
   }
-
   #scroll-thumb {
-    position: absolute;
-    right: 0;
-    width: 74px;
-    height: calc(100vh / 6);
-    cursor: grab;
-    pointer-events: auto;
-    user-select: none;
+    position: absolute; right: 0; width: 74px; height: calc(100vh / 6);
+    cursor: grab; pointer-events: auto; user-select: none;
   }
   #scroll-thumb:active { cursor: grabbing; }
-  #scroll-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    pointer-events: none;
-  }
+  #scroll-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; }
 
-  #content {
-    max-width: 1512px;
-    margin: 0 auto;
-    padding: 100px 120px 0;
-  }
+  #content { max-width: 1512px; margin: 0 auto; padding: 100px 120px 0; }
 
   .section-label {
-    display: inline-block;
-    font-family: 'Inconsolata', monospace;
-    font-size: 24px;
-    letter-spacing: 0.12em;
-    color: #000000;
-    background: #ffffff;
-    border: 2px solid #000000;
-    padding: 8px 20px;
-    margin-bottom: 48px;
-    text-transform: lowercase;
+    display: inline-block; font-family: 'Inconsolata', monospace; font-size: 24px;
+    letter-spacing: 0.12em; color: #000; background: #fff;
+    border: 2px solid #000; padding: 8px 20px; margin-bottom: 48px; text-transform: lowercase;
   }
-
   .section { margin-bottom: 0; }
 
   .placeholder {
-    width: 100%;
-    background: rgba(42,40,37,0.04);
-    border: 0.5px dashed rgba(42,40,37,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: rgba(42,40,37,0.25);
-    text-transform: uppercase;
+    width: 100%; background: rgba(42,40,37,0.04); border: 0.5px dashed rgba(42,40,37,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: 0.12em; color: rgba(42,40,37,0.25); text-transform: uppercase;
   }
   .placeholder-tall { height: 600px; }
   .placeholder-mid { height: 400px; }
 
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-  .grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 
   @keyframes slideLeft {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
 
-  .text-col {
-    font-size: 13px;
-    line-height: 2;
-    color: rgba(42,40,37,0.8);
-    white-space: pre-line;
-  }
-
-  .text-divider {
-    background: rgba(42,40,37,0.2);
-    height: 100%;
-    min-height: 400px;
-  }
-
-  .next-section {
-    padding-top: 160px;
-    padding-bottom: 160px;
-  }
+  .text-col { font-size: 13px; line-height: 2; color: rgba(42,40,37,0.8); white-space: pre-line; }
+  .text-divider { background: rgba(42,40,37,0.2); height: 100%; min-height: 400px; }
 
   .slide-section {
-    background: #fff;
-    padding: 120px 0 140px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background: #fff; padding: 120px 0 140px; position: relative;
+    display: flex; flex-direction: column; align-items: center;
   }
-
   .slide-track {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-    height: 900px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; width: 100%; height: 900px;
   }
-
-  .slide-item {
-    position: absolute;
-    transition: all 0.4s ease;
-  }
+  .slide-item { position: absolute; transition: all 0.4s ease; }
   .slide-item img { display: block; object-fit: contain; }
-
-  .slide-item.center {
-    z-index: 5; left: 50%; transform: translateX(-50%);
-  }
-  .slide-item.center img {
-    width: 650px; height: 830px;
-    filter: drop-shadow(0 24px 60px rgba(0,0,0,0.35));
-    opacity: 1;
-  }
-  .slide-item.left {
-    z-index: 3; left: 50%; transform: translateX(calc(-50% - 480px));
-  }
-  .slide-item.left img {
-    width: 220px; height: 280px;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
-    opacity: 0.6;
-  }
-  .slide-item.right {
-    z-index: 3; left: 50%; transform: translateX(calc(-50% + 480px));
-  }
-  .slide-item.right img {
-    width: 220px; height: 280px;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
-    opacity: 0.6;
-  }
+  .slide-item.center { z-index: 5; left: 50%; transform: translateX(-50%); }
+  .slide-item.center img { width: 650px; height: 830px; filter: drop-shadow(0 24px 60px rgba(0,0,0,0.35)); opacity: 1; }
+  .slide-item.left { z-index: 3; left: 50%; transform: translateX(calc(-50% - 480px)); }
+  .slide-item.left img { width: 220px; height: 280px; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15)); opacity: 0.6; }
+  .slide-item.right { z-index: 3; left: 50%; transform: translateX(calc(-50% + 480px)); }
+  .slide-item.right img { width: 220px; height: 280px; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15)); opacity: 0.6; }
   .slide-item.hidden { z-index: 1; display: none; pointer-events: none; }
 
   .slide-arrow {
-    background: none; border: none; font-size: 40px;
-    cursor: pointer; color: rgba(42,40,37,0.35);
-    font-family: 'Courier New', monospace;
+    background: none; border: none; font-size: 40px; cursor: pointer;
+    color: rgba(42,40,37,0.35); font-family: 'Courier New', monospace;
     transition: color 0.2s; padding: 0 40px;
     position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
   }
   .slide-arrow:hover { color: rgba(42,40,37,0.8); }
   .slide-arrow.left-arrow { left: 0; }
   .slide-arrow.right-arrow { right: 0; }
-
-  .slide-counter {
-    margin-top: 32px; font-size: 11px;
-    letter-spacing: 0.15em; color: rgba(42,40,37,0.35);
-  }
+  .slide-counter { margin-top: 32px; font-size: 11px; letter-spacing: 0.15em; color: rgba(42,40,37,0.35); }
 
   .yellow-text-box {
-    background: #FFFF2B;
-    padding: 80px 120px;
-    min-height: 970px;
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr 1fr;
-    gap: 0 40px;
-    align-items: start;
+    background: #FFFF2B; padding: 80px 120px; min-height: 970px;
+    display: grid; grid-template-columns: 1fr 1px 1fr 1fr; gap: 0 40px; align-items: start;
   }
-
-  .yellow-text-col {
-    font-size: 13px; line-height: 2;
-    color: rgba(42,40,37,0.85); white-space: pre-line;
-  }
-
-  .yellow-divider {
-    background: rgba(42,40,37,0.2);
-    min-height: 800px;
-  }
+  .yellow-text-col { font-size: 13px; line-height: 2; color: rgba(42,40,37,0.85); white-space: pre-line; }
+  .yellow-divider { background: rgba(42,40,37,0.2); min-height: 800px; }
 
   .sub-title {
-    font-family: 'Inconsolata', monospace;
-    font-size: 13px; letter-spacing: 0.15em;
-    color: rgba(42,40,37,0.5); text-transform: uppercase;
-    margin-bottom: 40px; text-align: center;
+    font-family: 'Inconsolata', monospace; font-size: 13px; letter-spacing: 0.15em;
+    color: rgba(42,40,37,0.5); text-transform: uppercase; margin-bottom: 40px; text-align: center;
   }
 
-  /* 작은 텍스트 박스 */
   .small-text-box {
-    border: 0.5px solid rgba(42,40,37,0.3);
-    background: rgba(255,255,255,0.3);
-    padding: 16px 20px;
-    font-size: 13px;
-    line-height: 1.8;
-    color: rgba(42,40,37,0.85);
+    border: 0.5px solid rgba(42,40,37,0.3); background: rgba(255,255,255,0.3);
+    padding: 16px 20px; font-size: 13px; line-height: 1.8;
+    color: rgba(42,40,37,0.85); white-space: pre-line; display: inline-block;
+  }
+
+  /* 번호 원 */
+  .num-circle {
+    width: 73px; height: 73px; background: #fff;
+    border: 1.5px solid #000; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; font-family: 'Courier New', monospace;
+    font-weight: normal; color: #000; position: absolute; z-index: 10;
+    line-height: 1;
+  }
+
+  /* 작품 설명 박스 */
+  .artwork-box {
+    border: 1px solid rgba(42,40,37,0.3);
+    padding: 24px 28px;
+    font-size: 12px;
+    line-height: 1.9;
+    color: rgba(42,40,37,0.8);
     white-space: pre-line;
-    display: inline-block;
+    background: #fff;
   }
 </style>
 </head>
@@ -252,9 +141,7 @@
 <button id="back-btn" onclick="window.location.href='index.html'">← back</button>
 
 <div id="custom-scrollbar">
-  <div id="scroll-thumb">
-    <img src="scroll.png" alt="scroll">
-  </div>
+  <div id="scroll-thumb"><img src="scroll.png" alt="scroll"></div>
 </div>
 
 <div id="content">
@@ -263,22 +150,24 @@
   <div class="section" id="section-artworks">
     <span class="section-label">artworks</span>
 
-    <div style="margin-left: -120px; margin-right: -120px;">
+    <!-- g1.jpg -->
+    <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="g1.jpg" style="width: 100%; display: block; object-fit: cover;">
-    </div>
 
-    <div style="margin-left: -120px; margin-right: -120px; padding: 0 120px;">
+      <!-- 토글 버튼 — g1과 흰색박스 경계에 걸치게 -->
       <button id="toggle-btn" onclick="togglePrintmaking()" style="
-        font-family: 'Inconsolata', monospace; font-size: 14px;
+        position: absolute; bottom: -30px; left: 120px;
+        font-family: 'Inconsolata', monospace; font-size: 20px;
         letter-spacing: 0.12em; color: #000; background: #fff;
-        border: 1.5px solid #000; padding: 8px 20px; cursor: pointer;
-        margin: 24px 0; text-transform: lowercase; display: flex;
-        align-items: center; gap: 10px;">
+        border: 1.5px solid #000; padding: 16px 40px; cursor: pointer;
+        text-transform: lowercase; display: flex; align-items: center; gap: 10px;
+        z-index: 10;">
         <span id="toggle-icon">＋</span> printmaking artworks
       </button>
     </div>
 
-    <div id="printmaking-section" style="display: none; margin-left: -120px; margin-right: -120px;">
+    <!-- 토글 섹션 -->
+    <div id="printmaking-section" style="display: none; margin-left: -120px; margin-right: -120px; margin-top: 60px;">
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; margin-top: 250px;">
         <img src="pm10.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
         <img src="pm9.jpg" style="width: 100%; height: 340px; object-fit: cover; display: block;">
@@ -293,7 +182,7 @@
     </div>
 
     <!-- 노란 배경 -->
-    <div style="background: #FFFF2C; margin-left: -120px; margin-right: -120px;">
+    <div style="background: #FFFF2C; margin-left: -120px; margin-right: -120px; margin-top: 60px;">
       <iframe width="100%" height="600"
         src="https://www.youtube.com/embed/YwqzBa2-cmY?start=10&end=40&loop=1&playlist=YwqzBa2-cmY&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0"
         frameborder="0" allowfullscreen style="display: block;"></iframe>
@@ -383,7 +272,6 @@
 私たちが歩んできた足跡の先で、
 静かに開かれますように。</div>
 
-          <!-- 작은 텍스트 박스 -->
           <div class="small-text-box">〈닿지 않을 나에게〉, 2025, 단채널 비디오, 컬러, 사운드, 1분 24초
 
 《届かない私へ》, 2025年, シングルチャンネル・ビデオ, カラー, サウンド, 1分24秒</div>
@@ -391,28 +279,93 @@
       </div>
     </div>
 
-    <!-- itrv.jpg -->
-    <div style="margin-left: -120px; margin-right: -120px;">
+    <!-- itrv.jpg + 원1 -->
+    <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="itrv.jpg" style="width: 100%; display: block;">
+      <!-- 원 1 — 우측 하단 -->
+      <div class="num-circle" style="bottom: 40px; right: 120px;">1</div>
     </div>
 
-    <!-- 가챠 섹션 -->
-    <div style="margin-left: -120px; margin-right: -120px; height: 100vh;">
+    <!-- 가챠 섹션 + 원2 -->
+    <div style="margin-left: -120px; margin-right: -120px; height: 100vh; position: relative;">
       <iframe src="https://gacha-877.pages.dev" width="100%" height="100%" frameborder="0" style="display: block;"></iframe>
+      <!-- 원 2 — 좌측 하단 -->
+      <div class="num-circle" style="bottom: 60px; left: 80px;">2</div>
     </div>
 
-    <!-- df.jpg -->
-    <div style="margin-left: -120px; margin-right: -120px;">
+    <!-- df.jpg + 원3 -->
+    <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="df.jpg" style="width: 100%; display: block;">
+      <!-- 원 3 — 우측 하단 -->
+      <div class="num-circle" style="bottom: 40px; right: 200px;">3</div>
     </div>
 
-    <div class="next-section">
-      <div class="grid-3">
-        <div class="placeholder placeholder-mid">작품 사진</div>
-        <div class="placeholder placeholder-mid">작품 사진</div>
-        <div class="placeholder placeholder-mid">작품 사진</div>
+    <!-- 작품 설명 섹션 — 원 + 캡션 3개 -->
+    <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
+
+        <!-- 왼쪽: 원2 + 작품2, 원3 + 작품3 세로 배치 -->
+        <div style="display: flex; flex-direction: column; gap: 48px;">
+
+          <!-- 원2 + 작품2 -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+              <div class="num-circle" style="position: static; flex-shrink: 0;">2</div>
+            </div>
+            <div class="artwork-box">〈가챠 웹〉, 2025
+
+웹 기반 인터랙티브 프로젝트, 바이브 코딩, 얼굴 인식 및 AI 기반 감정 분석 시스템
+
+사용자의 얼굴을 인식하고 이를 가챠 캡슐 형태의 이미지로 변환하는 과정을 통해, 익숙한 자신의 모습을 새로운 시각으로 바라보는 경험을 제안한다. 얼굴의 특징을 반영해 생성된 이미지는 각기 다른 형태와 개성을 지니며, 사용자는 자신의 정체성이 디지털 환경 속에서 어떻게 재해석될 수 있는지를 마주하게 된다.
+
+《ガチャ・ウェブ》, 2025
+
+Webインタラクティブプロジェクト、Vibe Coding、顔認識およびAI感情分析システム
+
+ユーザーの顔を認識し、それをガチャカプセルのイメージへと変換することで、見慣れた自分自身を新たな視点から捉える体験を提案する。顔の特徴をもとに生成されたイメージはそれぞれ異なる個性を持ち、利用者はデジタル空間の中で自身のアイデンティティがどのように再解釈されるのかを体験することができる。</div>
+          </div>
+
+          <!-- 원3 + 작품3 -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+              <div class="num-circle" style="position: static; flex-shrink: 0;">3</div>
+            </div>
+            <div class="artwork-box">〈물에서 자유롭게 춤을 추는〉, 2024
+
+단채널 비디오, 디지털 드로잉 애니메이션, 3분
+
+디지털 드로잉으로 제작된 물고기 애니메이션 뒤에는 물과 관련된 영상들이 중첩되어 재생된다. 애니메이션 속 물고기의 움직임은 제한적이며 언젠가는 끝을 맞이할 운명을 지닌다. 그러나 출렁이는 수면과 내리는 빗방울, 흐르는 물의 영상들은 마치 그 물고기가 조금이라도 더 오래 헤엄칠 수 있도록 생명력을 불어넣는 것처럼 보인다.
+
+《水の中で自由に踊る》, 2024
+
+シングルチャンネル・ビデオ、デジタルドローイング・アニメーション、3分
+
+デジタルドローイングによって描かれた魚のアニメーションの背後には、水にまつわる映像が重ねて再生されている。アニメーションの中の魚の動きは限られており、やがて終わりを迎える運命にある。しかし、揺らぐ水面や降り続く雨、流れる水の映像は、その魚にわずかでも長く泳ぎ続けるための生命感を与えているかのように見える。</div>
+          </div>
+
+        </div>
+
+        <!-- 오른쪽: 원1 + 작품1 -->
+        <div>
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div class="num-circle" style="position: static; flex-shrink: 0;">1</div>
+          </div>
+          <div class="artwork-box">〈가장 멍청한 회귀〉, 2025
+
+단채널 비디오, 모션 센서 기반 인터랙티브 영상 설치, 30초
+
+관람객의 움직임에 반응하여 변화하는 인터랙티브 영상 설치 작품이다. 작품은 물속에서의 자유롭고 평온한 기억으로 돌아가고자 하는 인간의 회귀 욕망을 다룬다. 관람자의 개입에 따라 영상의 흐름이 변화하며 기억과 현실 사이의 거리를 경험하도록 유도한다.
+
+《最も愚かな回帰》, 2025
+
+シングルチャンネル・ビデオ、モーションセンサーによるインタラクティブ映像インスタレーション、30秒
+
+鑑賞者の動きに反応して変化するインタラクティブ映像インスタレーション作品である。本作は、水の中で感じた自由で穏やかな記憶へ戻ろうとする人間の回帰願望をテーマとしている。鑑賞者の介入によって映像が変化し、記憶と現実のあいだにある距離を体験させる。</div>
+        </div>
+
       </div>
     </div>
+
   </div>
 
   <!-- SPATIAL DESIGN 섹션 -->
@@ -447,7 +400,6 @@
 
 しかし私たちは、いつでも再び版画のもとに集うことができる。失われつつある感覚や技術を取り戻そうとする人々のために、新たな鍵を作り出すことができる。本展は、31名の作家それぞれが生み出した「版画の鍵」を紹介する場である。私たちは版画という技術と概念を通じて新たな鍵を作り出し、それを来場者へ手渡したいと考えている。それぞれの手から生み出された鍵は、隠されていた版画のさまざまな側面を明らかにする媒介であり、閉ざされた構造を開くための試みでもある。私たちはそれぞれの作品の中に秘めていた問いを鍵へと変え、もう一度、その扉を開こうとしている。</div>
 
-          <!-- 작은 텍스트 박스 -->
           <div class="small-text-box">《더 스페어 키 (The spare key)》 졸업전시 공간 기획, 2026
 메인 입구 및 참여 작가 공간 배치 레이아웃
 
@@ -457,31 +409,20 @@
       </div>
     </div>
 
-    <!-- poster.png 풀너비 + realposter 위치 수정 -->
+    <!-- poster.png + realposter -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative;">
       <img src="poster.png" style="width: 100%; display: block;">
       <img src="realposter.png" style="
-        position: absolute;
-        bottom: -200px;
-        right: 7%;
-        width: 300px;
-        z-index: 4;
-      ">
+        position: absolute; bottom: -200px; right: 7%; width: 300px; z-index: 4;">
     </div>
 
-    <!-- 검정 동그라미 — poster랑 노란박스를 가로질러 존재 -->
+    <!-- 검정 동그라미 -->
     <div style="margin-left: -120px; margin-right: -120px; position: relative; height: 260px; background: #fff; overflow: visible; z-index: 3;">
-      <!-- 큰 동그라미 — 위로 절반 튀어나옴 (poster와 걸침) -->
       <div style="position: absolute; left: 5%; top: -70px; width: 160px; height: 160px; background: #000; border-radius: 50%; z-index: 4;"></div>
-      <!-- 작은 동그라미 -->
       <div style="position: absolute; left: 18%; top: 60px; width: 40px; height: 40px; background: #000; border-radius: 50%; z-index: 4;"></div>
-      <!-- 중간 동그라미 -->
       <div style="position: absolute; left: 30%; top: -30px; width: 100px; height: 100px; background: #000; border-radius: 50%; z-index: 4;"></div>
-      <!-- 아주 작은 동그라미 -->
       <div style="position: absolute; left: 45%; top: 80px; width: 28px; height: 28px; background: #000; border-radius: 50%; z-index: 4;"></div>
-      <!-- 큰 동그라미 오른쪽 — 아래로 절반 튀어나옴 (노란박스와 걸침) -->
       <div style="position: absolute; right: 20%; top: 120px; width: 180px; height: 180px; background: #000; border-radius: 50%; z-index: 4;"></div>
-      <!-- 작은 동그라미 우측 -->
       <div style="position: absolute; right: 10%; top: 30px; width: 35px; height: 35px; background: #000; border-radius: 50%; z-index: 4;"></div>
     </div>
 
@@ -592,19 +533,10 @@
     <!-- education -->
     <div style="margin-left: -120px; margin-right: -120px; background: #fff; padding: 80px 120px; border-top: 0.5px solid rgba(42,40,37,0.15);">
       <p class="sub-title">education</p>
-      <!-- cwd.jpg 슬라이드 -->
-      <div style="overflow: hidden; margin-bottom: 40px;">
-        <div style="display: flex; gap: 0; animation: slideLeft 60s linear infinite; width: max-content;">
-          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
-          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
-          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
-          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
-          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
-          <img src="cwd.jpg" style="height: 200px; width: auto; object-fit: cover; display: block;">
-        </div>
+      <img src="cwd.jpg" style="width: calc(100% + 240px); margin-left: -120px; display: block; margin-bottom: 40px;">
+      <div style="display: flex; justify-content: center;">
+        <img src="cwd2.jpg" style="width: 33%; display: block;">
       </div>
-      <!-- cwd2.jpg -->
-      <img src="cwd2.jpg" style="width: 33%; display: block;">
     </div>
 
     <!-- art for a cause -->
@@ -632,19 +564,12 @@
     const thumbTop = maxScroll > 0 ? (scrollTop / maxScroll) * maxThumbTop : 0;
     thumb.style.top = thumbTop + 'px';
   }
-
   window.addEventListener('scroll', updateThumb);
   updateThumb();
 
-  let isThumbDragging = false;
-  let startY = 0;
-  let startScrollY = 0;
-
+  let isThumbDragging = false, startY = 0, startScrollY = 0;
   thumb.addEventListener('mousedown', e => {
-    isThumbDragging = true;
-    startY = e.clientY;
-    startScrollY = window.scrollY;
-    e.preventDefault();
+    isThumbDragging = true; startY = e.clientY; startScrollY = window.scrollY; e.preventDefault();
   });
   window.addEventListener('mousemove', e => {
     if (!isThumbDragging) return;
@@ -667,18 +592,14 @@
     const section = document.getElementById('printmaking-section');
     const icon = document.getElementById('toggle-icon');
     if (section.style.display === 'none') {
-      section.style.display = 'block';
-      icon.textContent = '－';
-      buildSlides();
+      section.style.display = 'block'; icon.textContent = '－'; buildSlides();
     } else {
-      section.style.display = 'none';
-      icon.textContent = '＋';
+      section.style.display = 'none'; icon.textContent = '＋';
     }
   }
 
   const slides = ['pm1.png','pm2.png','pm3.png','pm4.png','pm5.png','pm6.png','pm7.png','pm8.png'];
-  let currentSlide = 0;
-  let slidesBuilt = false;
+  let currentSlide = 0, slidesBuilt = false;
 
   function buildSlides() {
     if (slidesBuilt) return;
@@ -712,15 +633,8 @@
     document.getElementById('slide-counter').textContent = (currentSlide + 1) + ' / ' + total;
   }
 
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    updateSlides();
-  }
-
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    updateSlides();
-  }
+  function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateSlides(); }
+  function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; updateSlides(); }
 </script>
 </body>
 </html>
